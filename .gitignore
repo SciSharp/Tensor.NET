@@ -33,3 +33,6 @@
 
 #builds
 build/
+
+#developments
+.vscode/
