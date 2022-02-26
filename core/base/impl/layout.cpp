@@ -10,7 +10,9 @@ Shape::Shape(const std::vector<size_t> &init_shape) {
             "max is %lu\n",
             init_shape.size(), MAX_NDIM);
   ndim = init_shape.size();
-  memcpy(shape, init_shape.data(), sizeof(size_t) * ndim);
+  for (int i = 0; i < ndim; i++) {
+    shape[i] = init_shape[ndim - 1 - i];
+  }
 }
 
 Shape::Shape(const std::initializer_list<size_t> init_shape)
@@ -67,7 +69,7 @@ Layout::Layout(const DType &dtype, const Format &format)
 Layout::Layout(const Shape &shape, const DType &dtype, const Format &format)
     : Shape(shape), dtype(dtype), format(format) {}
 
-bool Layout::is_layout(const Layout &rhs) const {
+bool Layout::is_same_layout(const Layout &rhs) const {
   return dtype == rhs.dtype && format == rhs.format && is_shape(rhs);
 }
 

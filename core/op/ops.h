@@ -1,116 +1,45 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 
 #include "core/base/include/ndArray.h"
 #include "core/macro.h"
-#include "core/op/base.h"
 #include "core/op/param.h"
 
 namespace nncore {
 namespace opr {
-static HandleType default_handle = HandleType::Naive;
 
 using namespace param;
 
-// class ReshapeBase {
-//  private:
-//   static std::unordered_map<HandleType, ReshapeBase*> m_handle_dic;
+#define DEF_OP_METHOD_SINGLE_INPUT(_name)                    \
+  virtual void _name(const NDArray& inp, const NDArray& oup, \
+                     const param::_name& param) = 0;
 
-//  public:
-//   using Param = Reshape;
-//   static const char* name() { return "Reshape"; }
-//   static ReshapeBase* get_op(HandleType handle) {
-//     nn_assert(m_handle_dic.count(handle), "Unsupported handle for op: %s.",
-//               name());
-//     return m_handle_dic[handle];
-//   }
-//   static void add_op(HandleType handle, ReshapeBase* op) {
-//     if (!m_handle_dic.count(handle)) {
-//       m_handle_dic.insert({handle, op});
-//     }
-//   }
-//   virtual void exec(const NDArray& inp, const NDArray& oup,
-//                     const ReshapeBase::Param& param) = 0;
-//   virtual ~ReshapeBase() = default;
-// };
+#define DEF_OP_METHOD_DOUBLE_INPUT(_name)                                    \
+  virtual void _name(const NDArray& a, const NDArray& b, const NDArray& oup, \
+                     const param::_name& param) = 0;
 
-#define DEF_OP_CLASS_1(_name)                                                 \
-  class _name##Base {                                                         \
-   private:                                                                   \
-    inline static std::unordered_map<HandleType, _name##Base*> m_handle_dic;  \
-                                                                              \
-   public:                                                                    \
-    using Param = _name;                                                      \
-    static const char* name() { return #_name; }                              \
-    static _name##Base* get_op(HandleType handle) {                           \
-      nn_assert(m_handle_dic.count(handle), "Unsupported handle for op: %s.", \
-                name());                                                      \
-      return m_handle_dic[handle];                                            \
-    }                                                                         \
-    static void add_op(HandleType handle, _name##Base* op) {                  \
-      if (!m_handle_dic.count(handle)) {                                      \
-        m_handle_dic.insert({handle, op});                                    \
-      }                                                                       \
-    }                                                                         \
-    virtual void exec(const NDArray& inp, const NDArray& oup,                 \
-                      const _name##Base::Param& param) = 0;                   \
-    virtual ~_name##Base() = default;                                         \
-  };
+#define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(reshape) cb(transpose)
 
-#define DEF_OP_METHOD_1(_name)                                  \
-  inline void do##_name(const NDArray& inp, const NDArray& oup, \
-                        const _name##Base::Param& param,        \
-                        HandleType handle = default_handle) {   \
-    _name##Base::get_op(handle)->exec(inp, oup, param);         \
-  }
+#define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot)
 
-#define DEF_OP_CLASS_2(_name)                                                 \
-  class _name##Base {                                                         \
-   private:                                                                   \
-    inline static std::unordered_map<HandleType, _name##Base*> m_handle_dic;  \
-                                                                              \
-   public:                                                                    \
-    using Param = _name;                                                      \
-    static const char* name() { return #_name; }                              \
-    static _name##Base* get_op(HandleType handle) {                           \
-      nn_assert(m_handle_dic.count(handle), "Unsupported handle for op: %s.", \
-                name());                                                      \
-      return m_handle_dic[handle];                                            \
-    }                                                                         \
-    static void add_op(HandleType handle, _name##Base* op) {                  \
-      if (!m_handle_dic.count(handle)) {                                      \
-        m_handle_dic.insert({handle, op});                                    \
-      }                                                                       \
-    }                                                                         \
-    virtual void exec(const NDArray& a, const NDArray& b, const NDArray& oup, \
-                      const _name##Base::Param& param) = 0;                   \
-    virtual ~_name##Base() = default;                                         \
-  };
+#define NN_FOREACH_SINGLE_INPUT_OP_WITH_PARAM(cb, ...) \
+  cb(reshape, __VA_ARGS__) cb(transpose, __VA_ARGS__)
 
-#define DEF_OP_METHOD_2(_name)                                               \
-  inline void do##_name(const NDArray& a, const NDArray& b,                  \
-                        const NDArray& oup, const _name##Base::Param& param, \
-                        HandleType handle = default_handle) {                \
-    _name##Base::get_op(handle)->exec(a, b, oup, param);                     \
-  }
+#define NN_FOREACH_DOUBLE_INPUT_OP_WITH_PARAM(cb, ...) \
+  cb(matmul, __VA_ARGS__) cb(dot, __VA_ARGS__)
 
-#define DEF_OP_1(_name) \
-  DEF_OP_CLASS_1(_name) \
-  DEF_OP_METHOD_1(_name)
+class OpBase {
+ public:
+  NN_FOREACH_SINGLE_INPUT_OP(DEF_OP_METHOD_SINGLE_INPUT)
 
-#define DEF_OP_2(_name) \
-  DEF_OP_CLASS_2(_name) \
-  DEF_OP_METHOD_2(_name)
+  NN_FOREACH_DOUBLE_INPUT_OP(DEF_OP_METHOD_DOUBLE_INPUT)
 
-#define FOREACH_OP_1(cb) cb(Reshape) cb(Transpose)
-FOREACH_OP_1(DEF_OP_1)
-#undef FOREACH_OP_1
+  virtual ~OpBase() = default;
+};
 
-#define FOREACH_OP_2(cb) cb(MatMul) cb(Dot)
-FOREACH_OP_2(DEF_OP_2)
-#undef FOREACH_OP_1
+// #undef DEF_OP_METHOD_SINGLE_INPUT
+// #undef DEF_OP_METHOD_DOUBLE_INPUT
 
 }  // namespace opr
 

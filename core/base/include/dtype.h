@@ -75,6 +75,10 @@ namespace dtype {
 
 #define NN_FOREACH_DTYPE(cb) cb(Int32) cb(Float32) cb(Float64) cb(Bool)
 
+#define NN_FOREACH_CTYPE_WITH_PARAM(cb, ...)            \
+  cb(nn_int32, __VA_ARGS__) cb(nn_float32, __VA_ARGS__) \
+      cb(nn_float64, __VA_ARGS__) cb(nn_bool, __VA_ARGS__)
+
 #define NN_DECLARE_DTYPE(_name)      \
   class _name final : public DType { \
    private:                          \

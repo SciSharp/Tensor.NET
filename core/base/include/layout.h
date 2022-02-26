@@ -47,7 +47,7 @@ struct Layout : public Shape {
   Layout(const DType &dtype, const Format &format);
   Layout(const Shape &shape, const DType &dtype, const Format &format);
 
-  bool is_layout(const Layout &rhs) const;
+  bool is_same_layout(const Layout &rhs) const;
 
   std::string to_string() const;
 

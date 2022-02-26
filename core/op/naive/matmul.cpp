@@ -1,19 +1,21 @@
-#include "core/op/naive/matmul/opr_impl.h"
+#include "core/op/naive/ops.h"
 
 namespace nncore {
 namespace opr {
 namespace naive {
+
+using param = nncore::param::matmul;
+
 template <typename T>
-void MatMulImpl::exec_internal(const NDArray& a, const NDArray& b,
-                               const NDArray& oup,
-                               const MatMulBase::Param& param) {
+void OpNaiveImpl<T>::matmul(const NDArray& a, const NDArray& b,
+                            const NDArray& oup, const param& param) {
   Shape shape_a(a.layout);
   nn_assert(shape_a.ndim > 0);
-  if (shape_a.ndim == 1) {
-    shape_a.shape[1] = shape_a.shape[0];
-    shape_a.shape[0] = 1;
-    shape_a.ndim++;
-  }
+  //   if (shape_a.ndim == 1) {
+  //     shape_a.shape[1] = shape_a.shape[0];
+  //     shape_a.shape[0] = 1;
+  //     shape_a.ndim++;
+  //   }
   Shape shape_b(b.layout);
   nn_assert(shape_b.ndim > 0);
   if (shape_b.ndim == 1) {
@@ -26,16 +28,18 @@ void MatMulImpl::exec_internal(const NDArray& a, const NDArray& b,
             "Invalid shape of the input of matmul, a is %s and b is %s.",
             shape_a.to_string().c_str(), shape_b.to_string().c_str());
   bool is_broadcast = false;
-  bool bradcast_a = true;
-  for (size_t i = shape_a.ndim - 3, j = shape_b.ndim - 3;; i--, j--) {
-    if (i < 0 || j < 0) break;
-    nn_assert(shape_a[i] == shape_b[j] || shape_a[i] == 1 || shape_b[j] == 1,
+  bool broadcast_a = true;
+  for (size_t i = shape_a.ndim > shape_b.ndim ? shape_b.ndim : shape_a.ndim;
+       i >= 2; i--) {
+    nn_assert(shape_a[i] == shape_b[i] || shape_a[i] == 1 || shape_b[i] == 1,
               "The input of matmul can not broadcast, a is %s and b is %s.",
               shape_a.to_string().c_str(), shape_b.to_string().c_str());
-    if (shape_a[i] != shape_b[j] && (shape_a[i] == 1 || shape_b[j] == 1)) {
-      is_broadcast = true;
-      if (shape_a[i] > 1 && shape_b[j] == 1) bradcast_a = false;
-    }
+    // if (shape_a[i] != shape_b[i] && (shape_a[i] == 1 || shape_b[j] == 1)) {
+    //   is_broadcast = true;
+    //   if (shape_a[i] > 1 && shape_b[j] == 1) broadcast_a = false;
+    // }
+    is_broadcast = true;
+    if (shape_a[i] > 1 && shape_b[i] == 1) broadcast_a = false;
   }
 
   T* ptr_a = a.ptr<T>();
@@ -65,7 +69,7 @@ void MatMulImpl::exec_internal(const NDArray& a, const NDArray& b,
         }
       }
     }
-  } else if (bradcast_a) {
+  } else if (broadcast_a) {
     size_t nc = 0;
     size_t hw_b = shape_b[shape_b.ndim - 2] * shape_b[shape_b.ndim - 1];
     size_t hw_oup =

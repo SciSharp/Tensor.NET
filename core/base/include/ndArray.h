@@ -45,7 +45,7 @@ struct NDArray {
   bool equal(const NDArray &rhs, bool with_info = false) const {
     layout.dtype.assert_is_ctype<T>();
     rhs.layout.dtype.assert_is_ctype<T>();
-    if (!layout.is_layout(rhs.layout)) return false;
+    if (!layout.is_same_layout(rhs.layout)) return false;
     auto lptr = ptr<T>();
     auto rptr = rhs.ptr<T>();
     for (size_t i = 0; i < layout.count(); i++) {

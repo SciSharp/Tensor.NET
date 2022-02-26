@@ -22,8 +22,8 @@
  * The variables used in the format string should be no more than 16.
  */
 #define nn_assert_with_msg(_expr, ...) \
-  assert(_expr);                       \
-  if (!(_expr)) printf(__VA_ARGS__)
+  if (!(_expr)) printf(__VA_ARGS__);   \
+  assert(_expr)
 
 #define nn_assert(...)                                                        \
   EXPAND(                                                                     \
@@ -44,3 +44,6 @@
     static _name instance;        \
     return &instance;             \
   }
+
+#define EXPLICIT_DECLARE_TEMPLATE_CLASS(_type, _class_name) \
+  template class _class_name<_type>;

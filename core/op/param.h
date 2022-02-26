@@ -5,18 +5,18 @@
 namespace nncore {
 namespace param {
 
-struct Reshape {
+struct reshape {
   Shape new_shape;
 };
 
-struct Transpose {
+struct transpose {
   size_t dimA;
   size_t dimB;
 };
 
-struct MatMul {};
+struct matmul {};
 
-struct Dot {};
+struct dot {};
 
 }  // namespace param
 
