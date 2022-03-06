@@ -57,23 +57,23 @@ void OpNaiveImpl<T>::matmul(const NDArray& a, const NDArray& b,
   T* ptr_oup = oup.ptr<T>();
 
   if (!is_broadcast) {
-    size_t nc = 1;
     size_t hw_a = shape_a[0] * shape_a[1];
     size_t hw_b = shape_b[0] * shape_b[1];
     size_t hw_oup = oup.layout[0] * oup.layout[1];
-    for (size_t i = 2; i < shape_a.ndim - 2; i++) {
+    size_t nc = 1;
+    for (size_t i = 2; i < shape_a.ndim; i++) {
       nc *= shape_a[i];
     }
     for (size_t p = 0; p < nc; p++) {
       for (size_t i = 0; i < shape_a[1]; i++) {
         for (size_t j = 0; j < shape_b[0]; j++) {
-          T r = 0;
+          T r = T(0);
           for (size_t k = 0; k < shape_a[0]; k++) {
-            size_t a_pos = p * hw_a + i * shape_a[0] + k;
-            size_t b_pos = p * hw_b + k * shape_b[0] + j;
+            size_t a_pos = p * hw_a + i * a.layout.stride[1] + k;
+            size_t b_pos = p * hw_b + k * b.layout.stride[1] + j;
             r += ptr_a[a_pos] * ptr_b[b_pos];
           }
-          size_t oup_pos = p * hw_oup + i * oup.layout[0] + j;
+          size_t oup_pos = p * hw_oup + i * oup.layout.stride[1] + j;
           ptr_oup[oup_pos] = r;
         }
       }
