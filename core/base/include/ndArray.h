@@ -4,13 +4,19 @@
 
 namespace nncore {
 struct NDArray {
-  void *raw_ptr;
   Layout layout;
+  void *raw_ptr;
 
   NDArray() : raw_ptr(nullptr) {}
 
-  NDArray(void *raw_ptr_, const Layout &layout_)
-      : raw_ptr(raw_ptr_), layout(layout_) {}
+  NDArray(const Layout &layout)
+      : layout(layout), raw_ptr(alloc_memory(layout, layout.dtype)) {}
+
+  NDArray(const Shape &shape, const DType dtype)
+      : layout(shape, dtype), raw_ptr(alloc_memory(shape, dtype)) {}
+
+  NDArray(const Layout &layout_, void *raw_ptr_)
+      : layout(layout_), raw_ptr(raw_ptr_) {}
 
   /*!
    * \brief Get the absolute index by the indcies of dims.
@@ -59,6 +65,11 @@ struct NDArray {
       }
     }
     return true;
+  }
+
+ private:
+  void *alloc_memory(const Shape &shape, const DType &dtype) {
+    return malloc(shape.count() * dtype.size());
   }
 };
 }  // namespace nncore

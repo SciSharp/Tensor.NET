@@ -5,7 +5,7 @@
 
 namespace nncore {
 Shape::Shape(const std::vector<size_t> &init_shape) {
-  nn_assert(init_shape.size() < MAX_NDIM,
+  nn_assert(init_shape.size() <= MAX_NDIM,
             "The shape you specified has too many dims, which is %lu, the "
             "max is %lu\n",
             init_shape.size(), MAX_NDIM);
@@ -15,7 +15,7 @@ Shape::Shape(const std::vector<size_t> &init_shape) {
   }
 }
 
-Shape::Shape(const std::initializer_list<size_t> init_shape)
+Shape::Shape(const std::initializer_list<size_t> &init_shape)
     : Shape(std::vector<size_t>{init_shape}) {}
 
 bool Shape::is_scalar() const { return ndim == 1 && shape[0] == 1; }
@@ -36,6 +36,20 @@ bool Shape::is_shape(const Shape &rhs) const {
   return true;
 }
 
+bool Shape::is_equivalent_shape(const Shape &rhs) const {
+  size_t min_ndim = ndim > rhs.ndim ? rhs.ndim : ndim;
+  for (size_t i = 0; i < min_ndim; i++) {
+    if (shape[i] != rhs.shape[i]) return false;
+  }
+  for (size_t i = min_ndim; i < ndim; i++) {
+    if (shape[i] != 1) return false;
+  }
+  for (size_t i = min_ndim; i < rhs.ndim; i++) {
+    if (rhs.shape[i] != 1) return false;
+  }
+  return true;
+}
+
 size_t Shape::count() const {
   size_t r = 1;
   for (size_t i = 0; i < ndim; i++) r *= shape[i];
@@ -46,7 +60,7 @@ std::string Shape::to_string() const {
   std::string r = "{";
   if (ndim > 0) {
     for (int i = 0; i < ndim; i++) {
-      r += std::to_string(shape[i]);
+      r += std::to_string(shape[ndim - 1 - i]);
       if (i != ndim - 1) r += ", ";
     }
   }
@@ -73,11 +87,15 @@ bool Layout::is_same_layout(const Layout &rhs) const {
   return dtype == rhs.dtype && format == rhs.format && is_shape(rhs);
 }
 
+bool Layout::is_equivalent_layout(const Layout &rhs) const {
+  return dtype == rhs.dtype && format == rhs.format && is_equivalent_shape(rhs);
+}
+
 std::string Layout::to_string() const {
   std::string r = "({";
   if (ndim > 0) {
     for (int i = 0; i < ndim; i++) {
-      r += std::to_string(shape[i]);
+      r += std::to_string(shape[ndim - 1 - i]);
       if (i != ndim - 1) r += ", ";
     }
   }
