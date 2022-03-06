@@ -19,23 +19,20 @@ struct NDArray {
       : layout(layout_), raw_ptr(raw_ptr_) {}
 
   /*!
-   * \brief Get the absolute index by the indcies of dims.
+   * \brief Get the value by the indcies of dims.
    * This method is not efficient and should not be used in ops.
    */
   template <typename T>
-  size_t at(std::initializer_list<int> idx) {
-    size_t n = idx.size();
+  size_t at(const std::vector<int> &idx) const {
     nn_assert(
-        n > 0 && n <= layout.ndim,
-        "The count of indices is out of range, the count is %d, and ndim = %d.",
-        n, layout.ndim);
-    T r = 0;
-    auto iptr = idx.begin();
-    size_t pos = *iptr;
+        idx.size() == layout.ndim,
+        "The count of indices mismatched ndim, the count is %d, and ndim = %d.",
+        idx.size(), layout.ndim);
+    T r = T(0);
+    size_t pos = 0;
     T *dptr = ptr<T>();
-    int i = 1;
-    for (; iptr != idx.end(); iptr++) {
-      pos = pos * layout[i + 1] + *iptr;
+    for (int i = 0; i < layout.ndim; i++) {
+      pos += idx[i] * layout.stride[i];
     }
     return dptr[pos];
   }

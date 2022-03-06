@@ -47,14 +47,19 @@ struct Layout : public Shape {
 
   DType dtype;
   Format format;
+  size_t stride[MAX_NDIM];
 
   // ctor
   Layout();
-  Layout(const Layout &rhs);
+  Layout(const Layout &rhs) = default;
   Layout(const DType &dtype);
   Layout(const Shape &shape, const DType &dtype);
   Layout(const DType &dtype, const Format &format);
   Layout(const Shape &shape, const DType &dtype, const Format &format);
+  Layout(const Shape &shape, const std::vector<size_t> &stride,
+         const DType &dtype);
+  Layout(const Shape &shape, const std::vector<size_t> &stride,
+         const DType &dtype, const Format &format);
 
   bool is_same_layout(const Layout &rhs) const;
 

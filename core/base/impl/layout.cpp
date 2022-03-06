@@ -70,21 +70,41 @@ std::string Shape::to_string() const {
 
 Layout::Layout() : dtype(), format(Format::Default) {}
 
-Layout::Layout(const Layout &rhs) : dtype(rhs.dtype), format(rhs.format) {}
-
 Layout::Layout(const DType &dtype) : dtype(dtype), format(Format::Default) {}
 
 Layout::Layout(const Shape &shape, const DType &dtype)
-    : Shape(shape), dtype(dtype), format(Format::Default) {}
+    : Layout(shape, dtype, Format::Default) {}
 
 Layout::Layout(const DType &dtype, const Format &format)
     : dtype(dtype), format(format) {}
 
 Layout::Layout(const Shape &shape, const DType &dtype, const Format &format)
-    : Shape(shape), dtype(dtype), format(format) {}
+    : Shape(shape), dtype(dtype), format(format) {
+  size_t s = 1;
+  for (size_t i = 0; i < ndim; i++) {
+    stride[i] = s;
+    s *= shape[i];
+  }
+}
+
+Layout::Layout(const Shape &shape, const std::vector<size_t> &stride,
+               const DType &dtype)
+    : Layout(shape, stride, dtype, Format::Default) {}
+Layout::Layout(const Shape &shape, const std::vector<size_t> &stride,
+               const DType &dtype, const Format &format)
+    : Shape(shape), dtype(dtype), format(Format::Default) {
+  nn_assert(shape.ndim == stride.size(),
+            "Size of shape mismatched that of stride.");
+  for (int i = 0; i < shape.ndim; i++) this->stride[i] = stride[ndim - i - 1];
+}
 
 bool Layout::is_same_layout(const Layout &rhs) const {
-  return dtype == rhs.dtype && format == rhs.format && is_shape(rhs);
+  if (dtype != rhs.dtype || format != rhs.format || !is_shape(rhs))
+    return false;
+  for (int i = 0; i < ndim; i++) {
+    if (stride[i] != rhs.stride[i]) return false;
+  }
+  return true;
 }
 
 bool Layout::is_equivalent_layout(const Layout &rhs) const {
@@ -92,14 +112,23 @@ bool Layout::is_equivalent_layout(const Layout &rhs) const {
 }
 
 std::string Layout::to_string() const {
-  std::string r = "({";
-  if (ndim > 0) {
+  std::string r = "(";
+  if (!ndim) {
+    r += " Scalar";
+  } else {
+    r += "shape = {";
     for (int i = 0; i < ndim; i++) {
       r += std::to_string(shape[ndim - 1 - i]);
       if (i != ndim - 1) r += ", ";
     }
+    r += "}, stride = {";
+    for (int i = 0; i < ndim; i++) {
+      r += std::to_string(stride[ndim - 1 - i]);
+      if (i != ndim - 1) r += ", ";
+    }
+    r += "}";
   }
-  r += "}, dtype = ";
+  r += ", dtype = ";
   r += dtype.name();
   r += ")";
   return r;
