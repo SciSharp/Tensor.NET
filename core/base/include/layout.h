@@ -61,6 +61,8 @@ struct Layout : public Shape {
   Layout(const Shape &shape, const std::vector<size_t> &stride,
          const DType &dtype, const Format &format);
 
+  Layout broadcast(const Shape &target);
+
   bool is_same_layout(const Layout &rhs) const;
 
   /*

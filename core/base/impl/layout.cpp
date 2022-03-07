@@ -98,6 +98,43 @@ Layout::Layout(const Shape &shape, const std::vector<size_t> &stride,
   for (int i = 0; i < shape.ndim; i++) this->stride[i] = stride[ndim - i - 1];
 }
 
+Layout Layout::broadcast(const Shape &target) {
+  nn_assert(ndim && target.ndim, "Empty tensor in broadcast.");
+
+  if (is_scalar()) {
+    Layout result(dtype, format);
+    result.ndim = target.ndim;
+    for (size_t i = 0; i < target.ndim; i++) {
+      result.shape[i] = target.shape[i];
+      result.stride[i] = (target.shape[i] == 1);
+    }
+    return result;
+  }
+
+  nn_assert(target.ndim >= ndim,
+            "dimension for broadcast less than "
+            "dst_shape: src_shape=%s dst_shape=%s",
+            to_string().c_str(), target.to_string().c_str());
+  Layout result(dtype, format);
+  for (size_t i = 0; i < target.ndim; ++i) {
+    size_t cur_shape = (i < ndim ? shape[i] : 1),
+           cur_stride = (i < ndim ? stride[i] : 0);
+    if (target.shape[i] != cur_shape) {
+      nn_assert(cur_shape == 1 || cur_stride == 0,
+                "broadcast on dim with shape not equal to 1: "
+                "src_shape=%s dst_shape=%s",
+                to_string().c_str(), target.to_string().c_str());
+      result.shape[i] = target.shape[i];
+      result.stride[i] = 0;
+    } else {
+      result.shape[i] = cur_shape;
+      result.stride[i] = cur_stride;
+    }
+  }
+  result.ndim = target.ndim;
+  return result;
+}
+
 bool Layout::is_same_layout(const Layout &rhs) const {
   if (dtype != rhs.dtype || format != rhs.format || !is_shape(rhs))
     return false;
