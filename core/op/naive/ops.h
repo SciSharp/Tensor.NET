@@ -2,7 +2,6 @@
 
 #include "core/macro.h"
 #include "core/op/common/ops.h"
-#include "core/op/naive/macro.h"
 
 namespace nncore {
 namespace opr {

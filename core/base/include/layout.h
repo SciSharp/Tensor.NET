@@ -68,6 +68,7 @@ struct Layout : public Shape {
    */
   const Layout &auto_stride();
 
+  void self_broadcast(const Shape &target);
   Layout broadcast(const Shape &target) const;
 
   bool is_same_layout(const Layout &rhs) const;

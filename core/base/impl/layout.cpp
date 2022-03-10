@@ -13,6 +13,9 @@ Shape::Shape(const std::vector<size_t> &init_shape) {
   for (int i = 0; i < ndim; i++) {
     shape[i] = init_shape[ndim - 1 - i];
   }
+  for (int i = ndim; i < MAX_NDIM; i++) {
+    shape[i] = 1;
+  }
 }
 
 Shape::Shape(const std::initializer_list<size_t> &init_shape)
@@ -107,24 +110,22 @@ const Layout &Layout::auto_stride() {
   return *this;
 }
 
-Layout Layout::broadcast(const Shape &target) const {
+void Layout::self_broadcast(const Shape &target) {
   nn_assert(ndim && target.ndim, "Empty tensor in broadcast.");
 
   if (is_scalar()) {
-    Layout result(dtype, format);
-    result.ndim = target.ndim;
+    ndim = target.ndim;
     for (size_t i = 0; i < target.ndim; i++) {
-      result.shape[i] = target.shape[i];
-      result.stride[i] = (target.shape[i] == 1);
+      shape[i] = target.shape[i];
+      stride[i] = (target.shape[i] == 1);
     }
-    return result;
+    return;
   }
 
   nn_assert(target.ndim >= ndim,
             "dimension for broadcast less than "
             "dst_shape: src_shape=%s dst_shape=%s",
             to_string().c_str(), target.to_string().c_str());
-  Layout result(dtype, format);
   for (size_t i = 0; i < target.ndim; ++i) {
     size_t cur_shape = (i < ndim ? shape[i] : 1),
            cur_stride = (i < ndim ? stride[i] : 0);
@@ -133,14 +134,20 @@ Layout Layout::broadcast(const Shape &target) const {
                 "broadcast on dim with shape not equal to 1: "
                 "src_shape=%s dst_shape=%s",
                 to_string().c_str(), target.to_string().c_str());
-      result.shape[i] = target.shape[i];
-      result.stride[i] = 0;
+      shape[i] = target.shape[i];
+      stride[i] = 0;
     } else {
-      result.shape[i] = cur_shape;
-      result.stride[i] = cur_stride;
+      shape[i] = cur_shape;
+      stride[i] = cur_stride;
     }
   }
-  result.ndim = target.ndim;
+  ndim = target.ndim;
+}
+
+Layout Layout::broadcast(const Shape &target) const {
+  Layout result(dtype, format);
+
+  result.self_broadcast(target);
   return result;
 }
 
