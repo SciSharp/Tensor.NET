@@ -4,15 +4,7 @@ namespace nncore {
 namespace opr {
 namespace naive {
 
-template <typename T>
-void OpNaiveImpl::matmul_internal(const NDArray& a, const NDArray& b,
-                                  const NDArray& oup, const Layout& la,
-                                  const Layout& lb, const Layout& loup,
-                                  const param::matmul& param) {
-  T* ptr_a = a.ptr<T>();
-  T* ptr_b = b.ptr<T>();
-  T* ptr_oup = oup.ptr<T>();
-
+IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(matmul){
   size_t hw_a = la[0] * la[1];
   size_t hw_b = lb[0] * lb[1];
   size_t hw_oup = loup[0] * loup[1];
@@ -36,8 +28,6 @@ void OpNaiveImpl::matmul_internal(const NDArray& a, const NDArray& b,
   }
 }
 
-NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL, OpNaiveImpl,
-                            matmul)
 
 }  // namespace naive
 }  // namespace opr

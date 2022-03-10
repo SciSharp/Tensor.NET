@@ -57,15 +57,17 @@ class OpBase {
   bool OpBase::deduce_layout_##_name(Layout& a, Layout& b, Layout& res, \
                                      const param::_name params)
 
-#define TYPE_SELECT_SINGLE_INPUT(_type, _name)            \
-  if (loup.dtype.is_ctype<_type>()) {                     \
-    _name##_internal<_type>(inp, oup, linp, loup, param); \
-    return;                                               \
+#define TYPE_SELECT_SINGLE_INPUT(_type, _name)                              \
+  if (loup.dtype.is_ctype<_type>()) {                                       \
+    _name##_internal<_type>(inp.ptr<_type>(), oup.ptr<_type>(), linp, loup, \
+                            param);                                         \
+    return;                                                                 \
   }
-#define TYPE_SELECT_DOUBLE_INPUT(_type, _name)               \
-  if (oup.layout.dtype.is_ctype<_type>()) {                  \
-    _name##_internal<_type>(a, b, oup, la, lb, loup, param); \
-    return;                                                  \
+#define TYPE_SELECT_DOUBLE_INPUT(_type, _name)                                \
+  if (oup.layout.dtype.is_ctype<_type>()) {                                   \
+    _name##_internal<_type>(a.ptr<_type>(), b.ptr<_type>(), oup.ptr<_type>(), \
+                            la, lb, loup, param);                             \
+    return;                                                                   \
   }
 
 #define IMPL_OP_SINGLE_INPUT(_name)                                            \
@@ -80,38 +82,36 @@ class OpBase {
                                                                                \
  private:                                                                      \
   template <typename T>                                                        \
-  void _name##_internal(const NDArray& inp, const NDArray& oup,                \
-                        const Layout& linp, const Layout& loup,                \
-                        const param::_name& param);
+  void _name##_internal(const T* inp, T* oup, const Layout& linp,              \
+                        const Layout& loup, const param::_name& param);
 
-#define IMPL_OP_DOUBLE_INPUT(_name)                              \
- public:                                                         \
-  void _name(const NDArray& a, const NDArray& b, NDArray& oup,   \
-             const param::_name& param) {                        \
-    Layout la(a.layout);                                         \
-    Layout lb(b.layout);                                         \
-    Layout loup;                                                 \
-    nn_assert(deduce_layout_##_name(la, lb, loup, param),        \
-              "Layout mismatched.");                             \
-    oup.relayout(loup.auto_stride());                            \
-    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_DOUBLE_INPUT, _name) \
-  }                                                              \
-                                                                 \
- private:                                                        \
-  template <typename T>                                          \
-  void _name##_internal(const NDArray& a, const NDArray& b,      \
-                        const NDArray& oup, const Layout& la,    \
-                        const Layout& lb, const Layout& loup,    \
-                        const param::_name& param);
+#define IMPL_OP_DOUBLE_INPUT(_name)                                 \
+ public:                                                            \
+  void _name(const NDArray& a, const NDArray& b, NDArray& oup,      \
+             const param::_name& param) {                           \
+    Layout la(a.layout);                                            \
+    Layout lb(b.layout);                                            \
+    Layout loup;                                                    \
+    nn_assert(deduce_layout_##_name(la, lb, loup, param),           \
+              "Layout mismatched.");                                \
+    oup.relayout(loup.auto_stride());                               \
+    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_DOUBLE_INPUT, _name)    \
+  }                                                                 \
+                                                                    \
+ private:                                                           \
+  template <typename T>                                             \
+  void _name##_internal(const T* ptr_a, const T* ptr_b, T* ptr_oup, \
+                        const Layout& la, const Layout& lb,         \
+                        const Layout& loup, const param::_name& param);
 
-#define SPECIFY_SINGLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name) \
-  template void _class_name::_op_name##_internal<_type>(                \
-      const NDArray& inp, const NDArray& oup, const Layout& linp,       \
-      const Layout& loup, const param::_op_name& param);
+#define SPECIFY_SINGLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name)     \
+  template void _class_name::_op_name##_internal<_type>(                    \
+      const _type* inp, _type* oup, const Layout& linp, const Layout& loup, \
+      const param::_op_name& param);
 
 #define SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name) \
   template void _class_name::_op_name##_internal<_type>(                \
-      const NDArray& a, const NDArray& b, const NDArray& oup,           \
+      const _type* ptr_a, const _type* ptr_b, _type* ptr_oup,           \
       const Layout& la, const Layout& lb, const Layout& loup,           \
       const param::_op_name& param);
 
