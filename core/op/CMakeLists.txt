@@ -1,5 +1,5 @@
 
-file(GLOB_RECURSE SOURCES naive/*.cpp ./*.h ./*.cpp naive/*.h)
+file(GLOB_RECURSE SOURCES naive/*.cpp common/*.cpp)
 
 # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -save-temps")
 

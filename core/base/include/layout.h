@@ -61,7 +61,14 @@ struct Layout : public Shape {
   Layout(const Shape &shape, const std::vector<size_t> &stride,
          const DType &dtype, const Format &format);
 
-  Layout broadcast(const Shape &target);
+  /*
+   * \brief Automatically fill the stride of this layout with its current shape.
+   * This also means that no broadcast is on this layout.
+   * \return The current layout itself.
+   */
+  const Layout &auto_stride();
+
+  Layout broadcast(const Shape &target) const;
 
   bool is_same_layout(const Layout &rhs) const;
 

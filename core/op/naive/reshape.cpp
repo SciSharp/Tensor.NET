@@ -3,12 +3,14 @@
 namespace nncore {
 namespace opr {
 namespace naive {
-
-using param = nncore::param::reshape;
-
 template <typename T>
-void OpNaiveImpl<T>::reshape(const NDArray& inp, const NDArray& oup,
-                             const param& param) {}
+void OpNaiveImpl::reshape_internal(const NDArray& inp, const NDArray& oup,
+                                   const Layout& linp, const Layout& loup,
+                                   const param::reshape& param) {}
+
+NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SINGLE_OUTPUT_OP_INTERNAL, OpNaiveImpl,
+                            reshape)
+
 }  // namespace naive
 }  // namespace opr
 

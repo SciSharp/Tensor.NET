@@ -4,11 +4,14 @@ namespace nncore {
 namespace opr {
 namespace naive {
 
-using param = nncore::param::transpose;
-
 template <typename T>
-void OpNaiveImpl<T>::transpose(const NDArray& inp, const NDArray& oup,
-                               const param& param) {}
+void OpNaiveImpl::transpose_internal(const NDArray& inp, const NDArray& oup,
+                                     const Layout& linp, const Layout& loup,
+                                     const param::transpose& param) {}
+
+NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SINGLE_OUTPUT_OP_INTERNAL, OpNaiveImpl,
+                            transpose)
+
 }  // namespace naive
 }  // namespace opr
 

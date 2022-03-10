@@ -17,6 +17,8 @@
 | Add naive op ```sub``` | Add naive implementation for op ```sub``` | Waiting 🔵 |
 | Add naive op ```mul``` | Add naive implementation for op ```mul``` | Waiting 🔵 |
 | Add naive op ```div``` | Add naive implementation for op ```div``` | Waiting 🔵 |
+| Add compiling condition for nn_assert and nn_throw | Add macro to seperate release and debug mode. Note that options should be added to cmake files. | Waiting 🔵 |
+| Add ```type_deduce``` | Add deduce method for type of layout to decide the ```dtype``` of the output Array. | Ongoing 🔵 |
 
 
 ✅   ❌   🚀   🔵

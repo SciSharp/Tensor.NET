@@ -44,6 +44,3 @@
     static _name instance;        \
     return &instance;             \
   }
-
-#define EXPLICIT_DECLARE_TEMPLATE_CLASS(_type, _class_name) \
-  template class _class_name<_type>;

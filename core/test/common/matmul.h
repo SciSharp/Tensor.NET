@@ -1,6 +1,6 @@
 #include <vector>
 
-#include "core/op/param.h"
+#include "core/op/common/param.h"
 
 namespace nncore {
 namespace test {

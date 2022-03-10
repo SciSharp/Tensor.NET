@@ -98,7 +98,16 @@ Layout::Layout(const Shape &shape, const std::vector<size_t> &stride,
   for (int i = 0; i < shape.ndim; i++) this->stride[i] = stride[ndim - i - 1];
 }
 
-Layout Layout::broadcast(const Shape &target) {
+const Layout &Layout::auto_stride() {
+  size_t s = 1;
+  for (size_t i = 0; i < ndim; i++) {
+    stride[i] = s;
+    s *= shape[i];
+  }
+  return *this;
+}
+
+Layout Layout::broadcast(const Shape &target) const {
   nn_assert(ndim && target.ndim, "Empty tensor in broadcast.");
 
   if (is_scalar()) {

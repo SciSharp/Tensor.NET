@@ -7,6 +7,16 @@ struct NDArray {
   Layout layout;
   void *raw_ptr;
 
+  /*
+   * \brief This method should be always used on an empty array!
+   * It is mainly used to delay the specification of array. Take
+   * care of using it!
+   */
+  void relayout(const Layout &layout) {
+    this->layout = layout;
+    raw_ptr = alloc_memory(layout, layout.dtype);
+  }
+
   NDArray() : raw_ptr(nullptr) {}
 
   NDArray(const Layout &layout)
