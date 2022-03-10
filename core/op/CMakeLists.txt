@@ -1,9 +1,9 @@
 
-file(GLOB_RECURSE SOURCES naive/*.cpp ./*.h ./*.cpp naive/*.h)
+file(GLOB_RECURSE SOURCES naive/*.cpp common/*.cpp)
 
 # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -save-temps")
 
-message(${SOURCES})
+# message(${SOURCES})
 
 add_library(core_op SHARED ${SOURCES})
 target_link_libraries(core_op PUBLIC core_base)

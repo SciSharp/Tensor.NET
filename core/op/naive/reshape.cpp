@@ -3,12 +3,8 @@
 namespace nncore {
 namespace opr {
 namespace naive {
+IMPL_NAIVE_SINGLE_INPUT_INTERNAL(reshape) {}
 
-using param = nncore::param::reshape;
-
-template <typename T>
-void OpNaiveImpl<T>::reshape(const NDArray& inp, const NDArray& oup,
-                             const param& param) {}
 }  // namespace naive
 }  // namespace opr
 

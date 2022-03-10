@@ -16,14 +16,14 @@ class NDArrayFactory {
   template <typename V, typename T>
   static NDArray from_list(std::initializer_list<V> values, Shape shape,
                            T dtype) {
-    NDArray res;
+    NDArray res(shape, dtype);
     nn_assert(values.size() == shape.count(),
               "The values used to init the NDArray is not compitable with the "
               "given shape. The element count of initial values is %ld, the "
               "shape is %s, which means %ld elements.",
               values.size(), shape.to_string().c_str(), shape.count());
-    res.layout = Layout(shape, dtype);
-    res.raw_ptr = static_cast<nn_byte*>(malloc(res.layout.content_bytes()));
+    // res.layout = Layout(shape, dtype);
+    // res.raw_ptr = static_cast<nn_byte*>(malloc(res.layout.content_bytes()));
 
     auto dptr = res.ptr<typename DTypeTrait<T>::ctype>();
     for (const auto& v : values) {
@@ -40,9 +40,9 @@ class NDArrayFactory {
    */
   template <typename T>
   static NDArray empty(Shape shape, T dtype) {
-    NDArray res;
-    res.layout = Layout(shape, dtype);
-    res.raw_ptr = static_cast<nn_byte*>(malloc(res.layout.content_bytes()));
+    NDArray res(shape, dtype);
+    // res.layout = Layout(shape, dtype);
+    // res.raw_ptr = static_cast<nn_byte*>(malloc(res.layout.content_bytes()));
     return res;
   }
 };

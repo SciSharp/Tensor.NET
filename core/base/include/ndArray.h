@@ -4,32 +4,45 @@
 
 namespace nncore {
 struct NDArray {
-  void *raw_ptr;
   Layout layout;
+  void *raw_ptr;
+
+  /*
+   * \brief This method should be always used on an empty array!
+   * It is mainly used to delay the specification of array. Take
+   * care of using it!
+   */
+  void relayout(const Layout &layout) {
+    this->layout = layout;
+    raw_ptr = alloc_memory(layout, layout.dtype);
+  }
 
   NDArray() : raw_ptr(nullptr) {}
 
-  NDArray(void *raw_ptr_, const Layout &layout_)
-      : raw_ptr(raw_ptr_), layout(layout_) {}
+  NDArray(const Layout &layout)
+      : layout(layout), raw_ptr(alloc_memory(layout, layout.dtype)) {}
+
+  NDArray(const Shape &shape, const DType dtype)
+      : layout(shape, dtype), raw_ptr(alloc_memory(shape, dtype)) {}
+
+  NDArray(const Layout &layout_, void *raw_ptr_)
+      : layout(layout_), raw_ptr(raw_ptr_) {}
 
   /*!
-   * \brief Get the absolute index by the indcies of dims.
+   * \brief Get the value by the indcies of dims.
    * This method is not efficient and should not be used in ops.
    */
   template <typename T>
-  size_t at(std::initializer_list<int> idx) {
-    size_t n = idx.size();
+  size_t at(const std::vector<int> &idx) const {
     nn_assert(
-        n > 0 && n <= layout.ndim,
-        "The count of indices is out of range, the count is %d, and ndim = %d.",
-        n, layout.ndim);
-    T r = 0;
-    auto iptr = idx.begin();
-    size_t pos = *iptr;
+        idx.size() == layout.ndim,
+        "The count of indices mismatched ndim, the count is %d, and ndim = %d.",
+        idx.size(), layout.ndim);
+    T r = T(0);
+    size_t pos = 0;
     T *dptr = ptr<T>();
-    int i = 1;
-    for (; iptr != idx.end(); iptr++) {
-      pos = pos * layout[i + 1] + *iptr;
+    for (int i = 0; i < layout.ndim; i++) {
+      pos += idx[i] * layout.stride[i];
     }
     return dptr[pos];
   }
@@ -59,6 +72,11 @@ struct NDArray {
       }
     }
     return true;
+  }
+
+ private:
+  void *alloc_memory(const Shape &shape, const DType &dtype) {
+    return malloc(shape.count() * dtype.size());
   }
 };
 }  // namespace nncore

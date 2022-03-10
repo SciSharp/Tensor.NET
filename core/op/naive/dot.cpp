@@ -3,12 +3,8 @@
 namespace nncore {
 namespace opr {
 namespace naive {
+IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(dot) {}
 
-using param = nncore::param::dot;
-
-template <typename T>
-void OpNaiveImpl<T>::dot(const NDArray& a, const NDArray& b, const NDArray& oup,
-                         const param& param) {}
 }  // namespace naive
 }  // namespace opr
 

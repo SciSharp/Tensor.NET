@@ -99,9 +99,9 @@ NN_FOREACH_DTYPE(NN_DECLARE_DTYPE)
 
 }  // namespace dtype
 
-#define NN_FOREACH_DTYPE_TRAIT(cb)                    \
-  cb(Int32, nn_int32, 32) cb(Float32, nn_float32, 32) \
-      cb(Float64, nn_float64, 64) cb(Bool, nn_bool, 8)
+#define NN_FOREACH_DTYPE_TRAIT(cb)                                             \
+  cb(Int32, nn_int32, 5) cb(Float32, nn_float32, 5) cb(Float64, nn_float64, 6) \
+      cb(Bool, nn_bool, 3)
 
 #define NN_DEF_DTYPE_TRAIT(_name, _ctype, _bits)    \
   template <>                                       \
