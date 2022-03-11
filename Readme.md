@@ -8,11 +8,11 @@
 | Complete naive implemention of Matmul | The results of naive implemention of matmul are wrong. Besides, more test cases need to be added, including more shapes, more dtypes and more data. | p0 | Complete ✅ |
 | Add Benchmark test for Matmul | Add some bechmark tests for Matmul to evaluate its effeciency | p1 | Waiting 🔵 |
 | Add deduce to decide the output shape of ops | Checking if the shapes are matched in the body of op is not a good choice. A calculator for it is needed | p0 | Complete ✅ |
-| Add broadcast | Add broadcast with stride and wrap it | p0 | On going 🚀 |
+| Add broadcast | Add broadcast with stride and wrap it | p0 | Complete ✅ |
 | Add script to auto build and test | Write a script on linux to build and run all tests automatically | p2 | Waiting 🔵 |
 | Add naive op ```dot``` | Add naive implementation for op ```dot``` | p0 | Waiting 🔵 |
-| Add naive op ```reshape``` | Add naive implementation for op ```reshape``` | p0 | Waiting 🔵 |
-| Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | Waiting 🔵 |
+| Add naive op ```reshape``` | Add naive implementation for op ```reshape``` | p0 | On going 🚀 |
+| Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | On going 🚀 |
 | Add naive op ```add``` | Add naive implementation for op ```add``` | p0 | Waiting 🔵 |
 | Add naive op ```sub``` | Add naive implementation for op ```sub``` | p0 | Waiting 🔵 |
 | Add naive op ```mul``` | Add naive implementation for op ```mul``` | p0 | Waiting 🔵 |
