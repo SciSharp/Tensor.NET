@@ -1,7 +1,10 @@
 #include "core/base/include/layout.h"
 
 #include <cstring>
+#include <numeric>
 #include <string>
+
+#define rep(i, n) for (auto i = decltype(n){0}; i < (n); ++i)
 
 namespace nncore {
 Shape::Shape(const std::vector<size_t> &init_shape) {
@@ -53,7 +56,7 @@ bool Shape::is_equivalent_shape(const Shape &rhs) const {
   return true;
 }
 
-size_t Shape::count() const {
+size_t Shape::total_elems() const {
   size_t r = 1;
   for (size_t i = 0; i < ndim; i++) r *= shape[i];
   return r;
@@ -71,46 +74,40 @@ std::string Shape::to_string() const {
   return r;
 }
 
-Layout::Layout() : dtype(), format(Format::Default) {}
+Layout::Layout() : dtype() {}
 
-Layout::Layout(const DType &dtype) : dtype(dtype), format(Format::Default) {}
+Layout::Layout(const DType &dtype) : dtype(dtype) {}
 
 Layout::Layout(const Shape &shape, const DType &dtype)
-    : Layout(shape, dtype, Format::Default) {}
-
-Layout::Layout(const DType &dtype, const Format &format)
-    : dtype(dtype), format(format) {}
-
-Layout::Layout(const Shape &shape, const DType &dtype, const Format &format)
-    : Shape(shape), dtype(dtype), format(format) {
-  size_t s = 1;
-  for (size_t i = 0; i < ndim; i++) {
-    stride[i] = s;
-    s *= shape[i];
-  }
+    : Shape(shape), dtype(dtype) {
+  init_contiguous_stride();
 }
 
 Layout::Layout(const Shape &shape, const std::vector<size_t> &stride,
                const DType &dtype)
-    : Layout(shape, stride, dtype, Format::Default) {}
-Layout::Layout(const Shape &shape, const std::vector<size_t> &stride,
-               const DType &dtype, const Format &format)
-    : Shape(shape), dtype(dtype), format(Format::Default) {
+    : Shape(shape), dtype(dtype) {
   nn_assert(shape.ndim == stride.size(),
             "Size of shape mismatched that of stride.");
   for (int i = 0; i < shape.ndim; i++) this->stride[i] = stride[ndim - i - 1];
 }
 
-const Layout &Layout::auto_stride() {
+size_t Layout::init_contiguous_stride() {
+  nn_assert(ndim);
+  nn_assert(ndim <= Layout::MAX_NDIM);
   size_t s = 1;
   for (size_t i = 0; i < ndim; i++) {
     stride[i] = s;
     s *= shape[i];
   }
-  return *this;
+  return s;
 }
 
-void Layout::self_broadcast(const Shape &target) {
+size_t Layout::init_contiguous_stride(const Shape &shape) {
+  this->Shape::operator=(shape);
+  return init_contiguous_stride();
+}
+
+void Layout::broadcast_inplace(const Shape &target) {
   nn_assert(ndim && target.ndim, "Empty tensor in broadcast.");
 
   if (is_scalar()) {
@@ -145,15 +142,14 @@ void Layout::self_broadcast(const Shape &target) {
 }
 
 Layout Layout::broadcast(const Shape &target) const {
-  Layout result(dtype, format);
+  Layout result(dtype);
 
-  result.self_broadcast(target);
+  result.broadcast_inplace(target);
   return result;
 }
 
 bool Layout::is_same_layout(const Layout &rhs) const {
-  if (dtype != rhs.dtype || format != rhs.format || !is_shape(rhs))
-    return false;
+  if (dtype != rhs.dtype || !is_shape(rhs)) return false;
   for (int i = 0; i < ndim; i++) {
     if (stride[i] != rhs.stride[i]) return false;
   }
@@ -161,7 +157,7 @@ bool Layout::is_same_layout(const Layout &rhs) const {
 }
 
 bool Layout::is_equivalent_layout(const Layout &rhs) const {
-  return dtype == rhs.dtype && format == rhs.format && is_equivalent_shape(rhs);
+  return dtype == rhs.dtype && is_equivalent_shape(rhs);
 }
 
 std::string Layout::to_string() const {
@@ -187,6 +183,172 @@ std::string Layout::to_string() const {
   return r;
 }
 
-size_t Layout::content_bytes() const { return count() * dtype.size(); }
+size_t Layout::content_bytes() const { return total_elems() * dtype.size(); }
+
+Layout Layout::dimshuffle(const std::vector<size_t> &dims) const {
+  Layout res{dtype};
+  res.ndim = this->ndim;
+  nn_assert(dims.size() == this->ndim);
+  auto ndim = this->ndim;
+  rep(i, ndim) {
+    auto dest = dims[res.ndim - i - 1];
+    nn_assert(dest < ndim);
+    res.shape[i] = this->shape[dest];
+    res.stride[i] = this->stride[dest];
+  }
+  return res;
+}
+
+Layout Layout::remove_axis(size_t idx) const {
+  Layout res{*this};
+  res.remove_axis_inplace(idx);
+  return res;
+}
+
+void Layout::remove_axis_inplace(size_t axis) {
+  nn_assert(ndim >= 2 && axis < ndim);
+  --ndim;
+  for (size_t i = axis; i < ndim; ++i) {
+    shape[i] = shape[i + 1];
+    stride[i] = stride[i + 1];
+  }
+}
+
+void Layout::add_axis_inplace(size_t axis, size_t shape, size_t stride) {
+  nn_assert(ndim + 1 <= MAX_NDIM && axis <= ndim && shape,
+            "can not add axis at %zu (current ndim %zu, MAX_NDIM %zu)", axis,
+            ndim, MAX_NDIM);
+  ndim++;
+  for (size_t i = ndim - 1; i > axis; i--) {
+    this->shape[i] = this->shape[i - 1];
+    this->stride[i] = this->stride[i - 1];
+  }
+  this->shape[axis] = shape;
+  this->stride[axis] = stride;
+}
+
+bool Layout::is_contiguous() const {
+  size_t expected = 1;
+  for (int i = 0; i < ndim; ++i) {
+    if (shape[i] != 1 && stride[i] != expected) return false;
+    expected *= shape[i];
+  }
+  // empty tensors are not contiguous
+  return expected != 0;
+}
+
+Layout Layout::collapse_contiguous() const {
+  // assert_valid(layout);
+  nn_assert(ndim);
+  Layout res{*this};
+
+  // remove all dims with shape 1
+  for (int i = 0; i <= res.ndim - 1 && res.ndim >= 2; ++i) {
+    if (!res.shape[i]) {
+      // empty tensor
+      res.ndim = 1;
+      res.shape[0] = 0;
+      res.stride[0] = 1;
+      return res;
+    }
+    if (res.shape[i] == 1) res.remove_axis_inplace(i);
+  }
+
+  if (res.ndim == 1) {
+    if (res.shape[0] <= 1) {
+      // make it the "most canonical" contiguous layout for scalars or
+      // empty tensors
+      res.stride[0] = 1;
+    }
+    return res;
+  }
+
+  nn_assert(res.ndim && res.shape[res.ndim - 1]);
+  for (size_t i = 1; i <= res.ndim - 1; ++i) {
+    nn_assert(res.shape[i]);
+    if (res.stride[i] == res.stride[i - 1] * res.shape[i - 1]) {
+      res.shape[i] *= res.shape[i - 1];
+      res.stride[i] = res.stride[i - 1];
+      res.remove_axis_inplace(i - 1);
+    }
+  }
+  return res;
+}
+
+bool Layout::try_reshape(Layout &result, const Shape &tshp,
+                         bool is_image) const {
+  nn_assert(tshp.ndim);
+
+  bool is_empty_shape = false;
+  for (size_t i = 0; i < tshp.ndim; ++i) {
+    if (!tshp.shape[i]) {
+      is_empty_shape = true;
+      break;
+    }
+  }
+
+  nn_assert(tshp.ndim && total_elems() == tshp.total_elems(),
+            "number of elements do not match "
+            "in reshape: src=%s dest=%s",
+            static_cast<const Shape &>(*this).to_string().c_str(),
+            tshp.to_string().c_str());
+
+  // So far only the swap of width and height is supported.
+  if (is_image) {
+    nn_assert(this->ndim >= 2 && tshp.ndim >= 2 &&
+              this->shape[0] == tshp.shape[1] &&
+              this->shape[1] == tshp.shape[0]);
+    for (size_t i = 2; i < this->ndim; i++) {
+      if (tshp.ndim > i && tshp.shape[i] != this->shape[i]) {
+        return false;
+      }
+    }
+    result.dtype = this->dtype;
+    result.Shape::operator=(tshp);
+    std::swap(result.stride[0], result.stride[1]);
+    return true;
+  }
+
+  auto cont = collapse_contiguous();
+  result.dtype = this->dtype;
+  result.Shape::operator=(tshp);
+
+  if (is_empty_shape) {
+    result.init_contiguous_stride();
+    return true;
+  }
+
+  // size_t sdim = 0, prod = 1, cont_sdim = 0;
+  // for (size_t i = 0; i < tshp.ndim; ++i) {
+  //   nn_assert(cont_sdim < cont.ndim);
+  //   prod *= result.shape[i];
+  //   if (prod > cont.shape[cont_sdim]) return false;
+
+  //   if (prod == cont.shape[cont_sdim] &&
+  //       (i + 1 >= tshp.ndim || tshp.shape[i + 1] != 1)) {
+  //     auto s = cont.stride[cont_sdim];
+  //     for (int j = i; j >= static_cast<int>(sdim); --j) {
+  //       result.stride[j] = s;
+  //       s *= result.shape[j];
+  //     }
+  //     ++cont_sdim;
+  //     sdim = i + 1;
+  //     prod = 1;
+  //   }
+  // }
+  // nn_assert(cont_sdim == cont.ndim);
+
+  result.init_contiguous_stride();
+
+  return true;
+}
+
+Layout Layout::reshape(const Shape &shape, bool is_image) const {
+  Layout ret;
+  auto succ = try_reshape(ret, shape, is_image);
+  nn_assert(succ, "can not reshape from %s to %s", to_string().c_str(),
+            shape.to_string().c_str());
+  return ret;
+}
 
 }  // namespace nncore

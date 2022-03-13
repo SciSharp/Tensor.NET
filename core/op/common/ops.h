@@ -76,7 +76,8 @@ class OpBase {
     Layout linp(inp.layout);                                                   \
     Layout loup;                                                               \
     nn_assert(deduce_layout_##_name(linp, loup, param), "Layout mismatched."); \
-    oup.relayout(loup.auto_stride());                                          \
+    loup.init_contiguous_stride();                                             \
+    oup.relayout(loup);                                                        \
     NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT, _name)               \
   }                                                                            \
                                                                                \
@@ -94,7 +95,8 @@ class OpBase {
     Layout loup;                                                    \
     nn_assert(deduce_layout_##_name(la, lb, loup, param),           \
               "Layout mismatched.");                                \
-    oup.relayout(loup.auto_stride());                               \
+    loup.init_contiguous_stride();                                  \
+    oup.relayout(loup);                                             \
     NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_DOUBLE_INPUT, _name)    \
   }                                                                 \
                                                                     \

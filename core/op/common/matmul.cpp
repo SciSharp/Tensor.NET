@@ -5,7 +5,6 @@ namespace opr {
 
 IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
   res.dtype = a.dtype;
-  res.format = a.format;
   if (!a.ndim || !b.ndim) return false;
   if (a.is_scalar() && b.is_scalar()) {
     res.shape[0] = 1;
@@ -16,8 +15,8 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
     res.shape[0] = b.shape[0];
     res.shape[1] = a.shape[0];
     res.ndim = 2;
-    a.self_broadcast({a.shape[0], 1});
-    b.self_broadcast({1, b.shape[0]});
+    a.broadcast_inplace({a.shape[0], 1});
+    b.broadcast_inplace({1, b.shape[0]});
     return true;
   }
   size_t dim = a.ndim > b.ndim ? a.ndim : b.ndim;
@@ -55,8 +54,8 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
     b.stride[1] = 1;
     b.stride[0] = 0;
   }
-  a.self_broadcast(a_dst_shape);
-  b.self_broadcast(b_dst_shape);
+  a.broadcast_inplace(a_dst_shape);
+  b.broadcast_inplace(b_dst_shape);
   return true;
 }
 

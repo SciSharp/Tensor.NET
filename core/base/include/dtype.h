@@ -22,6 +22,8 @@ class DType {
  public:
   DType() : m_trait(nullptr) {}
 
+  bool valid() const { return m_trait != nullptr; }
+
   DTypeEnum enumv() const;
 
   const char *name() const { return m_trait->name; }

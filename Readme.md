@@ -10,8 +10,8 @@
 | Add deduce to decide the output shape of ops | Checking if the shapes are matched in the body of op is not a good choice. A calculator for it is needed | p0 | Complete ✅ |
 | Add broadcast | Add broadcast with stride and wrap it | p0 | Complete ✅ |
 | Add script to auto build and test | Write a script on linux to build and run all tests automatically | p2 | Waiting 🔵 |
+| Add ```reshape``` | Add ```reshape``` for ```NDArray``` | p0 | Complete ✅ |
 | Add naive op ```dot``` | Add naive implementation for op ```dot``` | p0 | Waiting 🔵 |
-| Add naive op ```reshape``` | Add naive implementation for op ```reshape``` | p0 | On going 🚀 |
 | Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | On going 🚀 |
 | Add naive op ```add``` | Add naive implementation for op ```add``` | p0 | Waiting 🔵 |
 | Add naive op ```sub``` | Add naive implementation for op ```sub``` | p0 | Waiting 🔵 |
@@ -23,6 +23,7 @@
 | Add ```Checker``` for test | Add a checker class to judge if the pred and result are matched. | p0 | On going 🚀 |
 | Add Process for overflow | Add process to deal with overflow, show user NAN instead of completely wrong data. | p0 | Waiting 🔵 |
 | Automatically squeeze the shape of scalar to one-dim | Mainly for result of matmul. | p2 | Waiting 🔵 |
+| Add ```slice``` | Add support of ```slice``` | p0 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵
