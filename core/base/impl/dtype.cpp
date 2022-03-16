@@ -1,7 +1,5 @@
 #include "core/base/include/dtype.h"
 
-#include "core/macro.h"
-
 namespace nncore {
 DTypeEnum DType::enumv() const { return m_trait->enumv; }
 

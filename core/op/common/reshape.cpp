@@ -3,7 +3,9 @@
 namespace nncore {
 namespace opr {
 
-IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(reshape) { return false; }
+IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(reshape) {
+  return Status(StatusCategory::NUMNET, StatusCode::NOT_IMPLEMENTED);
+}
 
 }  // namespace opr
 }  // namespace nncore

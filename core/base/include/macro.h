@@ -24,11 +24,12 @@ inline void do_nothing() {}
  * The variables used in the format string should be no more than 16.
  */
 #define nn_assert_with_msg(_expr, ...) \
-  if (!(_expr)) {                      \
-    printf(__VA_ARGS__);               \
-    abort();                           \
-  }                                    \
-  do_nothing()
+  do {                                 \
+    if (!(_expr)) {                    \
+      printf(__VA_ARGS__);             \
+      abort();                         \
+    }                                  \
+  } while (0)
 
 #define nn_assert(...)                                                        \
   EXPAND(                                                                     \
@@ -37,6 +38,13 @@ inline void do_nothing() {}
   (__VA_ARGS__)
 
 #define nn_throw(...) throw __VA_ARGS__
+
+#define nn_throw_if(_expr, ...) \
+  do {                          \
+    if (!(_expr)) {             \
+      throw __VA_ARGS__;        \
+    }                           \
+  } while (0)
 
 #define DEF_OP_IMPL_CTOR(_name)   \
  private:                         \

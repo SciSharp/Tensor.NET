@@ -28,6 +28,7 @@ IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(matmul) {
       }
     }
   }
+  return Status::OK();
 }
 
 }  // namespace naive

@@ -5,11 +5,13 @@ namespace opr {
 
 IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
   res.dtype = a.dtype;
-  if (!a.ndim || !b.ndim) return false;
+  if (!a.ndim || !b.ndim)
+    return Status(StatusCategory::NUMNET, StatusCode::MISMATCHED_SHAPE,
+                  "Encountered empty tensor during deduce.");
   if (a.is_scalar() && b.is_scalar()) {
     res.shape[0] = 1;
     res.ndim = 1;
-    return true;
+    return Status::OK();
   }
   if (a.ndim == 1 && b.ndim == 1) {
     res.shape[0] = b.shape[0];
@@ -17,7 +19,7 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
     res.ndim = 2;
     a.broadcast_inplace({a.shape[0], 1});
     b.broadcast_inplace({1, b.shape[0]});
-    return true;
+    return Status::OK();
   }
   size_t dim = a.ndim > b.ndim ? a.ndim : b.ndim;
   res.ndim = dim;
@@ -31,7 +33,10 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
     } else if (a.shape[i] == b.shape[i]) {
       res.shape[i] = a.shape[i];
     } else {
-      return false;
+      return Status(StatusCategory::NUMNET, StatusCode::MISMATCHED_SHAPE,
+                    "Tensor shapes mismatched for matmul, a is " +
+                        a.Shape::to_string() + ", b is " +
+                        b.Shape::to_string());
     }
     a_dst_shape.push_back(res.shape[i]);
     b_dst_shape.push_back(res.shape[i]);
@@ -39,7 +44,9 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
   if (a.ndim == 1 && b.shape[1] != a.shape[0] ||
       b.ndim == 1 && b.shape[0] != a.shape[0] ||
       a.ndim != 1 && b.ndim != 1 && a.shape[0] != b.shape[1]) {
-    return false;
+    return Status(StatusCategory::NUMNET, StatusCode::MISMATCHED_SHAPE,
+                  "Tensor shapes mismatched for matmul, a is " +
+                      a.Shape::to_string() + ", b is " + b.Shape::to_string());
   }
   res.shape[1] = a.ndim == 1 ? 1 : a.shape[1];
   res.shape[0] = b.ndim == 1 ? 1 : b.shape[0];
@@ -56,7 +63,7 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
   }
   a.broadcast_inplace(a_dst_shape);
   b.broadcast_inplace(b_dst_shape);
-  return true;
+  return Status::OK();
 }
 
 }  // namespace opr

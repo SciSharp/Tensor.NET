@@ -4,7 +4,9 @@ namespace nncore {
 namespace opr {
 namespace naive {
 
-IMPL_NAIVE_SINGLE_INPUT_INTERNAL(transpose){}
+IMPL_NAIVE_SINGLE_INPUT_INTERNAL(transpose) {
+  return Status(StatusCategory::NUMNET, StatusCode::NOT_IMPLEMENTED);
+}
 
 }  // namespace naive
 }  // namespace opr

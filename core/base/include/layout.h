@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "core/base/include/dtype.h"
-#include "core/macro.h"
+#include "core/base/include/macro.h"
 
 namespace nncore {
 

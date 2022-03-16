@@ -3,7 +3,9 @@
 namespace nncore {
 namespace opr {
 namespace naive {
-IMPL_NAIVE_SINGLE_INPUT_INTERNAL(reshape) {}
+IMPL_NAIVE_SINGLE_INPUT_INTERNAL(reshape) {
+  return Status(StatusCategory::NUMNET, StatusCode::NOT_IMPLEMENTED);
+}
 
 }  // namespace naive
 }  // namespace opr
