@@ -2,14 +2,13 @@
 
 #include <iostream>
 
-#include "core/base/include/ndArray.h"
+#include "core/base/include/tensor.h"
 #include "gtest/gtest.h"
 
 namespace nncore {
 namespace test {
 template <typename ctype>
-void assert_same_data(const NDArray &a, const NDArray &b,
-                      float err = 0.000001f) {
+void assert_same_data(const Tensor &a, const Tensor &b, float err = 0.000001f) {
   ASSERT_TRUE(a.layout.dtype.is_ctype<ctype>());
   ASSERT_TRUE(a.layout.is_equivalent_layout(b.layout));
   auto lptr = a.ptr<ctype>();
@@ -21,8 +20,7 @@ void assert_same_data(const NDArray &a, const NDArray &b,
 }
 
 template <typename ctype>
-void assert_same_view(const NDArray &a, const NDArray &b,
-                      float err = 0.000001f) {
+void assert_same_view(const Tensor &a, const Tensor &b, float err = 0.000001f) {
   ASSERT_TRUE(a.layout.dtype.is_ctype<ctype>());
   ASSERT_TRUE(a.layout.is_equivalent_layout(b.layout));
   ASSERT_TRUE(!a.layout.is_empty());
@@ -44,7 +42,7 @@ void assert_same_view(const NDArray &a, const NDArray &b,
 }
 
 template <typename ctype>
-void print_data(const NDArray &src) {
+void print_data(const Tensor &src) {
   src.layout.dtype.assert_is_ctype<ctype>();
   nn_assert(!src.layout.is_empty(), "Cannot print an empty ndarray.");
   auto ptr = src.ptr<ctype>();

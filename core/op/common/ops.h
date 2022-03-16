@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "core/base/include/ndArray.h"
 #include "core/base/include/status.h"
+#include "core/base/include/tensor.h"
 #include "core/op/common/param.h"
 
 namespace nncore {
@@ -23,20 +23,20 @@ using namespace param;
 
 #define DEF_OP_SINGLE_INPUT(_name)                       \
  public:                                                 \
-  virtual Status _name(const NDArray& inp, NDArray& oup, \
+  virtual Status _name(const Tensor& inp, Tensor& oup,   \
                        const param::_name& param) = 0;   \
                                                          \
  protected:                                              \
   Status deduce_layout_##_name(Layout& inp, Layout& res, \
                                const param::_name param);
 
-#define DEF_OP_DOUBLE_INPUT(_name)                                       \
- public:                                                                 \
-  virtual Status _name(const NDArray& a, const NDArray& b, NDArray& oup, \
-                       const param::_name& param) = 0;                   \
-                                                                         \
- protected:                                                              \
-  Status deduce_layout_##_name(Layout& a, Layout& b, Layout& res,        \
+#define DEF_OP_DOUBLE_INPUT(_name)                                    \
+ public:                                                              \
+  virtual Status _name(const Tensor& a, const Tensor& b, Tensor& oup, \
+                       const param::_name& param) = 0;                \
+                                                                      \
+ protected:                                                           \
+  Status deduce_layout_##_name(Layout& a, Layout& b, Layout& res,     \
                                const param::_name param);
 
 class OpBase {
@@ -71,26 +71,26 @@ class OpBase {
     return Status::OK();                                                 \
   }
 
-#define IMPL_OP_SINGLE_INPUT(_name)                                           \
- public:                                                                      \
-  Status _name(const NDArray& inp, NDArray& oup, const param::_name& param) { \
-    Layout linp(inp.layout);                                                  \
-    Layout loup;                                                              \
-    nn_return_status_if_error(deduce_layout_##_name(linp, loup, param));      \
-    loup.init_contiguous_stride();                                            \
-    oup.relayout(loup);                                                       \
-    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT, _name)              \
-    return Status::OK();                                                      \
-  }                                                                           \
-                                                                              \
- private:                                                                     \
-  template <typename T>                                                       \
-  Status _name##_internal(const T* inp, T* oup, const Layout& linp,           \
+#define IMPL_OP_SINGLE_INPUT(_name)                                         \
+ public:                                                                    \
+  Status _name(const Tensor& inp, Tensor& oup, const param::_name& param) { \
+    Layout linp(inp.layout);                                                \
+    Layout loup;                                                            \
+    nn_return_status_if_error(deduce_layout_##_name(linp, loup, param));    \
+    loup.init_contiguous_stride();                                          \
+    oup.relayout(loup);                                                     \
+    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT, _name)            \
+    return Status::OK();                                                    \
+  }                                                                         \
+                                                                            \
+ private:                                                                   \
+  template <typename T>                                                     \
+  Status _name##_internal(const T* inp, T* oup, const Layout& linp,         \
                           const Layout& loup, const param::_name& param);
 
 #define IMPL_OP_DOUBLE_INPUT(_name)                                        \
  public:                                                                   \
-  Status _name(const NDArray& a, const NDArray& b, NDArray& oup,           \
+  Status _name(const Tensor& a, const Tensor& b, Tensor& oup,              \
                const param::_name& param) {                                \
     Layout la(a.layout);                                                   \
     Layout lb(b.layout);                                                   \

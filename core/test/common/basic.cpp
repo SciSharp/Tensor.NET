@@ -1,4 +1,4 @@
-#include "core/base/include/ndArray.h"
+#include "core/base/include/tensor.h"
 #include "core/op/naive/ops.h"
 #include "core/test/common/factory.h"
 #include "core/test/common/utils.h"
@@ -47,7 +47,7 @@ TEST(Basic, reshape) {
   assert_same_view<int>(inp3, truth3);
 
   // group4 combined with matmul
-  NDArray a4 = F::from_list(
+  Tensor a4 = F::from_list(
       {17.466985062517146,  6.7664066410803585,  14.843100731907732,
        -4.6390678878805645, -11.721863661802509, -10.874290362288598,
        -17.450436421583543, -6.755345064323057,  8.327839373672429,
@@ -57,13 +57,13 @@ TEST(Basic, reshape) {
        -18.35114478739234,  16.080997940178044,  19.130843119578557,
        -7.780265244261599,  7.957347818762777,   -4.786855939893734},
       {2, 4, 3}, dtype::Float64());
-  NDArray b4 =
+  Tensor b4 =
       F::from_list({0.5741403351746364, -2.052231433802003, 25.24007024109701,
                     29.858219492503345, -18.67625475563329, 12.918972076270109,
                     -1.753392156743466, 23.42291952066134, 26.036713810702366,
                     -7.365878774868115, 20.185043802968643, -12.90536007406542},
                    {2, 6}, dtype::Float64());
-  NDArray truth4 = F::from_list(
+  Tensor truth4 = F::from_list(
       {220.2063906086251, 91.81153535065636, 974.6173556521721,
        -251.06043201452295, -317.95010976837546, -803.5171742210955,
        212.12455323560656, -27.334838431359515, 640.2676444441263,
@@ -77,7 +77,7 @@ TEST(Basic, reshape) {
   Layout pred_layout_b4;
   ASSERT_TRUE(b4.layout.try_reshape(pred_layout_b4, {4, 3}));
   b4.layout = pred_layout_b4;
-  NDArray pred4;
+  Tensor pred4;
   using Param = param::matmul;
   Param p4;
   opr::naive::OpNaiveImpl oprs;

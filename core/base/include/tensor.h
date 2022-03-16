@@ -64,7 +64,7 @@ class RefPtr {
   }
 };
 
-struct NDArray {
+struct Tensor {
   Layout layout;
 
   /*
@@ -77,19 +77,19 @@ struct NDArray {
     m_ref_ptr.alloc_memory(layout, layout.dtype);
   }
 
-  NDArray() : m_ref_ptr(RefPtr((void *)nullptr)) {}
+  Tensor() : m_ref_ptr(RefPtr((void *)nullptr)) {}
 
-  NDArray(const Layout &layout)
+  Tensor(const Layout &layout)
       : layout(layout), m_ref_ptr(RefPtr((void *)nullptr)) {
     m_ref_ptr.alloc_memory(layout, layout.dtype);
   }
 
-  NDArray(const Shape &shape, const DType dtype)
+  Tensor(const Shape &shape, const DType dtype)
       : layout(shape, dtype), m_ref_ptr(RefPtr((void *)nullptr)) {
     m_ref_ptr.alloc_memory(layout, layout.dtype);
   }
 
-  NDArray(const Layout &layout_, void *raw_ptr_)
+  Tensor(const Layout &layout_, void *raw_ptr_)
       : layout(layout_), m_ref_ptr(raw_ptr_) {}
 
   //! \brief get typed pointer; type check is performed.

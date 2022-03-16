@@ -1,4 +1,4 @@
-#include "core/base/include/ndArray.h"
+#include "core/base/include/tensor.h"
 
 namespace nncore {
 void RefPtr::reset(const void* ptr, size_t offset) {
@@ -7,7 +7,7 @@ void RefPtr::reset(const void* ptr, size_t offset) {
   m_offset = offset;
 }
 
-void NDArray::reset_ptr(void* ptr, size_t offset) {
+void Tensor::reset_ptr(void* ptr, size_t offset) {
   m_ref_ptr.reset(ptr, offset);
 }
 }  // namespace nncore
