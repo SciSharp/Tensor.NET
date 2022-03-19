@@ -160,6 +160,22 @@ bool Layout::is_equivalent_layout(const Layout &rhs) const {
   return dtype == rhs.dtype && is_equivalent_shape(rhs);
 }
 
+void Layout::offset_to_indices(size_t offset, size_t *indices) const {
+  for (size_t i = 0; i < ndim; i++) {
+    size_t idx = ndim - i - 1;
+    indices[idx] = offset / stride[idx];
+    offset %= stride[idx];
+  }
+}
+
+size_t Layout::indices_to_offset(size_t *indices) const {
+  size_t res = 0;
+  for (size_t i = 0; i < ndim; i++) {
+    res += indices[i] * stride[i];
+  }
+  return res;
+}
+
 std::string Layout::to_string() const {
   std::string r = "(";
   if (!ndim) {

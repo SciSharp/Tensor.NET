@@ -66,6 +66,20 @@ struct Layout : public Shape {
    */
   bool is_equivalent_layout(const Layout &rhs) const;
 
+  /*
+   * \brief Convert offset to indices of the current layout.
+   * \param indices An array which has same or larger size than the ndim of the
+   * current layout.
+   */
+  void offset_to_indices(size_t offset, size_t *indices) const;
+
+  /*
+   * \brief Convert offset to indices of the current layout.
+   * \param dst An array which has same or larger size than the ndim of the
+   * current layout.
+   */
+  size_t indices_to_offset(size_t *indices) const;
+
   std::string to_string() const;
 
   size_t content_bytes() const;

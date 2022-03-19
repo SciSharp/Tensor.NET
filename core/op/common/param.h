@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory.h>
+
 #include "core/base/include/layout.h"
 
 namespace nncore {
@@ -12,6 +14,14 @@ struct reshape {
 struct transpose {
   size_t dimA;
   size_t dimB;
+};
+
+struct permute {
+  size_t dims[NN_MAX_NDIM];
+
+  permute(const std::vector<size_t>& value) {
+    memcpy(dims, value.data(), value.size() * sizeof(size_t));
+  }
 };
 
 struct matmul {};

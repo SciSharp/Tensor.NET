@@ -5,15 +5,17 @@
 
 namespace nncore {
 
-#define nn_return_status_if_error(_expr) \
-  Status _status = _expr;                \
-  if (!_status.is_ok()) return _status;
+#define nn_return_status_if_error(_expr)  \
+  do {                                    \
+    Status _status = _expr;               \
+    if (!_status.is_ok()) return _status; \
+  } while (0)
 
 #define nn_throw_if_status_fail(_expr) \
   do {                                 \
-    Status _status = (expr);           \
-    if ((!_status.IsOK())) {           \
-      throw _status.to_string();       \
+    Status _status = (_expr);          \
+    if ((!_status.is_ok())) {          \
+      throw _status.error_message();   \
     }                                  \
   } while (0)
 
@@ -31,7 +33,8 @@ enum StatusCode {
   ENGINE_ERROR = 5,
   RUNTIME_EXCEPTION = 6,
   INVALID_PROTOBUF = 7,
-  NOT_IMPLEMENTED = 8
+  INVALID_PARAM = 8,
+  NOT_IMPLEMENTED = 9
 };
 
 constexpr const char* StatusCodeToString(StatusCode status) noexcept {
@@ -52,6 +55,8 @@ constexpr const char* StatusCodeToString(StatusCode status) noexcept {
       return "RUNTIME_EXCEPTION";
     case StatusCode::INVALID_PROTOBUF:
       return "INVALID_PROTOBUF";
+    case StatusCode::INVALID_PARAM:
+      return "INVALID_PARAM";
     case StatusCode::NOT_IMPLEMENTED:
       return "NOT_IMPLEMENTED";
     default:
