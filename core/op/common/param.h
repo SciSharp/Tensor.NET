@@ -14,6 +14,8 @@ struct reshape {
 struct transpose {
   size_t dimA;
   size_t dimB;
+
+  transpose(size_t a, size_t b) : dimA(a), dimB(b) {}
 };
 
 struct permute {

@@ -11,7 +11,6 @@ IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(permute) {
   res.ndim = inp.ndim;
   for (int i = 0; i < inp.ndim; i++) {
     if (param.dims[i] >= inp.ndim) {
-      std::cout << "dim" << std::endl;
       return Status(StatusCategory::NUMNET, StatusCode::INVALID_PARAM,
                     "Invalid permute param.");
     }
