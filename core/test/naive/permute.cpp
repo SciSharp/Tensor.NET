@@ -26,11 +26,10 @@ TEST(Naive, Permute) {
       F::from_list({-19, -4, 4,  -5,  -11, 4, -13, -5,  6,   17, 18,  -12,
                     -19, 4,  -5, -19, -7,  5, 8,   -13, -16, 4,  -17, -15},
                    {2, 4, 3}, dtype::Int32());
-
   Param p1({1, 2, 0});
 
   Tensor pred1;
-  oprs.permute(inp1, pred1, p1);
+  ASSERT_TRUE(oprs.permute(inp1, pred1, p1).is_ok());
   assert_same_data<nn_int32>(pred1, truth1, 0.0001f);
 
   // Group 2
@@ -50,11 +49,10 @@ TEST(Naive, Permute) {
        -122, -133, -133, -112, -171, 96,   -62,  -137, 46,   11,   21,   42,
        -10,  -92,  -60,  -155, -186, -77,  58,   -109, -58,  -103, -116, -28},
       {2, 2, 3, 6}, dtype::Int32());
-
   Param p2({2, 3, 1, 0});
 
   Tensor pred2;
-  oprs.permute(inp2, pred2, p2);
+  ASSERT_TRUE(oprs.permute(inp2, pred2, p2).is_ok());
   assert_same_data<nn_int32>(pred2, truth2, 0.0001f);
 
   // Group 3
@@ -62,10 +60,9 @@ TEST(Naive, Permute) {
                              dtype::Float64());
   Tensor truth3 = F::from_list({-144.88911173213074, -177.9092558668978},
                                {2, 1}, dtype::Float64());
-
   Param p3({1, 0});
 
   Tensor pred3;
-  oprs.permute(inp3, pred3, p3);
+  ASSERT_TRUE(oprs.permute(inp3, pred3, p3).is_ok());
   assert_same_data<nn_float64>(pred3, truth3, 0.0001f);
 }

@@ -13,6 +13,7 @@ using namespace opr;
 using namespace opr::naive;
 
 using F = NDArrayFactory;
+using Param = param::matmul;
 
 TEST(Naive, Matmul) {
   OpNaiveImpl oprs;
@@ -21,12 +22,10 @@ TEST(Naive, Matmul) {
   Tensor a1 = F::from_list({1, 2, 3, 4, 5, 6}, {2, 3}, dtype::Int32());
   Tensor b1 = F::from_list({-1, 1, 2, 1, -1, 3}, {3, 2}, dtype::Int32());
   Tensor truth1 = F::from_list({0, 12, 0, 27}, {2, 2}, dtype::Int32());
-
-  using Param = param::matmul;
   Param p1;
 
   Tensor pred1;
-  oprs.matmul(a1, b1, pred1, p1);
+  ASSERT_TRUE(oprs.matmul(a1, b1, pred1, p1).is_ok());
   assert_same_data<int>(pred1, truth1, 0.0001f);
 
   // Group 2
@@ -36,31 +35,11 @@ TEST(Naive, Matmul) {
       F::from_list({2,  4,  6,  8,  10, 6,  12, 18, 24, 30, 10, 20, 30,
                     40, 50, 14, 28, 42, 56, 70, 18, 36, 54, 72, 90},
                    {5, 5}, dtype::Int32());
-
-  using Param = param::matmul;
   Param p2;
 
   Tensor pred2;
-  oprs.matmul(a2, b2, pred2, p2);
-
+  ASSERT_TRUE(oprs.matmul(a2, b2, pred2, p2).is_ok());
   assert_same_data<int>(pred2, truth2, 0.0001f);
-
-  // Group 4
-  Tensor a4 = F::from_list({1, 2, 5, -2, -4, 6, 1, 2, 5, -2, -4, 6,
-                            1, 2, 5, -2, -4, 6, 1, 2, 5, -2, -4, 6},
-                           {1, 4, 2, 3}, dtype::Int32());
-  Tensor b4 = F::from_list({1, 1, 2, 3, -2, -4, 8, 15, -7, -1, 5, 0},
-                           {1, 4, 3, 1}, dtype::Int32());
-  Tensor truth4 = F::from_list({13, 6, -21, -22, 3, -118, 9, -18}, {1, 4, 2, 1},
-                               dtype::Int32());
-
-  using Param = param::matmul;
-  Param p4;
-
-  Tensor pred4;
-  oprs.matmul(a4, b4, pred4, p4);
-
-  assert_same_data<int>(pred4, truth4, 0.0001f);
 
   // Group 3
   Tensor a3 = F::from_list(
@@ -113,14 +92,25 @@ TEST(Naive, Matmul) {
        955,  -84,   -512, 569,   -1546, -194, -83,   1079,  132,  314,  168,
        92,   -150,  -460, -775,  -50},
       {2, 3, 4, 8}, dtype::Int32());
-
-  using Param = param::matmul;
   Param p3;
 
   Tensor pred3;
-  oprs.matmul(a3, b3, pred3, p3);
-
+  ASSERT_TRUE(oprs.matmul(a3, b3, pred3, p3).is_ok());
   assert_same_data<int>(pred3, truth3, 0.0001f);
+
+  // Group 4
+  Tensor a4 = F::from_list({1, 2, 5, -2, -4, 6, 1, 2, 5, -2, -4, 6,
+                            1, 2, 5, -2, -4, 6, 1, 2, 5, -2, -4, 6},
+                           {1, 4, 2, 3}, dtype::Int32());
+  Tensor b4 = F::from_list({1, 1, 2, 3, -2, -4, 8, 15, -7, -1, 5, 0},
+                           {1, 4, 3, 1}, dtype::Int32());
+  Tensor truth4 = F::from_list({13, 6, -21, -22, 3, -118, 9, -18}, {1, 4, 2, 1},
+                               dtype::Int32());
+  Param p4;
+
+  Tensor pred4;
+  ASSERT_TRUE(oprs.matmul(a4, b4, pred4, p4).is_ok());
+  assert_same_data<int>(pred4, truth4, 0.0001f);
 
   // Group 5
   Tensor a5 = F::from_list(
@@ -183,13 +173,10 @@ TEST(Naive, Matmul) {
        -201.36741048315838, -105.36851711908248, -275.5465735989572,
        -539.9063120367825,  -649.9585535562818,  135.97787257080606},
       {2, 3, 4, 3}, dtype::Float64());
-
-  using Param = param::matmul;
   Param p5;
 
   Tensor pred5;
-  oprs.matmul(a5, b5, pred5, p5);
-
+  ASSERT_TRUE(oprs.matmul(a5, b5, pred5, p5).is_ok());
   assert_same_data<double>(pred5, truth5, 0.000001f);
 
   // Group 6
@@ -211,13 +198,10 @@ TEST(Naive, Matmul) {
                     206.4382766323594, -407.9122636772442, 91.88104632149431,
                     362.1747498694832, 348.3746955852936},
                    {2, 2, 1, 2}, dtype::Float64());
-
-  using Param = param::matmul;
   Param p6;
 
   Tensor pred6;
-  oprs.matmul(a6, b6, pred6, p6);
-
+  ASSERT_TRUE(oprs.matmul(a6, b6, pred6, p6).is_ok());
   assert_same_data<double>(pred6, truth6, 0.000001);
 
   // Group 7
@@ -238,13 +222,10 @@ TEST(Naive, Matmul) {
       F::from_list({72.04047666360029, 175.67342570179252, 217.1761421082951,
                     -83.73215691205462, 542.5424790165914, -466.06481963441973},
                    {3, 1, 2, 1}, dtype::Float64());
-
-  using Param = param::matmul;
   Param p7;
 
   Tensor pred7;
-  oprs.matmul(a7, b7, pred7, p7);
-
+  ASSERT_TRUE(oprs.matmul(a7, b7, pred7, p7).is_ok());
   assert_same_data<double>(pred7, truth7, 0.000001);
 
   // Group 8
@@ -272,51 +253,39 @@ TEST(Naive, Matmul) {
        -144.46959658080647, -101.97269754089359, -221.45579419121552,
        -200.01402938009352, 195.8067188946301, 651.3100820493304},
       {3, 2, 3}, dtype::Float64());
-
-  using Param = param::matmul;
   Param p8;
 
   Tensor pred8;
-  oprs.matmul(a8, b8, pred8, p8);
-
+  ASSERT_TRUE(oprs.matmul(a8, b8, pred8, p8).is_ok());
   assert_same_data<double>(pred8, truth8, 0.000001);
 
   // Group 9
   Tensor a9 = F::from_list({99.89}, {1}, dtype::Float32());
   Tensor b9 = F::from_list({65.32}, {1}, dtype::Float32());
   Tensor truth9 = F::from_list({6524.8148}, {1}, dtype::Float32());
-
-  using Param = param::matmul;
   Param p9;
 
   Tensor pred9;
-  oprs.matmul(a9, b9, pred9, p9);
-
+  ASSERT_TRUE(oprs.matmul(a9, b9, pred9, p9).is_ok());
   assert_same_data<float>(pred9, truth9, 0.000001);
 
   // Group 10
   Tensor a10 = F::from_list({99.89}, {1, 1}, dtype::Float32());
   Tensor b10 = F::from_list({65.32}, {1, 1, 1}, dtype::Float32());
   Tensor truth10 = F::from_list({6524.8148}, {1, 1, 1}, dtype::Float32());
-
-  using Param = param::matmul;
   Param p10;
 
   Tensor pred10;
-  oprs.matmul(a10, b10, pred10, p10);
-
+  ASSERT_TRUE(oprs.matmul(a10, b10, pred10, p10).is_ok());
   assert_same_data<float>(pred10, truth10, 0.000001);
 
   // Group 11
   Tensor a11 = F::from_list({99.89}, {1, 1, 1, 1}, dtype::Float32());
   Tensor b11 = F::from_list({65.32}, {1}, dtype::Float32());
   Tensor truth11 = F::from_list({6524.8148}, {1, 1, 1, 1}, dtype::Float32());
-
-  using Param = param::matmul;
   Param p11;
 
   Tensor pred11;
-  oprs.matmul(a11, b11, pred11, p11);
-
+  ASSERT_TRUE(oprs.matmul(a11, b11, pred11, p11).is_ok());
   assert_same_data<float>(pred11, truth11, 0.000001);
 }

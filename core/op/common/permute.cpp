@@ -10,17 +10,17 @@ IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(permute) {
   res.dtype = inp.dtype;
   res.ndim = inp.ndim;
   for (int i = 0; i < inp.ndim; i++) {
-    if (params.dims[i] >= inp.ndim) {
+    if (param.dims[i] >= inp.ndim) {
       std::cout << "dim" << std::endl;
       return Status(StatusCategory::NUMNET, StatusCode::INVALID_PARAM,
                     "Invalid permute param.");
     }
-    res[params.dims[i]] = inp[i];
-    if (duplicated & (1 << params.dims[i])) {
+    res[param.dims[i]] = inp[i];
+    if (duplicated & (1 << param.dims[i])) {
       return Status(StatusCategory::NUMNET, StatusCode::INVALID_PARAM,
                     "Duplicated index in permute param.");
     }
-    duplicated += 1 << params.dims[i];
+    duplicated += 1 << param.dims[i];
   }
   return Status::OK();
 }
