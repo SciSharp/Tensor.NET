@@ -10,7 +10,7 @@ namespace nncore {
 Shape::Shape(const std::vector<size_t> &init_shape) {
   nn_assert(init_shape.size() <= MAX_NDIM,
             "The shape you specified has too many dims, which is %lu, the "
-            "max is %lu\n",
+            "max is %d\n",
             init_shape.size(), MAX_NDIM);
   ndim = init_shape.size();
   for (int i = 0; i < ndim; i++) {
@@ -21,6 +21,11 @@ Shape::Shape(const std::vector<size_t> &init_shape) {
   }
 }
 
+Shape::Shape(size_t *init_shape, int ndim) {
+  this->ndim = ndim;
+  memcpy(shape, init_shape, ndim * sizeof(size_t));
+}
+
 Shape::Shape(const std::initializer_list<size_t> &init_shape)
     : Shape(std::vector<size_t>{init_shape}) {}
 
@@ -28,7 +33,7 @@ bool Shape::is_scalar() const { return ndim == 1 && shape[0] == 1; }
 
 bool Shape::is_empty() const {
   if (ndim == 0) return true;
-  for (size_t i = 0; i < ndim; i++) {
+  for (int i = 0; i < ndim; i++) {
     if (shape[i] == 0) return true;
   }
   return false;
@@ -36,21 +41,21 @@ bool Shape::is_empty() const {
 
 bool Shape::is_shape(const Shape &rhs) const {
   if (ndim != rhs.ndim) return false;
-  for (size_t i = 0; i < ndim; i++) {
+  for (int i = 0; i < ndim; i++) {
     if (shape[i] != rhs.shape[i]) return false;
   }
   return true;
 }
 
 bool Shape::is_equivalent_shape(const Shape &rhs) const {
-  size_t min_ndim = ndim > rhs.ndim ? rhs.ndim : ndim;
-  for (size_t i = 0; i < min_ndim; i++) {
+  int min_ndim = ndim > rhs.ndim ? rhs.ndim : ndim;
+  for (int i = 0; i < min_ndim; i++) {
     if (shape[i] != rhs.shape[i]) return false;
   }
-  for (size_t i = min_ndim; i < ndim; i++) {
+  for (int i = min_ndim; i < ndim; i++) {
     if (shape[i] != 1) return false;
   }
-  for (size_t i = min_ndim; i < rhs.ndim; i++) {
+  for (int i = min_ndim; i < rhs.ndim; i++) {
     if (rhs.shape[i] != 1) return false;
   }
   return true;
@@ -58,7 +63,7 @@ bool Shape::is_equivalent_shape(const Shape &rhs) const {
 
 size_t Shape::total_elems() const {
   size_t r = 1;
-  for (size_t i = 0; i < ndim; i++) r *= shape[i];
+  for (int i = 0; i < ndim; i++) r *= shape[i];
   return r;
 }
 
@@ -95,7 +100,7 @@ size_t Layout::init_contiguous_stride() {
   nn_assert(ndim);
   nn_assert(ndim <= Layout::MAX_NDIM);
   size_t s = 1;
-  for (size_t i = 0; i < ndim; i++) {
+  for (int i = 0; i < ndim; i++) {
     stride[i] = s;
     s *= shape[i];
   }
@@ -112,7 +117,7 @@ void Layout::broadcast_inplace(const Shape &target) {
 
   if (is_scalar()) {
     ndim = target.ndim;
-    for (size_t i = 0; i < target.ndim; i++) {
+    for (int i = 0; i < target.ndim; i++) {
       shape[i] = target.shape[i];
       stride[i] = (target.shape[i] == 1);
     }
@@ -123,7 +128,7 @@ void Layout::broadcast_inplace(const Shape &target) {
             "dimension for broadcast less than "
             "dst_shape: src_shape=%s dst_shape=%s",
             to_string().c_str(), target.to_string().c_str());
-  for (size_t i = 0; i < target.ndim; ++i) {
+  for (int i = 0; i < target.ndim; ++i) {
     size_t cur_shape = (i < ndim ? shape[i] : 1),
            cur_stride = (i < ndim ? stride[i] : 0);
     if (target.shape[i] != cur_shape) {
@@ -161,8 +166,8 @@ bool Layout::is_equivalent_layout(const Layout &rhs) const {
 }
 
 void Layout::offset_to_indices(size_t offset, size_t *indices) const {
-  for (size_t i = 0; i < ndim; i++) {
-    size_t idx = ndim - i - 1;
+  for (int i = 0; i < ndim; i++) {
+    int idx = ndim - i - 1;
     indices[idx] = offset / stride[idx];
     offset %= stride[idx];
   }
@@ -170,7 +175,7 @@ void Layout::offset_to_indices(size_t offset, size_t *indices) const {
 
 size_t Layout::indices_to_offset(size_t *indices) const {
   size_t res = 0;
-  for (size_t i = 0; i < ndim; i++) {
+  for (int i = 0; i < ndim; i++) {
     res += indices[i] * stride[i];
   }
   return res;
@@ -224,7 +229,7 @@ Layout Layout::remove_axis(size_t idx) const {
 void Layout::remove_axis_inplace(size_t axis) {
   nn_assert(ndim >= 2 && axis < ndim);
   --ndim;
-  for (size_t i = axis; i < ndim; ++i) {
+  for (int i = axis; i < ndim; ++i) {
     shape[i] = shape[i + 1];
     stride[i] = stride[i + 1];
   }
@@ -232,10 +237,10 @@ void Layout::remove_axis_inplace(size_t axis) {
 
 void Layout::add_axis_inplace(size_t axis, size_t shape, size_t stride) {
   nn_assert(ndim + 1 <= MAX_NDIM && axis <= ndim && shape,
-            "can not add axis at %zu (current ndim %zu, MAX_NDIM %zu)", axis,
+            "can not add axis at %zu (current ndim %d, MAX_NDIM %d)", axis,
             ndim, MAX_NDIM);
   ndim++;
-  for (size_t i = ndim - 1; i > axis; i--) {
+  for (int i = ndim - 1; i > axis; i--) {
     this->shape[i] = this->shape[i - 1];
     this->stride[i] = this->stride[i - 1];
   }
@@ -296,7 +301,7 @@ bool Layout::try_reshape(Layout &result, const Shape &tshp,
   nn_assert(tshp.ndim);
 
   bool is_empty_shape = false;
-  for (size_t i = 0; i < tshp.ndim; ++i) {
+  for (int i = 0; i < tshp.ndim; ++i) {
     if (!tshp.shape[i]) {
       is_empty_shape = true;
       break;
@@ -314,7 +319,7 @@ bool Layout::try_reshape(Layout &result, const Shape &tshp,
     nn_assert(this->ndim >= 2 && tshp.ndim >= 2 &&
               this->shape[0] == tshp.shape[1] &&
               this->shape[1] == tshp.shape[0]);
-    for (size_t i = 2; i < this->ndim; i++) {
+    for (int i = 2; i < this->ndim; i++) {
       if (tshp.ndim > i && tshp.shape[i] != this->shape[i]) {
         return false;
       }

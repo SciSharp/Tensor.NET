@@ -83,7 +83,6 @@ class OpBase {
     return Status::OK();                                                    \
   }                                                                         \
                                                                             \
- private:                                                                   \
   template <typename T>                                                     \
   Status _name##_internal(const T* inp, T* oup, const Layout& linp,         \
                           const Layout& loup, const param::_name& param);
@@ -97,12 +96,13 @@ class OpBase {
     Layout loup;                                                           \
     nn_return_status_if_error(deduce_layout_##_name(la, lb, loup, param)); \
     loup.init_contiguous_stride();                                         \
-    oup.relayout(loup);                                                    \
+    if (oup.is_ptr_owner()) {                                              \
+      oup.relayout(loup);                                                  \
+    }                                                                      \
     NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_DOUBLE_INPUT, _name)           \
     return Status::OK();                                                   \
   }                                                                        \
                                                                            \
- private:                                                                  \
   template <typename T>                                                    \
   Status _name##_internal(const T* ptr_a, const T* ptr_b, T* ptr_oup,      \
                           const Layout& la, const Layout& lb,              \

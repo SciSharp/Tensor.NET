@@ -7,7 +7,13 @@
 #include "core/base/include/macro.h"
 
 namespace nncore {
-enum class DTypeEnum : uint32_t { Invalid, Int32, Float32, Float64, Bool };
+enum class DTypeEnum : uint32_t {
+  Invalid = 0,
+  Int32 = 1,
+  Float32 = 2,
+  Float64 = 3,
+  Bool = 4
+};
 
 class DType {
  protected:

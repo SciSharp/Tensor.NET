@@ -12,14 +12,15 @@
 namespace nncore {
 
 struct Shape {
-  static constexpr size_t MAX_NDIM = NN_MAX_NDIM;
+  static constexpr int MAX_NDIM = NN_MAX_NDIM;
 
   size_t shape[MAX_NDIM];
-  size_t ndim = 0;
+  int ndim = 0;
 
   // ctor
   Shape() = default;
   Shape(const Shape &rhs) = default;
+  Shape(size_t *init_shape, int ndim);
   Shape(const std::vector<size_t> &init_shape);
   Shape(const std::initializer_list<size_t> &init_shape);
 

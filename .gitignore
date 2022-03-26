@@ -36,3 +36,7 @@ build/
 
 #developments
 .vscode/
+
+#CSharp
+bin/
+obj/

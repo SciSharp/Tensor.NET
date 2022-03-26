@@ -12,7 +12,7 @@
 | Add script to auto build and test | Write a script on linux to build and run all tests automatically | p2 | Waiting 🔵 |
 | Add ```reshape``` | Add ```reshape``` for ```NDArray``` | p0 | Complete ✅ |
 | Add naive op ```dot``` | Add naive implementation for op ```dot``` | p0 | Waiting 🔵 |
-| Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | On going 🚀 |
+| Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | Complete ✅ |
 | Add naive op ```permute``` | Add naive implementation for op ```permute``` | p0 | Complete ✅ |
 | Add naive op ```add``` | Add naive implementation for op ```add``` | p0 | Waiting 🔵 |
 | Add naive op ```sub``` | Add naive implementation for op ```sub``` | p0 | Waiting 🔵 |
