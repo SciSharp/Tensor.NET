@@ -18,7 +18,7 @@
 | Add naive op ```sub``` | Add naive implementation for op ```sub``` | p0 | Waiting 🔵 |
 | Add naive op ```mul``` | Add naive implementation for op ```mul``` | p0 | Waiting 🔵 |
 | Add naive op ```div``` | Add naive implementation for op ```div``` | p0 | Waiting 🔵 |
-| Add ```type_deduce``` | Add deduce method for type of layout to decide the ```dtype``` of the output Array. | p0 | Waiting 🔵 |
+| Add ```type_deduce``` | Add deduce method for type of layout to decide the ```dtype``` of the output Array. | p0 | Complete ✅ |
 | Add ```Status``` | Add a status struct to tell the caller if the call success and return error message if failed. | p0 | Complete ✅ |
 | Define actions on Debug and Release mode | define different actions for one expr on different mode. For instance, ```nn_assert``` should not take action on release mode | p0 | Waiting 🔵 |
 | Add ```Checker``` for test | Add a checker class to judge if the pred and result are matched. | p0 | On going 🚀 |

@@ -1,15 +1,13 @@
 using System.Buffers;
 using Numnet.Native;
+using Numnet.Common;
 
 namespace Numnet.Base{
-    public abstract class TensorBase
+    public abstract class TensorBase:ITensor
     {
         internal unsafe delegate IntPtr DoubleInputOperation(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param, Provider provider);
-        internal TensorMemory _dataHandle;
-        internal TensorLayout _layout;
-        protected void Pin(out MemoryHandle handle){
-            _dataHandle.Pin(out handle);
-        }
+        public TensorLayout TLayout{get; protected set; }
+        protected abstract void Pin(out MemoryHandle handle);
         unsafe internal static IntPtr Execute(TensorBase a, TensorBase b, TensorBase oup, DoubleInputOperation func, IntPtr param, Provider provider){
             MemoryHandle handleA, handleB, handleOup;
             a.Pin(out handleA);
@@ -17,31 +15,31 @@ namespace Numnet.Base{
             oup.Pin(out handleOup);
             IntPtr status;
             Console.WriteLine("字符串地址= 0x{0:x}", (long)handleOup.Pointer);
-            fixed(ulong* shapeAPtr = a._layout._shape, shapeBPtr = b._layout._shape, shapeOupPtr = oup._layout._shape, 
-                        strideAPtr = a._layout._stride, strideBPtr = b._layout._stride, strideOupPtr = oup._layout._stride){
+            fixed(ulong* shapeAPtr = a.TLayout._shape, shapeBPtr = b.TLayout._shape, shapeOupPtr = oup.TLayout._shape, 
+                        strideAPtr = a.TLayout._stride, strideBPtr = b.TLayout._stride, strideOupPtr = oup.TLayout._stride){
                 NativeTensor nativeA = new NativeTensor()
                 {
-                    dtype = a._layout._dtype,
-                    ndim = a._layout._ndim,
-                    offset = a._layout._offset,
+                    dtype = a.TLayout._dtype,
+                    ndim = a.TLayout._ndim,
+                    offset = a.TLayout._offset,
                     shape = new IntPtr(shapeAPtr),
                     stride = new IntPtr(strideAPtr),
                     data = new IntPtr(handleA.Pointer)
                 };
                 NativeTensor nativeB = new NativeTensor()
                 {
-                    dtype = b._layout._dtype,
-                    ndim = b._layout._ndim,
-                    offset = b._layout._offset,
+                    dtype = b.TLayout._dtype,
+                    ndim = b.TLayout._ndim,
+                    offset = b.TLayout._offset,
                     shape = new IntPtr(shapeBPtr),
                     stride = new IntPtr(strideBPtr),
                     data = new IntPtr(handleB.Pointer)
                 };
                 NativeTensor nativeOup = new NativeTensor()
                 {
-                    dtype = oup._layout._dtype,
-                    ndim = oup._layout._ndim,
-                    offset = oup._layout._offset,
+                    dtype = oup.TLayout._dtype,
+                    ndim = oup.TLayout._ndim,
+                    offset = oup.TLayout._offset,
                     shape = new IntPtr(shapeOupPtr),
                     stride = new IntPtr(strideOupPtr),
                     data = new IntPtr(handleOup.Pointer)

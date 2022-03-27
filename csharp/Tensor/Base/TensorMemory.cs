@@ -1,15 +1,21 @@
 using System.Runtime.InteropServices;
 using System.Buffers;
+using System.Linq;
 
 namespace Numnet.Base{
-    internal class TensorMemory{
-        private Memory<byte> _memory;
-        public TensorMemory(ulong length, int size){
-            _memory = new byte[length * (ulong)size];
+
+    public class TensorMemory<T> where T :struct
+    {
+        private  Memory<T> _memory;
+        public TensorMemory(ulong length){
+            _memory = new T[length];
+        }
+        public TensorMemory(T[] data){
+            _memory = data.AsMemory<T>();
         }
 
-        public Span<T> AsSpan<T>() where T:struct{
-            return MemoryMarshal.Cast<byte, T>(_memory.Span);
+        public Span<T> AsSpan(){
+            return _memory.Span;
         }
 
         public void Pin(out MemoryHandle handle){

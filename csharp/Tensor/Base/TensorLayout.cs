@@ -1,7 +1,7 @@
 using Numnet.Native;
 
 namespace Numnet.Base{
-    internal sealed class TensorLayout
+    public sealed class TensorLayout
     {
         static readonly int MAX_NDIM = 4;
         public DType _dtype { get; private set; }
@@ -21,7 +21,7 @@ namespace Numnet.Base{
             _offset = 0;
             InitContiguousLayout(shape);
         }
-        public void InitContiguousLayout()
+        internal void InitContiguousLayout()
         {
             ulong s = 1;
             for (int i = 0; i < _ndim; i++)
@@ -30,7 +30,7 @@ namespace Numnet.Base{
                 s *= _shape[i];
             }
         }
-        public void InitContiguousLayout(Span<ulong> shape)
+        internal void InitContiguousLayout(Span<ulong> shape)
         {
             _ndim = shape.Length;
             if (_ndim > MAX_NDIM)
