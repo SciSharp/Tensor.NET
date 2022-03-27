@@ -1,21 +1,21 @@
 using Numnet.Native;
 
-namespace Numnet.Base{
+namespace Numnet.Tensor.Base{
     public sealed class TensorLayout
     {
         static readonly int MAX_NDIM = 4;
         public DType _dtype { get; private set; }
         public int _ndim{ get; private set; }
-        public ulong _offset{ get; private set; }
-        public ulong[] _shape { get; private set; } = new ulong[4];
-        public ulong[] _stride { get; private set; } = new ulong[4];
+        public int _offset{ get; private set; }
+        public int[] _shape { get; private set; } = new int[4];
+        public int[] _stride { get; private set; } = new int[4];
         public TensorLayout()
         {
             _dtype = DType.Invalid;
             _ndim = 0;
             _offset = 0;
         }
-        public TensorLayout(DType dtype, Span<ulong> shape)
+        public TensorLayout(DType dtype, Span<int> shape)
         {
             _dtype = dtype;
             _offset = 0;
@@ -23,14 +23,14 @@ namespace Numnet.Base{
         }
         internal void InitContiguousLayout()
         {
-            ulong s = 1;
+            int s = 1;
             for (int i = 0; i < _ndim; i++)
             {
                 _stride[i] = s;
                 s *= _shape[i];
             }
         }
-        internal void InitContiguousLayout(Span<ulong> shape)
+        internal void InitContiguousLayout(Span<int> shape)
         {
             _ndim = shape.Length;
             if (_ndim > MAX_NDIM)
@@ -43,11 +43,11 @@ namespace Numnet.Base{
             InitContiguousLayout();
         }
 
-        public ulong total_elems(){
+        public int total_elems(){
             if(_ndim == 0){
                 return 0;
             }
-            ulong res = 1;
+            int res = 1;
             for (int i = 0; i < _ndim; i++){
                 res *= _shape[i];
             }

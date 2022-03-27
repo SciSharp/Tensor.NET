@@ -17,7 +17,7 @@ namespace Numnet.Native{
     {
         public DType dtype;
         public int ndim;
-        public ulong offset;
+        public int offset;
         public IntPtr shape;
         public IntPtr stride;
         public IntPtr data;

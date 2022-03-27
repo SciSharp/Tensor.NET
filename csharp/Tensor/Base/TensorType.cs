@@ -1,6 +1,6 @@
 using Numnet.Native;
 
-namespace Numnet.Base{
+namespace Numnet.Tensor.Base{
     internal sealed class TensorTypeInfo
     {
         private static readonly Dictionary<Type, TensorTypeInfo> _typeInfoMap;

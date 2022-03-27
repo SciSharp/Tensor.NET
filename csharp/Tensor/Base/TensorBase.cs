@@ -1,8 +1,8 @@
 using System.Buffers;
 using Numnet.Native;
-using Numnet.Common;
+using Numnet.Tensor.Common;
 
-namespace Numnet.Base{
+namespace Numnet.Tensor.Base{
     public abstract class TensorBase:ITensor
     {
         internal unsafe delegate IntPtr DoubleInputOperation(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param, Provider provider);
@@ -15,7 +15,7 @@ namespace Numnet.Base{
             oup.Pin(out handleOup);
             IntPtr status;
             Console.WriteLine("字符串地址= 0x{0:x}", (long)handleOup.Pointer);
-            fixed(ulong* shapeAPtr = a.TLayout._shape, shapeBPtr = b.TLayout._shape, shapeOupPtr = oup.TLayout._shape, 
+            fixed(int* shapeAPtr = a.TLayout._shape, shapeBPtr = b.TLayout._shape, shapeOupPtr = oup.TLayout._shape, 
                         strideAPtr = a.TLayout._stride, strideBPtr = b.TLayout._stride, strideOupPtr = oup.TLayout._stride){
                 NativeTensor nativeA = new NativeTensor()
                 {

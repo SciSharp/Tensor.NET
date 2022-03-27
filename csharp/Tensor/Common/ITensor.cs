@@ -1,6 +1,6 @@
-using Numnet.Base;
+using Numnet.Tensor.Base;
 
-namespace Numnet.Common{
+namespace Numnet.Tensor.Common{
     public interface ITensor<T> where T: struct{
         public Span<T> AsSpan();
         public TensorMemory<T> TMemory{ get; }
