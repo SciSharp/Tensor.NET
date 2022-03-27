@@ -4,6 +4,7 @@
 
 #include "core/base/include/status.h"
 #include "core/base/include/tensor.h"
+#include "core/op/common/dtype_deduce.h"
 #include "core/op/common/param.h"
 
 namespace nncore {
@@ -57,70 +58,50 @@ class OpBase {
   Status OpBase::deduce_layout_##_name(Layout& a, Layout& b, Layout& res, \
                                        const param::_name param)
 
-#define TYPE_SELECT_SINGLE_INPUT(_type, _name)                   \
-  if (loup.dtype.is_ctype<_type>()) {                            \
-    nn_return_status_if_error(_name##_internal<_type>(           \
-        inp.ptr<_type>(), oup.ptr<_type>(), linp, loup, param)); \
-    return Status::OK();                                         \
-  }
-#define TYPE_SELECT_DOUBLE_INPUT(_type, _name)                           \
-  if (oup.layout.dtype.is_ctype<_type>()) {                              \
-    nn_return_status_if_error(                                           \
-        _name##_internal<_type>(a.ptr<_type>(), b.ptr<_type>(),          \
-                                oup.ptr<_type>(), la, lb, loup, param)); \
-    return Status::OK();                                                 \
-  }
-
-#define IMPL_OP_SINGLE_INPUT(_name)                                         \
- public:                                                                    \
-  Status _name(const Tensor& inp, Tensor& oup, const param::_name& param) { \
-    Layout linp(inp.layout);                                                \
-    Layout loup;                                                            \
-    nn_return_status_if_error(deduce_layout_##_name(linp, loup, param));    \
-    loup.init_contiguous_stride();                                          \
-    oup.relayout(loup);                                                     \
-    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT, _name)            \
-    return Status::OK();                                                    \
-  }                                                                         \
-                                                                            \
-  template <typename T>                                                     \
-  Status _name##_internal(const T* inp, T* oup, const Layout& linp,         \
+#define IMPL_OP_SINGLE_INPUT(_name)                                            \
+ public:                                                                       \
+  Status _name(const Tensor& inp, Tensor& oup, const param::_name& param) {    \
+    Layout linp(inp.layout);                                                   \
+    if (oup.is_ptr_owner()) {                                                  \
+      Layout loup;                                                             \
+      nn_return_status_if_error(deduce_layout_##_name(linp, loup, param));     \
+      loup.init_contiguous_stride();                                           \
+      oup.relayout(loup);                                                      \
+      NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT, _name, loup)       \
+    } else {                                                                   \
+      NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT, _name, oup.layout) \
+    }                                                                          \
+    return Status::OK();                                                       \
+  }                                                                            \
+                                                                               \
+  template <typename T>                                                        \
+  Status _name##_internal(const T* inp, T* oup, const Layout& linp,            \
                           const Layout& loup, const param::_name& param);
 
-#define IMPL_OP_DOUBLE_INPUT(_name)                                        \
- public:                                                                   \
-  Status _name(const Tensor& a, const Tensor& b, Tensor& oup,              \
-               const param::_name& param) {                                \
-    Layout la(a.layout);                                                   \
-    Layout lb(b.layout);                                                   \
-    Layout loup;                                                           \
-    nn_return_status_if_error(deduce_layout_##_name(la, lb, loup, param)); \
-    loup.init_contiguous_stride();                                         \
-    if (oup.is_ptr_owner()) {                                              \
-      oup.relayout(loup);                                                  \
-    }                                                                      \
-    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_DOUBLE_INPUT, _name)           \
-    return Status::OK();                                                   \
-  }                                                                        \
-                                                                           \
-  template <typename T>                                                    \
-  Status _name##_internal(const T* ptr_a, const T* ptr_b, T* ptr_oup,      \
-                          const Layout& la, const Layout& lb,              \
+#define IMPL_OP_DOUBLE_INPUT(_name)                                            \
+ public:                                                                       \
+  Status _name(const Tensor& a, const Tensor& b, Tensor& oup,                  \
+               const param::_name& param) {                                    \
+    Layout la(a.layout);                                                       \
+    Layout lb(b.layout);                                                       \
+    if (oup.is_ptr_owner()) {                                                  \
+      Layout loup;                                                             \
+      nn_return_status_if_error(deduce_layout_##_name(la, lb, loup, param));   \
+      loup.init_contiguous_stride();                                           \
+      oup.relayout(loup);                                                      \
+      DOUBLE_INPUT_DTYPE_DEDUCE(la.dtype.enumv(), lb.dtype.enumv(), _name, la, \
+                                lb, loup, param);                              \
+    } else {                                                                   \
+      DOUBLE_INPUT_DTYPE_DEDUCE(la.dtype.enumv(), lb.dtype.enumv(), _name, la, \
+                                lb, oup.layout, param);                        \
+    }                                                                          \
+    return Status::OK();                                                       \
+  }                                                                            \
+                                                                               \
+  template <typename TA, typename TB, typename TC>                             \
+  Status _name##_internal(const TA* ptr_a, const TB* ptr_b, TC* ptr_oup,       \
+                          const Layout& la, const Layout& lb,                  \
                           const Layout& loup, const param::_name& param);
-
-#define SPECIFY_SINGLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name)     \
-  template Status _class_name::_op_name##_internal<_type>(                  \
-      const _type* inp, _type* oup, const Layout& linp, const Layout& loup, \
-      const param::_op_name& param);
-
-#define SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name) \
-  template Status _class_name::_op_name##_internal<_type>(              \
-      const _type* ptr_a, const _type* ptr_b, _type* ptr_oup,           \
-      const Layout& la, const Layout& lb, const Layout& loup,           \
-      const param::_op_name& param);
-
-// #undef DEF_OP_METHOD_SINGLE_INPUT
-// #undef DEF_OP_METHOD_DOUBLE_INPUT
 
 }  // namespace opr
 

@@ -13,7 +13,7 @@ unsafe{
     Console.WriteLine(c._layout._ndim);
     a._dataHandle.AsSpan<int>().Fill(1);
     b._dataHandle.AsSpan<int>().Fill(2);
-    IntPtr status = Tensor<int>.Execute(a, b, c, NativeApi.Matmul, IntPtr.Zero);
+    IntPtr status = Tensor<int>.Execute(a, b, c, NativeApi.Matmul, IntPtr.Zero, Provider.Naive);
     for (int i = 0; i < c._dataHandle.AsSpan<int>().Length; i++){
         Console.Write(c._dataHandle.AsSpan<int>()[i] + " ");
     }

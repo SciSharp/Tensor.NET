@@ -4,13 +4,13 @@ using Numnet.Native;
 namespace Numnet.Base{
     public abstract class TensorBase
     {
-        internal unsafe delegate IntPtr DoubleInputOperation(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param);
+        internal unsafe delegate IntPtr DoubleInputOperation(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param, Provider provider);
         internal TensorMemory _dataHandle;
         internal TensorLayout _layout;
         protected void Pin(out MemoryHandle handle){
             _dataHandle.Pin(out handle);
         }
-        unsafe internal static IntPtr Execute(TensorBase a, TensorBase b, TensorBase oup, DoubleInputOperation func, IntPtr param){
+        unsafe internal static IntPtr Execute(TensorBase a, TensorBase b, TensorBase oup, DoubleInputOperation func, IntPtr param, Provider provider){
             MemoryHandle handleA, handleB, handleOup;
             a.Pin(out handleA);
             b.Pin(out handleB);
@@ -49,7 +49,7 @@ namespace Numnet.Base{
                 Console.WriteLine(nativeA.ndim);
                 Console.WriteLine(nativeB.ndim);
                 Console.WriteLine(nativeOup.ndim);
-                status = func(&nativeA, &nativeB, &nativeOup, param);
+                status = func(&nativeA, &nativeB, &nativeOup, param, provider);
             }
             handleA.Dispose();
             handleB.Dispose();

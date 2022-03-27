@@ -13,7 +13,7 @@ IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(matmul) {
     for (size_t c = 0; c < c_total; c++) {
       for (size_t i = 0; i < la[1]; i++) {
         for (size_t j = 0; j < lb[0]; j++) {
-          T r = T(0);
+          TC r = TC(0);
           for (size_t k = 0; k < la[0]; k++) {
             size_t a_pos =
                 n * la.stride[3] + c * la.stride[2] + i * la.stride[1] + k;

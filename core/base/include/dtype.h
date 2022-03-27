@@ -7,12 +7,13 @@
 #include "core/base/include/macro.h"
 
 namespace nncore {
-enum class DTypeEnum : uint32_t {
+enum class DTypeEnum : int32_t {
   Invalid = 0,
   Int32 = 1,
   Float32 = 2,
   Float64 = 3,
-  Bool = 4
+  Int64 = 4,
+  Bool = 5
 };
 
 class DType {
@@ -68,24 +69,27 @@ namespace dtype {
 #define nn_float32 float
 #define nn_float64 double
 #define nn_bool bool
+#define nn_int64 long long
 
 //! Define min and max value of data types
-#define max_val_nn_byte 255
-#define min_val_nn_byte 0
 #define max_val_nn_int32 2147483647
 #define min_val_nn_int32 -2147483648
 #define max_val_nn_float32 3.40282346638528859811704183484516925e+38F
 #define min_val_nn_float32 -3.40282346638528859811704183484516925e+38F
 #define max_val_nn_float64 1.79769313486231570E+308
 #define min_val_nn_float64 -1.79769313486231570E+308
+#define max_val_nn_int64 9223372036854775807U
+#define min_val_nn_int64 -9223372036854775808U
 #define max_val_nn_bool 1
 #define min_val_nn_bool 0
 
-#define NN_FOREACH_DTYPE(cb) cb(Int32) cb(Float32) cb(Float64) cb(Bool)
+#define NN_FOREACH_DTYPE(cb) \
+  cb(Int32) cb(Float32) cb(Float64) cb(Bool) cb(Int64)
 
-#define NN_FOREACH_CTYPE_WITH_PARAM(cb, ...)            \
-  cb(nn_int32, __VA_ARGS__) cb(nn_float32, __VA_ARGS__) \
-      cb(nn_float64, __VA_ARGS__) cb(nn_bool, __VA_ARGS__)
+#define NN_FOREACH_CTYPE_WITH_PARAM(cb, ...)                \
+  cb(nn_int32, __VA_ARGS__) cb(nn_float32, __VA_ARGS__)     \
+      cb(nn_float64, __VA_ARGS__) cb(nn_int64, __VA_ARGS__) \
+          cb(nn_bool, __VA_ARGS__)
 
 #define NN_DECLARE_DTYPE(_name)      \
   class _name final : public DType { \
@@ -109,7 +113,7 @@ NN_FOREACH_DTYPE(NN_DECLARE_DTYPE)
 
 #define NN_FOREACH_DTYPE_TRAIT(cb)                                             \
   cb(Int32, nn_int32, 5) cb(Float32, nn_float32, 5) cb(Float64, nn_float64, 6) \
-      cb(Bool, nn_bool, 3)
+      cb(Bool, nn_bool, 3) cb(Int64, nn_int64, 6)
 
 #define NN_DEF_DTYPE_TRAIT(_name, _ctype, _bits)    \
   template <>                                       \

@@ -7,6 +7,18 @@ namespace opr {
 namespace naive {
 
 class OpNaiveImpl final : public OpBase {
+ private:
+  OpNaiveImpl(){};
+  ~OpNaiveImpl(){};
+  OpNaiveImpl(const OpNaiveImpl&);
+  OpNaiveImpl& operator=(const OpNaiveImpl&);
+
+ public:
+  static OpNaiveImpl* get_instance() {
+    static OpNaiveImpl instance;
+    return &instance;
+  }
+
   NN_FOREACH_SINGLE_INPUT_OP(IMPL_OP_SINGLE_INPUT)
 
   NN_FOREACH_DOUBLE_INPUT_OP(IMPL_OP_DOUBLE_INPUT)
@@ -21,13 +33,13 @@ class OpNaiveImpl final : public OpBase {
                                        const Layout& linp, const Layout& loup, \
                                        const param::_name& param)
 
-#define IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(_name)                               \
-  NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL, OpNaiveImpl, \
-                              _name)                                          \
-                                                                              \
-  template <typename T>                                                       \
-  Status OpNaiveImpl::_name##_internal(                                       \
-      const T* ptr_a, const T* ptr_b, T* ptr_oup, const Layout& la,           \
+#define IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(_name)                        \
+  FOREACH_DOUBLE_INPUT_TYPE_PAIR(SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL,    \
+                                 OpNaiveImpl, _name)                   \
+                                                                       \
+  template <typename TA, typename TB, typename TC>                     \
+  Status OpNaiveImpl::_name##_internal(                                \
+      const TA* ptr_a, const TB* ptr_b, TC* ptr_oup, const Layout& la, \
       const Layout& lb, const Layout& loup, const param::_name& param)
 
 // NN_FOREACH_CTYPE_WITH_PARAM(EXPLICIT_DECLARE_TEMPLATE_CLASS, OpNaiveImpl)

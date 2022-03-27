@@ -14,7 +14,7 @@ using F = NDArrayFactory;
 using Param = param::permute;
 
 TEST(Naive, Permute) {
-  OpNaiveImpl oprs;
+  OpBase* oprs = OpNaiveImpl::get_instance();
 
   // Group 1
   Tensor inp1 =
@@ -28,7 +28,7 @@ TEST(Naive, Permute) {
   Param p1({1, 2, 0});
 
   Tensor pred1;
-  ASSERT_TRUE(oprs.permute(inp1, pred1, p1).is_ok());
+  ASSERT_TRUE(oprs->permute(inp1, pred1, p1).is_ok());
   assert_same_data<nn_int32>(pred1, truth1, 0.0001f);
 
   // Group 2
@@ -51,7 +51,7 @@ TEST(Naive, Permute) {
   Param p2({2, 3, 1, 0});
 
   Tensor pred2;
-  ASSERT_TRUE(oprs.permute(inp2, pred2, p2).is_ok());
+  ASSERT_TRUE(oprs->permute(inp2, pred2, p2).is_ok());
   assert_same_data<nn_int32>(pred2, truth2, 0.0001f);
 
   // Group 3
@@ -62,6 +62,6 @@ TEST(Naive, Permute) {
   Param p3({1, 0});
 
   Tensor pred3;
-  ASSERT_TRUE(oprs.permute(inp3, pred3, p3).is_ok());
+  ASSERT_TRUE(oprs->permute(inp3, pred3, p3).is_ok());
   assert_same_data<nn_float64>(pred3, truth3, 0.0001f);
 }

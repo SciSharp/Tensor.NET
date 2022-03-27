@@ -26,6 +26,10 @@
 | Automatically squeeze the shape of scalar to one-dim | Mainly for result of matmul. | p2 | Waiting 🔵 |
 | Add ```slice``` | Add support of ```slice``` | p0 | Waiting 🔵 |
 | Add CSharp interop | Test CSharp interop, with a few basic apis | p0 | On going 🚀 |
+| Add Serialization for .npy file | Provide interface to serialize and deserialize with .npy files | p0 | Waiting 🔵 |
+| Support reading of excel | Provide interface to read and write with .csv and excel file | p1 | Waiting 🔵 |
+| Support type convert | Support type convert of ```Tensor``` | p0 | Waiting 🔵 |
+| Type deduce for double-input ops | Add type deduce of double-input ops in c++ part | p2 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵

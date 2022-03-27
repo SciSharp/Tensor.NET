@@ -11,6 +11,8 @@ extern "C" {
 
 /***************************Declarations**********************************/
 
+enum class ProviderEnum : int32_t { Naive = 0, ST_x86 = 1, MT_x86 = 2 };
+
 struct NativeTensor {
   DTypeEnum dtype;
   int ndim;
@@ -30,6 +32,8 @@ struct NativeTensor {
 
 /***************************Common APIs**********************************/
 
+opr::OpBase* GetImpl(ProviderEnum provider);
+
 int GetErrorCode(Status* status);
 
 const char* GetErrorMessage(Status* status);
@@ -39,7 +43,7 @@ void FreeStatusMemory(Status* status);
 /***************************Operator APIs**********************************/
 
 Status* Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup,
-               param::matmul* param);
+               param::matmul* param, ProviderEnum provider);
 
 #if __cplusplus
 }

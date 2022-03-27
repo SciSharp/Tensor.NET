@@ -1,13 +1,15 @@
 using System.Runtime.InteropServices;
 
 namespace Numnet.Native{
+    enum Provider: Int32 { Naive = 0, ST_x86 = 1, MT_x86 = 2 };
     public enum DType: Int32
     {
         Invalid = 0,
         Int32 = 1,
         Float32 = 2,
         Float64 = 3,
-        Bool = 4
+        Int64 = 4,
+        Bool = 5
     }
 
     [StructLayout(LayoutKind.Sequential)]

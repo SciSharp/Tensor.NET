@@ -3,11 +3,23 @@
 #include <iostream>
 
 using namespace nncore;
+using opr::OpBase;
 
 /***************Common Implementations****************/
 
+opr::OpBase* GetImpl(ProviderEnum provider) {
+  if (provider == ProviderEnum::Naive) {
+    return opr::naive::OpNaiveImpl::get_instance();
+  } else {
+    return nullptr;
+  }
+}
+
 template <typename ctype>
 void print_data(const Tensor& src) {
+  bool a = 1;
+  bool b = 1;
+  bool c = a * b;
   src.layout.dtype.assert_is_ctype<ctype>();
   nn_assert(!src.layout.is_empty(), "Cannot print an empty ndarray.");
   auto ptr = src.ptr<ctype>();
@@ -65,29 +77,20 @@ void FreeStatusMemory(Status* status) {
 /*************Operator Implementations*************/
 
 Status* Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup,
-               param::matmul* param) {
+               param::matmul* param, ProviderEnum provider) {
   Tensor t_a, t_b, t_oup;
-  std::cout << a->ndim << " " << b->ndim << " " << oup->ndim << std::endl;
   a->ToTensor(t_a, false);
   b->ToTensor(t_b, false);
   oup->ToTensor(t_oup, true);
-  std::cout << t_a.layout.ndim << " " << t_a.layout.to_string() << std::endl;
-  std::cout << t_b.layout.ndim << " " << t_b.layout.to_string() << std::endl;
-  std::cout << t_oup.layout.ndim << " " << t_oup.layout.to_string()
-            << std::endl;
-  opr::naive::OpNaiveImpl impl;
-  auto status = impl.matmul(t_a, t_b, t_oup, param::matmul());
-  print_data<int>(t_a);
-  print_data<int>(t_b);
-  print_data<int>(t_oup);
-  std::cout << t_oup.ptr<int>() << std::endl;
-  Status* s = new Status(StatusCategory::NUMNET, StatusCode::MISMATCHED_DTYPE,
-                         "Error!!");
-  std::cout << "address: " << s << std::endl;
-  return s;
+  OpBase* impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->matmul(t_a, t_b, t_oup, param::matmul());
   if (status.is_ok()) {
     return nullptr;
   } else {
-    return &status;
+    return new Status(status);
   }
 }
