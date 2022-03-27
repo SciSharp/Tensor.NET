@@ -16,15 +16,15 @@ enum class ProviderEnum : int32_t { Naive = 0, ST_x86 = 1, MT_x86 = 2 };
 struct NativeTensor {
   DTypeEnum dtype;
   int ndim;
-  size_t offset;
-  size_t* shape;
-  size_t* stride;
+  nn_size offset;
+  nn_size* shape;
+  nn_size* stride;
   void* data;
 
   void ToTensor(Tensor& t, bool is_mutable = true) {
     t.reset_ptr(data, offset, is_mutable, false);
     t.layout.ndim = ndim;
-    memcpy(t.layout.shape, shape, sizeof(size_t) * ndim);
+    memcpy(t.layout.shape, shape, sizeof(nn_size) * ndim);
     t.layout.dtype = DType::from_enum(dtype);
     t.layout.init_contiguous_stride();
   }

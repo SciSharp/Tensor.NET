@@ -9,7 +9,7 @@ IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(permute) {
   int duplicated = 0;
   res.dtype = inp.dtype;
   res.ndim = inp.ndim;
-  for (int i = 0; i < inp.ndim; i++) {
+  for (nn_size i = 0; i < inp.ndim; i++) {
     if (param.dims[i] >= inp.ndim) {
       return Status(StatusCategory::NUMNET, StatusCode::INVALID_PARAM,
                     "Invalid permute param.");

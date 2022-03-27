@@ -12,17 +12,17 @@ struct reshape {
 };
 
 struct transpose {
-  size_t dimA;
-  size_t dimB;
+  nn_size dimA;
+  nn_size dimB;
 
-  transpose(size_t a, size_t b) : dimA(a), dimB(b) {}
+  transpose(nn_size a, nn_size b) : dimA(a), dimB(b) {}
 };
 
 struct permute {
-  size_t dims[NN_MAX_NDIM];
+  nn_size dims[NN_MAX_NDIM];
 
-  permute(const std::vector<size_t>& value) {
-    memcpy(dims, value.data(), value.size() * sizeof(size_t));
+  permute(const std::vector<nn_size>& value) {
+    memcpy(dims, value.data(), value.size() * sizeof(nn_size));
   }
 };
 

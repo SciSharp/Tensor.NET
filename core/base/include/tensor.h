@@ -9,7 +9,7 @@ namespace nncore {
 class RefPtr {
  private:
   std::shared_ptr<void *> m_ref;
-  size_t m_offset;
+  nn_size m_offset;
   bool m_mutable;
   bool m_owned;
 
@@ -21,14 +21,14 @@ class RefPtr {
     m_owned = true;
   }
 
-  RefPtr(void *ref_ptr, const size_t offset = 0) {
+  RefPtr(void *ref_ptr, const nn_size offset = 0) {
     m_ref = std::make_shared<void *>(ref_ptr);
     m_offset = offset;
     m_mutable = true;
     m_owned = true;
   }
 
-  explicit RefPtr(std::shared_ptr<void *> ref_ptr, const size_t offset = 0,
+  explicit RefPtr(std::shared_ptr<void *> ref_ptr, const nn_size offset = 0,
                   bool is_mutable = true, bool is_owned = true) {
     m_ref = ref_ptr;
     m_offset = offset;
@@ -45,10 +45,10 @@ class RefPtr {
 
   bool is_owned() const { return m_owned; }
 
-  void reset(const void *ptr, size_t offset = 0, bool is_mutable = true,
+  void reset(const void *ptr, nn_size offset = 0, bool is_mutable = true,
              bool is_owner = true);
 
-  RefPtr &operator+=(size_t offset) {
+  RefPtr &operator+=(nn_size offset) {
     m_offset += offset;
     return *this;
   }
@@ -102,8 +102,8 @@ struct Tensor {
   Tensor(const Layout &layout_, void *raw_ptr_)
       : layout(layout_), m_ref_ptr(raw_ptr_) {}
 
-  Tensor(const Layout &layout_, std::shared_ptr<void *> raw_ptr_, size_t offset,
-         bool is_mutable, bool is_owner = false)
+  Tensor(const Layout &layout_, std::shared_ptr<void *> raw_ptr_,
+         nn_size offset, bool is_mutable, bool is_owner = false)
       : layout(layout_), m_ref_ptr(raw_ptr_, offset, is_mutable, is_owner) {}
 
   //! \brief get typed pointer; type check is performed.
@@ -113,7 +113,7 @@ struct Tensor {
     return static_cast<T *>(m_ref_ptr.get_ptr());
   }
 
-  void reset_ptr(void *ptr, size_t offset, bool is_mutable, bool is_owner);
+  void reset_ptr(void *ptr, nn_size offset, bool is_mutable, bool is_owner);
 
   bool is_ptr_owner() { return m_ref_ptr.is_owned(); }
 

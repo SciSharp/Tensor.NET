@@ -23,9 +23,9 @@ void print_data(const Tensor& src) {
   src.layout.dtype.assert_is_ctype<ctype>();
   nn_assert(!src.layout.is_empty(), "Cannot print an empty ndarray.");
   auto ptr = src.ptr<ctype>();
-  for (int i = 0; i < src.layout.total_elems(); i++) {
-    int mod = 1;
-    for (int j = 0; j < src.layout.ndim; j++) {
+  for (nn_size i = 0; i < src.layout.total_elems(); i++) {
+    nn_size mod = 1;
+    for (nn_size j = 0; j < src.layout.ndim; j++) {
       mod *= src.layout.shape[j];
       if (i % mod == 0) {
         std::cout << "[";
@@ -40,8 +40,8 @@ void print_data(const Tensor& src) {
 
     std::cout << " ";
     mod = 1;
-    int hit_times = 0;
-    for (int j = 0; j < src.layout.ndim; j++) {
+    nn_size hit_times = 0;
+    for (nn_size j = 0; j < src.layout.ndim; j++) {
       mod *= src.layout.shape[j];
       if ((i + 1) % mod == 0) {
         std::cout << "]";
@@ -52,7 +52,7 @@ void print_data(const Tensor& src) {
     }
     if (hit_times > 0 && hit_times < src.layout.ndim) {
       std::cout << "," << std::endl;
-      for (int j = 0; j < hit_times; j++) {
+      for (nn_size j = 0; j < hit_times; j++) {
         std::cout << " ";
       }
     }
