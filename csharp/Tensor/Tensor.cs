@@ -1,6 +1,5 @@
 using System.Buffers;
 using Numnet.Tensor.Base;
-using Numnet.Tensor.Common;
 
 namespace Numnet.Tensor{
     public sealed partial class Tensor<T>: TensorBase, ITensor<T> where T:struct{

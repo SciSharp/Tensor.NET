@@ -1,6 +1,5 @@
 using System.Buffers;
 using Numnet.Native;
-using Numnet.Tensor.Common;
 
 namespace Numnet.Tensor.Base{
     public abstract class TensorBase:ITensor

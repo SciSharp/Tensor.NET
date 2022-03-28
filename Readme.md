@@ -33,6 +33,8 @@
 | Add self-manipulated type ops | Except for single input and double input ops, there are some ops directly manipulating itself's data, such as IDentity, Ones and so on. | p0 | Waiting 🔵 |
 | Type deduce in C# part | Add type deduce of C# part | p0 | On going 🚀 |
 | Design exceptions in C# part | Design exceptions in C# part | p0 | On going 🚀 |
+| Add unit tests for C# part | Add unit tests for C# part | p0 | On going 🚀 |
+| Add Logger for C# part | Add Logger for C# part, in which new feature of C# 10 could be taken into account | p0 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵
