@@ -1,5 +1,6 @@
 using System.Buffers;
 using Numnet.Tensor.Base;
+using System.Text;
 
 namespace Numnet.Tensor{
     public sealed partial class Tensor<T>: TensorBase, ITensor<T> where T:struct{
@@ -8,9 +9,7 @@ namespace Numnet.Tensor{
             TMemory.Pin(out handle);
         }
 
-        internal Tensor(int[] shape){
-            var dtypeInfo = TensorTypeInfo.GetTypeInfo(typeof(T));
-            TLayout = new TensorLayout(dtypeInfo._dtype, shape);
+        internal Tensor(int[] shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
             int length = 1;
             foreach(var s in shape){
                 length *= s;
@@ -18,31 +17,70 @@ namespace Numnet.Tensor{
             TMemory = new TensorMemory<T>(length);
         }
 
-        public Tensor(IEnumerable<T> data, Span<int> shape){
-            var dtypeInfo = TensorTypeInfo.GetTypeInfo(typeof(T));
-            TLayout = new TensorLayout(dtypeInfo._dtype, shape);
+        public Tensor(IEnumerable<T> data, Span<int> shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
             TMemory = new TensorMemory<T>(data.ToArray());
         }
 
-        public Tensor(T[] data, Span<int> shape){
-            var dtypeInfo = TensorTypeInfo.GetTypeInfo(typeof(T));
-            TLayout = new TensorLayout(dtypeInfo._dtype, shape);
+        public Tensor(T[] data, Span<int> shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
             TMemory = new TensorMemory<T>(data);
         }
 
-        public Tensor(Array data){
+        public Tensor(Array data):base(new TensorLayout()){
             var ndim = data.Rank;
             int[] shape = new int[ndim];
             for (int i = 0; i < ndim; i++){
                 shape[i] = data.GetLength(i);
             }
-            var dtypeInfo = TensorTypeInfo.GetTypeInfo(data.GetType().GetElementType());
-            TLayout = new TensorLayout(dtypeInfo._dtype, shape);
+            var dtypeInfo = TensorTypeInfo.GetTypeInfo(data.GetType().GetElementType()!);
+            TLayout.NDim = ndim;
+            TLayout.DType = dtypeInfo._dtype;
+            TLayout.Shape = shape;
             TMemory = new TensorMemory<T>(data);
         }
 
         public Span<T> AsSpan(){
             return TMemory.AsSpan();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder r = new StringBuilder($"Tensor({TLayout.GetInfoString()}):\n     ");
+            var data = TMemory.AsSpan();
+            for (int i = 0; i < TLayout.TotalElemCount(); i++) {
+                int mod = 1;
+                for (int j = 0; j < TLayout.NDim; j++) {
+                    mod *= TLayout.Shape[j];
+                    if (i % mod == 0) {
+                        r.Append("[");
+                    } else {
+                        break;
+                    }
+                }
+                r.Append(" ").Append(data[i]);
+
+                if ((i + 1) % TLayout.Shape[0] != 0) r.Append(",");
+
+                r.Append(" ");
+                mod = 1;
+                int hit_times = 0;
+                for (int j = 0; j < TLayout.NDim; j++) {
+                    mod *= TLayout.Shape[j];
+                    if ((i + 1) % mod == 0) {
+                        r.Append("]");
+                        hit_times++;
+                    } else {
+                        break;
+                    }
+                }
+                if (hit_times > 0 && hit_times < TLayout.NDim) {
+                    r.Append(",\n     ");
+                    for (int j = 0; j < hit_times; j++) {
+                        r.Append(" ");
+                    }
+                }
+            }
+            // r.Append("\n");
+            return r.ToString();
         }
     }
 }

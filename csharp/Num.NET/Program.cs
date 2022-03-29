@@ -14,4 +14,5 @@ unsafe{
     Console.WriteLine();
     Console.WriteLine(NativeStatus.GetErrorCode(status));
     Console.WriteLine(NativeStatus.GetErrorMessage(status));
+    Console.WriteLine(c);
 }
