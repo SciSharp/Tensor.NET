@@ -9,14 +9,6 @@ namespace Numnet.Tensor{
             TMemory.Pin(out handle);
         }
 
-        internal Tensor(int[] shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
-            int length = 1;
-            foreach(var s in shape){
-                length *= s;
-            }
-            TMemory = new TensorMemory<T>(length);
-        }
-
         public Tensor(IEnumerable<T> data, Span<int> shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
             TMemory = new TensorMemory<T>(data.ToArray());
         }
@@ -35,7 +27,23 @@ namespace Numnet.Tensor{
             TLayout.NDim = ndim;
             TLayout.DType = dtypeInfo._dtype;
             TLayout.Shape = shape;
+            TLayout.InitContiguousLayout();
             TMemory = new TensorMemory<T>(data);
+        }
+
+        internal Tensor(int[] shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
+            int length = 1;
+            foreach(var s in shape){
+                length *= s;
+            }
+            TMemory = new TensorMemory<T>(length);
+        }
+
+        internal Tensor(TensorMemory<T> memory, TensorLayout layout):base(layout){
+            if(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype != layout.DType){
+                throw new NotImplementedException();
+            }
+            TMemory = memory;
         }
 
         public Span<T> AsSpan(){
