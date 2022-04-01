@@ -25,8 +25,8 @@ struct NativeTensor {
     t.reset_ptr(data, offset, is_mutable, false);
     t.layout.ndim = ndim;
     memcpy(t.layout.shape, shape, sizeof(nn_size) * ndim);
+    memcpy(t.layout.stride, stride, sizeof(nn_size) * ndim);
     t.layout.dtype = DType::from_enum(dtype);
-    t.layout.init_contiguous_stride();
   }
 };
 
