@@ -48,6 +48,10 @@ namespace Numnet.Tensor.Base{
             return res;
         }
 
+        public bool IsScalar(){
+            return NDim == 1 && Shape[0] == 1;
+        }
+
         public override string ToString()
         {
             return $"TensorLayout({GetInfoString()})";
@@ -218,6 +222,50 @@ namespace Numnet.Tensor.Base{
                 Shape[i] = Shape[i + 1];
                 Stride[i] = Stride[i + 1];
             }
+        }
+
+        internal void BroadcastInplace(int[] targetShape){
+            Array.Reverse(targetShape);
+            int targetNDim = targetShape.Length;
+            if(NDim <= 0 || targetNDim <= 0){
+                throw new InvalidShapeException("Cannot broadcast (to) empty tensor shape");
+            }
+
+            if (IsScalar()) {
+                NDim = targetNDim;
+                for (int i = 0; i < targetNDim; i++) {
+                    Shape[i] = targetShape[i];
+                    Stride[i] = targetShape[i] == 1?targetShape[i]:0;
+                }
+                return;
+            }
+
+            if(targetNDim < NDim){
+                throw new InvalidShapeException($"Dimension after broadcast is less than that before braodcast. " +
+                        $"The src shape is ({string.Join(',', Shape.AsSpan(0, NDim).ToArray())}), dst shape is ({string.Join(',', targetShape)}).");
+            }
+
+            for (int i = 0; i < targetNDim; ++i) {
+                int cur_shape = (i < NDim ? Shape[i] : 1), cur_stride = (i < NDim ? Stride[i] : 0);
+                if (targetShape[i] != cur_shape) {
+                    if(cur_shape != 1 && cur_stride != 0){
+                        throw new InvalidShapeException("Broadcast on dim with shape not equal to 1: " + 
+                            $"src_shape=({string.Join(',', Shape.AsSpan(0, NDim).ToArray())}) dst_shape=({string.Join(',', targetShape)})");
+                    }
+                    Shape[i] = targetShape[i];
+                    Stride[i] = 0;
+                } else {
+                    Shape[i] = cur_shape;
+                    Stride[i] = cur_stride;
+                }
+            }
+            NDim = targetNDim;
+        }
+
+        internal TensorLayout BroadcastTo(int[] targetShape){
+            TensorLayout res = new TensorLayout(this);
+            res.BroadcastInplace(targetShape);
+            return res;
         }
     }
     
