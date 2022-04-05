@@ -3,38 +3,71 @@ using System.Text;
 using Numnet.Exceptions;
 
 namespace Numnet.Tensor.Base{
-    public sealed class TensorLayout
-    {
-        static readonly int MAX_NDIM = 4;
-        public DType DType { get; internal set; }
+    public class TensorShape{
+        public static readonly int MAX_NDIM = 4;
+        public int[] Shape { get; internal set; } = new int[MAX_NDIM];
         public int NDim{ get; internal set; }
+        public TensorShape(params int[] shape){
+            if(shape.Length > MAX_NDIM){
+                throw new DimExceedException(shape.Length);
+            }
+            NDim = shape.Length;
+            for (int i = 0; i < NDim; i++){
+                Shape[i] = shape[NDim - i - 1];
+            }
+        }
+        public TensorShape(Span<int> shape){
+            if(shape.Length > MAX_NDIM){
+                throw new DimExceedException(shape.Length);
+            }
+            NDim = shape.Length;
+            for (int i = 0; i < NDim; i++){
+                Shape[i] = shape[NDim - i - 1];
+            }
+        }
+        public TensorShape(TensorShape rhs){
+            NDim = rhs.NDim;
+            rhs.Shape.CopyTo(Shape.AsSpan());
+        }
+    }
+    public sealed class TensorLayout:TensorShape
+    {
+        public DType DType { get; internal set; }
         public int Offset{ get; internal set; }
-        public int[] Shape { get; internal set; } = new int[4];
-        public int[] Stride { get; internal set; } = new int[4];
+        public int[] Stride { get; internal set; } = new int[MAX_NDIM];
         public TensorLayout()
         {
             DType = DType.Invalid;
             NDim = 0;
             Offset = 0;
         }
-        public TensorLayout(DType dtype, Span<int> shape)
+        public TensorLayout(DType dtype, Span<int> shape):base(shape)
         {
             DType = dtype;
             Offset = 0;
-            InitContiguousLayout(shape);
+            InitContiguousLayout();
         }
 
-        public TensorLayout(DType dtype, int[] shape)
+        public TensorLayout(DType dtype, int[] shape):base(shape)
         {
             DType = dtype;
             Offset = 0;
-            InitContiguousLayout(shape.AsSpan());
+            InitContiguousLayout();
+        }
+
+        public TensorLayout(DType dtype, TensorShape shape):base(shape)
+        {
+            DType = dtype;
+            Offset = 0;
+            InitContiguousLayout();
         }
 
         public TensorLayout(TensorLayout rhs){
             DType = rhs.DType;
             Offset = rhs.Offset;
-            InitContiguousLayout(rhs.Shape);
+            NDim = rhs.NDim;
+            rhs.Shape.CopyTo(Shape.AsSpan());
+            rhs.Stride.CopyTo(Stride.AsSpan());
         }
 
         public int TotalElemCount(){
@@ -83,23 +116,10 @@ namespace Numnet.Tensor.Base{
                 s *= Shape[i];
             }
         }
-        internal void InitContiguousLayout(Span<int> shape)
-        {
-            NDim = shape.Length;
-            if (NDim > MAX_NDIM)
-            {
-                throw new InvalidLayoutException(shape);
-            }
-            for (int i = 0; i < NDim; i++){
-                Shape[NDim - i - 1] = shape[i];
-            }
-            InitContiguousLayout();
-        }
-
-        internal TensorLayout Reshape(int[] targetShape, bool isImage){
-            int targetNDim = targetShape.Length;
+        internal TensorLayout Reshape(TensorShape targetShape, bool isImage){
+            int targetNDim = targetShape.NDim;
             if(targetNDim <= 0){
-                throw new InvalidShapeException(targetShape, "Reshape");
+                throw new InvalidShapeException(targetShape.Shape, "Reshape");
             }
             // bool isEmptyShape = false;
             int targetTotalElems = 1;
@@ -108,7 +128,7 @@ namespace Numnet.Tensor.Base{
                 //     isEmptyShape = true;
                 //     break;
                 // }
-                targetTotalElems *= targetShape[i];
+                targetTotalElems *= targetShape.Shape[i];
             }
 
             if(this.TotalElemCount() != targetTotalElems){
@@ -125,11 +145,11 @@ namespace Numnet.Tensor.Base{
                 else if(targetNDim < 2){
                     throw new InvalidShapeException($"The target shape({string.Join(',', targetShape)}) is not an invalid shape for image.");
                 }
-                else if(this.Shape[0] != targetShape[1] || this.Shape[1] != targetShape[0]){
+                else if(this.Shape[0] != targetShape.Shape[1] || this.Shape[1] != targetShape.Shape[0]){
                     throw new InvalidShapeException($"The target shape({string.Join(',', targetShape)}) does not match the current shape({string.Join(',', this.Shape)}) as an image.");
                 }
                 for (int i = 2; i < this.NDim; i++) {
-                    if (targetNDim > i && targetShape[i] != this.Shape[i]) {
+                    if (targetNDim > i && targetShape.Shape[i] != this.Shape[i]) {
                         throw new InvalidShapeException($"The target shape({string.Join(',', targetShape)}) does not match the current shape({string.Join(',', this.Shape)}) as an image to reshape.");
                     }
                 }
@@ -224,9 +244,8 @@ namespace Numnet.Tensor.Base{
             }
         }
 
-        internal void BroadcastInplace(int[] targetShape){
-            Array.Reverse(targetShape);
-            int targetNDim = targetShape.Length;
+        internal void BroadcastInplace(TensorShape targetShape){
+            int targetNDim = targetShape.NDim;
             if(NDim <= 0 || targetNDim <= 0){
                 throw new InvalidShapeException("Cannot broadcast (to) empty tensor shape");
             }
@@ -234,8 +253,8 @@ namespace Numnet.Tensor.Base{
             if (IsScalar()) {
                 NDim = targetNDim;
                 for (int i = 0; i < targetNDim; i++) {
-                    Shape[i] = targetShape[i];
-                    Stride[i] = targetShape[i] == 1?targetShape[i]:0;
+                    Shape[i] = targetShape.Shape[i];
+                    Stride[i] = targetShape.Shape[i] == 1?targetShape.Shape[i]:0;
                 }
                 return;
             }
@@ -247,12 +266,12 @@ namespace Numnet.Tensor.Base{
 
             for (int i = 0; i < targetNDim; ++i) {
                 int cur_shape = (i < NDim ? Shape[i] : 1), cur_stride = (i < NDim ? Stride[i] : 0);
-                if (targetShape[i] != cur_shape) {
+                if (targetShape.Shape[i] != cur_shape) {
                     if(cur_shape != 1 && cur_stride != 0){
                         throw new InvalidShapeException("Broadcast on dim with shape not equal to 1: " + 
                             $"src_shape=({string.Join(',', Shape.AsSpan(0, NDim).ToArray())}) dst_shape=({string.Join(',', targetShape)})");
                     }
-                    Shape[i] = targetShape[i];
+                    Shape[i] = targetShape.Shape[i];
                     Stride[i] = 0;
                 } else {
                     Shape[i] = cur_shape;
@@ -262,7 +281,7 @@ namespace Numnet.Tensor.Base{
             NDim = targetNDim;
         }
 
-        internal TensorLayout BroadcastTo(int[] targetShape){
+        internal TensorLayout BroadcastTo(TensorShape targetShape){
             TensorLayout res = new TensorLayout(this);
             res.BroadcastInplace(targetShape);
             return res;

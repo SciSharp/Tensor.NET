@@ -52,7 +52,21 @@ namespace Numnet.Tensor{
 
         public override string ToString()
         {
-            StringBuilder r = new StringBuilder($"Tensor({TLayout.GetInfoString()}):\n     ");
+            Func<int, int> getRealPos = idx => {
+                int res = 0;
+                for (int i =  TLayout.NDim - 1; i >= 0; i--) {
+                    int mod = TLayout.Stride[i];
+                    if (mod <= 0)
+                        mod = TLayout.Shape[i] * (i > 0 ? TLayout.Stride[i - 1] : 1);
+                    else
+                        res += idx / mod * mod;
+                    idx %= mod;
+                    if (idx <= 0) break;
+                }
+                return res;
+            };
+
+            StringBuilder r = new StringBuilder($"Tensor({TLayout.GetInfoString()}):\n");
             var data = TMemory.AsSpan();
             for (int i = 0; i < TLayout.TotalElemCount(); i++) {
                 int mod = 1;
@@ -64,7 +78,7 @@ namespace Numnet.Tensor{
                         break;
                     }
                 }
-                r.Append(" ").Append(data[i]);
+                r.Append(" ").Append(data[getRealPos(i)]);
 
                 if ((i + 1) % TLayout.Shape[0] != 0) r.Append(",");
 
@@ -81,8 +95,8 @@ namespace Numnet.Tensor{
                     }
                 }
                 if (hit_times > 0 && hit_times < TLayout.NDim) {
-                    r.Append(",\n     ");
-                    for (int j = 0; j < hit_times; j++) {
+                    r.Append(",\n");
+                    for (int j = 0; j < TLayout.NDim - hit_times; j++) {
                         r.Append(" ");
                     }
                 }

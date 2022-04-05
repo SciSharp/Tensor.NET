@@ -17,6 +17,20 @@ opr::OpBase* GetImpl(ProviderEnum provider) {
 
 template <typename ctype>
 void print_data(const Tensor& src) {
+  auto get_real_pos = [&src](int idx) {
+    int res = 0;
+    for (int i = src.layout.ndim - 1; i >= 0; i--) {
+      int mod = src.layout.stride[i];
+      if (!mod)
+        mod = src.layout.shape[i] * (i > 0 ? src.layout.stride[i - 1] : 1);
+      else
+        res += idx / mod * mod;
+      idx %= mod;
+      if (!idx) break;
+    }
+    return res;
+  };
+
   bool a = 1;
   bool b = 1;
   bool c = a * b;
@@ -35,7 +49,8 @@ void print_data(const Tensor& src) {
     }
     std::cout << " ";
 
-    std::cout << ptr[i];
+    std::cout << ptr[get_real_pos(i)];
+
     if ((i + 1) % src.layout.shape[0] != 0) std::cout << ",";
 
     std::cout << " ";
@@ -52,7 +67,7 @@ void print_data(const Tensor& src) {
     }
     if (hit_times > 0 && hit_times < src.layout.ndim) {
       std::cout << "," << std::endl;
-      for (nn_size j = 0; j < hit_times; j++) {
+      for (nn_size j = 0; j < src.layout.ndim - hit_times; j++) {
         std::cout << " ";
       }
     }

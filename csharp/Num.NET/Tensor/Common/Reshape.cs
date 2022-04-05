@@ -1,8 +1,11 @@
-using Numnet.Tensor;
+using Numnet.Tensor.Base;
 
 namespace Numnet.Tensor{
     public sealed partial class Tensor<T>{
         public Tensor<T> Reshape(int[] shape){
+            return new Tensor<T>(this.TMemory, this.TLayout.Reshape(new TensorShape(shape), false));
+        }
+        public Tensor<T> Reshape(TensorShape shape){
             return new Tensor<T>(this.TMemory, this.TLayout.Reshape(shape, false));
         }
     }

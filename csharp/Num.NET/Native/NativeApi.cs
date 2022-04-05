@@ -12,6 +12,7 @@ namespace Numnet.Native{
 
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         unsafe public static extern IntPtr Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param, Provider provider);
-        
+        [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
+        unsafe public static extern IntPtr Permute(NativeTensor* inp, NativeTensor* oup, IntPtr param, Provider provider);
     }
 }

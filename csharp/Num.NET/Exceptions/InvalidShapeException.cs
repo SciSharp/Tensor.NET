@@ -9,4 +9,11 @@ namespace Numnet.Exceptions{
             _message = info;
         }
     }
+    public class DimExceedException:Exception{
+        protected string _message;
+        public override string Message => _message;
+        public DimExceedException(int dim){
+            _message = $"Exceed max dim: the max is {Numnet.Tensor.Base.TensorShape.MAX_NDIM}, but {dim} is rerquired.";
+        }
+    }
 }

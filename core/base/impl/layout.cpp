@@ -238,8 +238,8 @@ void Layout::remove_axis_inplace(nn_size axis) {
 
 void Layout::add_axis_inplace(nn_size axis, nn_size shape, nn_size stride) {
   nn_assert(ndim + 1 <= MAX_NDIM && axis <= ndim && shape,
-            "can not add axis at %zu (current ndim %d, MAX_NDIM %d)", axis,
-            ndim, MAX_NDIM);
+            "can not add axis at %d (current ndim %d, MAX_NDIM %d)", axis, ndim,
+            MAX_NDIM);
   ndim++;
   for (int i = ndim - 1; i > axis; i--) {
     this->shape[i] = this->shape[i - 1];

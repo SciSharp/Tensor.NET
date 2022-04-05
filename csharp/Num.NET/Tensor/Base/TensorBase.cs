@@ -5,6 +5,7 @@ namespace Numnet.Tensor.Base{
     public abstract class TensorBase:ITensor
     {
         internal unsafe delegate IntPtr DoubleInputOperation(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param, Provider provider);
+        internal unsafe delegate IntPtr SingleInputOperation(NativeTensor* inp, NativeTensor* oup, IntPtr param, Provider provider);
         public TensorLayout TLayout{get; protected set; }
         protected abstract void Pin(out MemoryHandle handle);
         public TensorBase(TensorLayout layout){
@@ -49,6 +50,38 @@ namespace Numnet.Tensor.Base{
             }
             handleA.Dispose();
             handleB.Dispose();
+            handleOup.Dispose();
+            return status;
+        }
+
+        unsafe internal static IntPtr Execute(TensorBase inp, TensorBase oup, SingleInputOperation func, IntPtr param, Provider provider){
+            MemoryHandle handleInp, handleOup;
+            inp.Pin(out handleInp);
+            oup.Pin(out handleOup);
+            IntPtr status;
+            fixed(int* shapeInpPtr = inp.TLayout.Shape, shapeOupPtr = oup.TLayout.Shape, 
+                        strideInpPtr = inp.TLayout.Stride, strideOupPtr = oup.TLayout.Stride){
+                NativeTensor nativeInp = new NativeTensor()
+                {
+                    dtype = inp.TLayout.DType,
+                    ndim = inp.TLayout.NDim,
+                    offset = inp.TLayout.Offset,
+                    shape = new IntPtr(shapeInpPtr),
+                    stride = new IntPtr(strideInpPtr),
+                    data = new IntPtr(handleInp.Pointer)
+                };
+                NativeTensor nativeOup = new NativeTensor()
+                {
+                    dtype = oup.TLayout.DType,
+                    ndim = oup.TLayout.NDim,
+                    offset = oup.TLayout.Offset,
+                    shape = new IntPtr(shapeOupPtr),
+                    stride = new IntPtr(strideOupPtr),
+                    data = new IntPtr(handleOup.Pointer)
+                };
+                status = func(&nativeInp, &nativeOup, param, provider);
+            }
+            handleInp.Dispose();
             handleOup.Dispose();
             return status;
         }
