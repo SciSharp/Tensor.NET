@@ -56,8 +56,16 @@ namespace Numnet.Tensor{
                 int res = 0;
                 for (int i =  TLayout.NDim - 1; i >= 0; i--) {
                     int mod = TLayout.Stride[i];
-                    if (mod <= 0)
-                        mod = TLayout.Shape[i] * (i > 0 ? TLayout.Stride[i - 1] : 1);
+                    if (mod <= 0){
+                        int j = i - 1;
+                        while(j >= 0 && TLayout.Stride[j] <= 0) j--;
+                        if(j < 0){
+                            mod = 1;
+                        }
+                        else{
+                            mod = TLayout.Stride[j] * TLayout.Shape[j];
+                        }
+                    }
                     else
                         res += idx / mod * mod;
                     idx %= mod;

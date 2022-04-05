@@ -19,7 +19,7 @@ struct transpose {
 };
 
 struct permute {
-  nn_size dims[NN_MAX_NDIM];
+  nn_size* dims;
 
   permute(const std::vector<nn_size>& value) {
     memcpy(dims, value.data(), value.size() * sizeof(nn_size));
@@ -29,7 +29,6 @@ struct permute {
 struct matmul {};
 
 struct dot {};
-
 }  // namespace param
 
 }  // namespace nncore

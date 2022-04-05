@@ -45,6 +45,9 @@ void FreeStatusMemory(Status* status);
 Status* Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup,
                param::matmul* param, ProviderEnum provider);
 
+Status* Permute(NativeTensor* inp, NativeTensor* oup, param::permute* param,
+                ProviderEnum provider);
+
 #if __cplusplus
 }
 #endif
