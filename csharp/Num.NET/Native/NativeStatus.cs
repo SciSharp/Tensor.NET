@@ -16,9 +16,25 @@ namespace Numnet.Native{
     };
 
     internal static class NativeStatus{
-        public static void AssertOK(){
-
+        /// <summary>
+        /// Assert that the status indicates no error. Note that the memory that "status" points to will be free after this call.
+        /// </summary>
+        /// <param name="status"></param>
+        /// <exception cref="Numnet.Exceptions.NNRuntimeException"></exception>
+        public static void AssertOK(IntPtr status){
+            if(status == IntPtr.Zero){
+                return;
+            }
+            var errorCode = GetErrorCode(status);
+            var errorMsg = GetErrorMessage(status);
+            DisposeStatus(status);
+            throw new Numnet.Exceptions.NNRuntimeException($"A runtime error occured, [{Enum.GetName(typeof(StatusCode), errorCode)}]: {errorMsg}");
         }
+
+        public static void DisposeStatus(IntPtr status){
+            NativeApi.FreeStatusMemory(status);
+        }
+
 
         public static StatusCode GetErrorCode(IntPtr status){
             Console.WriteLine("Get!");

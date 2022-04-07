@@ -6,10 +6,11 @@ using Numnet.Common;
 namespace Numnet{
     public partial class Tensor
     {
-        internal unsafe delegate IntPtr DoubleInputOperation(NativeTensor* a, NativeTensor* b, NativeTensor* oup, IntPtr param, Provider provider);
-        internal unsafe delegate IntPtr SingleInputOperation(NativeTensor* inp, NativeTensor* oup, IntPtr param, Provider provider);
+        internal delegate IntPtr DoubleInputOperation(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
+        internal delegate IntPtr SingleInputOperation(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
         public TensorLayout TLayout{get; protected set; }
         internal TensorMemory TMemory{ get; set; }
+        public static NativeProvider Provider { get; set; } = NativeProvider.Naive;
         protected void Pin(out MemoryHandle handle){
             TMemory.Pin(out handle);
         }
@@ -20,6 +21,10 @@ namespace Numnet{
         internal Tensor(TensorLayout layout){
             TLayout = layout;
             TMemory = new TensorMemory(layout.TotalElemCount(), layout.DType);
+        }
+        internal Tensor(TensorShape shape, DType dtype){
+            TLayout = new TensorLayout(shape, dtype);
+            TMemory = new TensorMemory(shape.TotalElemCount(), dtype);
         }
         internal ValueType GetValue(int idx){
             if(TLayout.DType == DType.Int32){
@@ -56,42 +61,43 @@ namespace Numnet{
         public bool IsType(DType dtype){
             return TLayout.DType == dtype;
         }
-        unsafe internal static IntPtr Execute(Tensor a, Tensor b, Tensor oup, DoubleInputOperation func, IntPtr param, Provider provider){
+        unsafe internal static IntPtr Execute(DoubleInputOperation func, TensorMemory a, TensorMemory b, TensorMemory oup, 
+                            TensorLayout layoutA, TensorLayout layoutB, TensorLayout layoutOup, IntPtr param, NativeProvider provider){
             MemoryHandle handleA, handleB, handleOup;
             a.Pin(out handleA);
             b.Pin(out handleB);
             oup.Pin(out handleOup);
             IntPtr status;
-            fixed(int* shapeAPtr = a.TLayout.Shape, shapeBPtr = b.TLayout.Shape, shapeOupPtr = oup.TLayout.Shape, 
-                        strideAPtr = a.TLayout.Stride, strideBPtr = b.TLayout.Stride, strideOupPtr = oup.TLayout.Stride){
+            fixed(int* shapeAPtr = layoutA.Shape, shapeBPtr = layoutB.Shape, shapeOupPtr = layoutOup.Shape, 
+                        strideAPtr = layoutA.Stride, strideBPtr = layoutB.Stride, strideOupPtr = layoutOup.Stride){
                 NativeTensor nativeA = new NativeTensor()
                 {
-                    dtype = a.TLayout.DType,
-                    ndim = a.TLayout.NDim,
-                    offset = a.TLayout.Offset,
+                    dtype = layoutA.DType,
+                    ndim = layoutA.NDim,
+                    offset = layoutA.Offset,
                     shape = new IntPtr(shapeAPtr),
                     stride = new IntPtr(strideAPtr),
                     data = new IntPtr(handleA.Pointer)
                 };
                 NativeTensor nativeB = new NativeTensor()
                 {
-                    dtype = b.TLayout.DType,
-                    ndim = b.TLayout.NDim,
-                    offset = b.TLayout.Offset,
+                    dtype = layoutB.DType,
+                    ndim = layoutB.NDim,
+                    offset = layoutB.Offset,
                     shape = new IntPtr(shapeBPtr),
                     stride = new IntPtr(strideBPtr),
                     data = new IntPtr(handleB.Pointer)
                 };
                 NativeTensor nativeOup = new NativeTensor()
                 {
-                    dtype = oup.TLayout.DType,
-                    ndim = oup.TLayout.NDim,
-                    offset = oup.TLayout.Offset,
+                    dtype = layoutOup.DType,
+                    ndim = layoutOup.NDim,
+                    offset = layoutOup.Offset,
                     shape = new IntPtr(shapeOupPtr),
                     stride = new IntPtr(strideOupPtr),
                     data = new IntPtr(handleOup.Pointer)
                 };
-                status = func(&nativeA, &nativeB, &nativeOup, param, provider);
+                status = func(new IntPtr(&nativeA), new IntPtr(&nativeB), new IntPtr(&nativeOup), param, provider);
             }
             handleA.Dispose();
             handleB.Dispose();
@@ -99,32 +105,33 @@ namespace Numnet{
             return status;
         }
 
-        unsafe internal static IntPtr Execute(Tensor inp, Tensor oup, SingleInputOperation func, IntPtr param, Provider provider){
+        unsafe internal static IntPtr Execute(TensorMemory inp, TensorMemory oup, TensorLayout layoutInp, TensorLayout layoutOup, 
+                                SingleInputOperation func, IntPtr param, NativeProvider provider){
             MemoryHandle handleInp, handleOup;
             inp.Pin(out handleInp);
             oup.Pin(out handleOup);
             IntPtr status;
-            fixed(int* shapeInpPtr = inp.TLayout.Shape, shapeOupPtr = oup.TLayout.Shape, 
-                        strideInpPtr = inp.TLayout.Stride, strideOupPtr = oup.TLayout.Stride){
+            fixed(int* shapeInpPtr = layoutInp.Shape, shapeOupPtr = layoutOup.Shape, 
+                        strideInpPtr = layoutInp.Stride, strideOupPtr = layoutOup.Stride){
                 NativeTensor nativeInp = new NativeTensor()
                 {
-                    dtype = inp.TLayout.DType,
-                    ndim = inp.TLayout.NDim,
-                    offset = inp.TLayout.Offset,
+                    dtype = layoutInp.DType,
+                    ndim = layoutInp.NDim,
+                    offset = layoutInp.Offset,
                     shape = new IntPtr(shapeInpPtr),
                     stride = new IntPtr(strideInpPtr),
                     data = new IntPtr(handleInp.Pointer)
                 };
                 NativeTensor nativeOup = new NativeTensor()
                 {
-                    dtype = oup.TLayout.DType,
-                    ndim = oup.TLayout.NDim,
-                    offset = oup.TLayout.Offset,
+                    dtype = layoutOup.DType,
+                    ndim = layoutOup.NDim,
+                    offset = layoutOup.Offset,
                     shape = new IntPtr(shapeOupPtr),
                     stride = new IntPtr(strideOupPtr),
                     data = new IntPtr(handleOup.Pointer)
                 };
-                status = func(&nativeInp, &nativeOup, param, provider);
+                status = func(new IntPtr(&nativeInp), new IntPtr(&nativeOup), param, provider);
             }
             handleInp.Dispose();
             handleOup.Dispose();

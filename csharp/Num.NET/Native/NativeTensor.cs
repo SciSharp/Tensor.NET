@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 
 namespace Numnet.Native{
-    enum Provider: Int32 { Naive = 0, ST_x86 = 1, MT_x86 = 2 };
+    public enum NativeProvider: Int32 { Naive = 0, ST_x86 = 1, MT_x86 = 2 };
     public enum DType: Int32
     {
         Invalid = 0,

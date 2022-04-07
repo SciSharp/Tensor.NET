@@ -1,5 +1,12 @@
 namespace Numnet.Exceptions{
-    public class InvalidParamException:NNRuntimeException{
-        public InvalidParamException(IntPtr status):base(status){}
+    public class InvalidParamException:Exception{
+        protected string _message;
+        public override string Message => _message;
+        public InvalidParamException(string message){
+            _message = message;
+        }
+        public InvalidParamException(){
+            _message = "";
+        }
     }
 }

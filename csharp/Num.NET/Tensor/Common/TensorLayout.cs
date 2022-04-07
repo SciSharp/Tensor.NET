@@ -25,9 +25,26 @@ namespace Numnet.Common{
                 Shape[i] = shape[NDim - i - 1];
             }
         }
+        public TensorShape(IEnumerable<int> shape){
+            if(shape.Count() > MAX_NDIM){
+                throw new DimExceedException(shape.Count());
+            }
+            NDim = shape.Count();
+            int i = NDim - 1;
+            foreach(var value in shape){
+                Shape[i] = value;
+                i--;
+            }
+        }
         public TensorShape(TensorShape rhs){
             NDim = rhs.NDim;
             rhs.Shape.CopyTo(Shape.AsSpan());
+        }
+        internal TensorShape(){
+            NDim = 0;
+        }
+        public bool IsScalar(){
+            return NDim == 1 && Shape[0] == 1;
         }
         public int TotalElemCount(){
             if(NDim == 0){
@@ -38,6 +55,10 @@ namespace Numnet.Common{
                 res *= Shape[i];
             }
             return res;
+        }
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
     public sealed class TensorLayout:TensorShape
@@ -51,21 +72,21 @@ namespace Numnet.Common{
             NDim = 0;
             Offset = 0;
         }
-        public TensorLayout(DType dtype, Span<int> shape):base(shape)
+        public TensorLayout(Span<int> shape, DType dtype):base(shape)
         {
             DType = dtype;
             Offset = 0;
             InitContiguousLayout();
         }
 
-        public TensorLayout(DType dtype, int[] shape):base(shape)
+        public TensorLayout(int[] shape, DType dtype):base(shape)
         {
             DType = dtype;
             Offset = 0;
             InitContiguousLayout();
         }
 
-        public TensorLayout(DType dtype, TensorShape shape):base(shape)
+        public TensorLayout(TensorShape shape, DType dtype):base(shape)
         {
             DType = dtype;
             Offset = 0;
@@ -78,10 +99,6 @@ namespace Numnet.Common{
             NDim = rhs.NDim;
             rhs.Shape.CopyTo(Shape.AsSpan());
             rhs.Stride.CopyTo(Stride.AsSpan());
-        }
-
-        public bool IsScalar(){
-            return NDim == 1 && Shape[0] == 1;
         }
 
         public override string ToString()
@@ -134,7 +151,7 @@ namespace Numnet.Common{
                 throw new InvalidShapeException($"Number of elements does not match in reshape: src = {this.TotalElemCount()}, dst = {targetTotalElems}.");
             }
 
-            TensorLayout res = new TensorLayout(this.DType, targetShape);
+            TensorLayout res = new TensorLayout(targetShape, this.DType);
             // Maybe the process here is not correct when dealing with image.
             // Because the shape is not converted into contiguous before the process.
             if (isImage) {

@@ -1,4 +1,5 @@
 using Numnet.Native;
+using Numnet.Exceptions;
 
 namespace Numnet.Common{
     internal sealed class TensorTypeInfo
@@ -27,21 +28,21 @@ namespace Numnet.Common{
         public static TensorTypeInfo GetTypeInfo(Type type){
             TensorTypeInfo res;
             if(!_typeInfoMap.TryGetValue(type, out res)){
-                throw new UnsopportedTypeException();
+                throw new UnsupportedTypeException();
             }
             return res;
         }
         public static Type GetTypeInfo(DType type){
             Type res;
             if(!_dtypeMap.TryGetValue(type, out res)){
-                throw new UnsopportedTypeException();
+                throw new UnsupportedTypeException();
             }
             return res;
         }
         public static int GetTypeSize(DType type){
             int res;
             if(!_sizeMap.TryGetValue(type, out res)){
-                throw new UnsopportedTypeException();
+                throw new UnsupportedTypeException();
             }
             return res;
         }
@@ -49,7 +50,7 @@ namespace Numnet.Common{
         public static int GetTypeSize(Type type){
             TensorTypeInfo typeInfo;
             if(!_typeInfoMap.TryGetValue(type, out typeInfo)){
-                throw new UnsopportedTypeException();
+                throw new UnsupportedTypeException();
             }
             return typeInfo._size;
         }

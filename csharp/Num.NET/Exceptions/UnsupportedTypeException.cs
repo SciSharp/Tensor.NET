@@ -1,11 +1,11 @@
 namespace Numnet.Exceptions{
-    public class MismatchedTypeException:Exception{
+    public class UnsupportedTypeException:Exception{
         protected string _message;
         public override string Message => _message;
-        public MismatchedTypeException(string message){
+        public UnsupportedTypeException(string message){
             _message = message;
         }
-        public MismatchedTypeException(){
+        public UnsupportedTypeException(){
             _message = "";
         }
     }
