@@ -1,10 +1,11 @@
 using Numnet.Native;
 
-namespace Numnet.Tensor.Base{
+namespace Numnet.Common{
     internal sealed class TensorTypeInfo
     {
         private static readonly Dictionary<Type, TensorTypeInfo> _typeInfoMap;
         private static readonly Dictionary<DType, Type> _dtypeMap;
+        private static readonly Dictionary<DType, int> _sizeMap;
         public readonly DType _dtype;
         public readonly int _size;
         static TensorTypeInfo(){
@@ -17,6 +18,7 @@ namespace Numnet.Tensor.Base{
                 { typeof(double), new TensorTypeInfo( DType.Float64, sizeof(double)) }
             };
             _dtypeMap = _typeInfoMap.ToDictionary(k => k.Value._dtype, v => v.Key);
+            _sizeMap = _typeInfoMap.ToDictionary(k => k.Value._dtype, v => v.Value._size);
         }
         public TensorTypeInfo(DType dtype, int size){
             _dtype = dtype;
@@ -35,6 +37,21 @@ namespace Numnet.Tensor.Base{
                 throw new UnsopportedTypeException();
             }
             return res;
+        }
+        public static int GetTypeSize(DType type){
+            int res;
+            if(!_sizeMap.TryGetValue(type, out res)){
+                throw new UnsopportedTypeException();
+            }
+            return res;
+        }
+
+        public static int GetTypeSize(Type type){
+            TensorTypeInfo typeInfo;
+            if(!_typeInfoMap.TryGetValue(type, out typeInfo)){
+                throw new UnsopportedTypeException();
+            }
+            return typeInfo._size;
         }
     }
 }

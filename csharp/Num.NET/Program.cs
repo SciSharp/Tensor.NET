@@ -1,14 +1,13 @@
 ﻿using System.Runtime.InteropServices;
 using Numnet.Native;
-using Numnet.Tensor;
-using Numnet.Tensor.Utilities;
 using Numnet.Native.Param;
+using Numnet;
 
 unsafe{
-    Tensor<int> a = new Tensor<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
-    Tensor<double> b = new Tensor<double>(new double[]{1.2, 2.6, 3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6, 1.2, 2.6, 
-                        3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6}, new int[] { 4, 2, 4 });
-    a = a.BroadCast(new int[]{4, 3, 2});
+    Tensor<int> a = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
+    Tensor<double> b = Tensor.FromArray<double>(new double[]{1.2, 2.6, 3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6, 1.2, 2.6, 
+                        3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6}, new int[] { 4, 2, 4 });
+    a.BroadcastTo(new int[]{4, 3, 2});
     Console.WriteLine(a);
     int[] permuteParam = new int[3] { 2, 0, 1 };
     var ap = Tensor.Zeros<int>(new int[] { 2, 4, 3 });
@@ -17,7 +16,7 @@ unsafe{
         var ptr = new IntPtr(&param);
         IntPtr st = Tensor<int>.Execute(a, ap, NativeApi.Permute, ptr, Provider.Naive);
         Console.WriteLine(NativeStatus.GetErrorCode(st));
-        Console.WriteLine(NativeStatus.GetErrorMessage(st));
+        Console.WriteLine(NativeStatus.GetErrorMessage(st)); 
     }
     Console.WriteLine(ap);
     Tensor<double> c = Tensor.Zeros<double>(new int[] { 4, 3, 4 });

@@ -2,7 +2,7 @@ using Numnet.Native;
 using System.Text;
 using Numnet.Exceptions;
 
-namespace Numnet.Tensor.Base{
+namespace Numnet.Common{
     public class TensorShape{
         public static readonly int MAX_NDIM = 4;
         public int[] Shape { get; internal set; } = new int[MAX_NDIM];
@@ -28,6 +28,16 @@ namespace Numnet.Tensor.Base{
         public TensorShape(TensorShape rhs){
             NDim = rhs.NDim;
             rhs.Shape.CopyTo(Shape.AsSpan());
+        }
+        public int TotalElemCount(){
+            if(NDim == 0){
+                return 0;
+            }
+            int res = 1;
+            for (int i = 0; i < NDim; i++){
+                res *= Shape[i];
+            }
+            return res;
         }
     }
     public sealed class TensorLayout:TensorShape
@@ -68,17 +78,6 @@ namespace Numnet.Tensor.Base{
             NDim = rhs.NDim;
             rhs.Shape.CopyTo(Shape.AsSpan());
             rhs.Stride.CopyTo(Stride.AsSpan());
-        }
-
-        public int TotalElemCount(){
-            if(NDim == 0){
-                return 0;
-            }
-            int res = 1;
-            for (int i = 0; i < NDim; i++){
-                res *= Shape[i];
-            }
-            return res;
         }
 
         public bool IsScalar(){
@@ -281,7 +280,7 @@ namespace Numnet.Tensor.Base{
             NDim = targetNDim;
         }
 
-        internal TensorLayout BroadcastTo(TensorShape targetShape){
+        internal TensorLayout Broadcast(TensorShape targetShape){
             TensorLayout res = new TensorLayout(this);
             res.BroadcastInplace(targetShape);
             return res;

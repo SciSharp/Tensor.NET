@@ -1,4 +1,3 @@
-using Numnet.Tensor.Base;
 using Numnet.Exceptions;
 
 namespace Numnet.Native.Param{
