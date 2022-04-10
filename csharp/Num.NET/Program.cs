@@ -32,4 +32,6 @@ unsafe{
     Console.WriteLine(c);
     c = c.Permute(new int[] { 1, 0 });
     Console.WriteLine(c);
+    c = c.Transpose(0, 1);
+    Console.WriteLine(c);
 }

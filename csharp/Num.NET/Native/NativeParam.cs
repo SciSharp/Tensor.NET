@@ -8,4 +8,9 @@ namespace Numnet.Native.Param{
     internal struct PermuteParam{
         internal IntPtr dims;
     }
+
+    internal struct TransposeParam{
+        internal int dimA;
+        internal int dimB;
+    }
 }

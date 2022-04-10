@@ -6,14 +6,14 @@ using Numnet.Native.Param;
 namespace Numnet.Manipulation{
     public static class PermuteExtension{
 
-        unsafe public static Tensor Permute(this Tensor src, int[] dims)
+        public static Tensor Permute(this Tensor src, int[] dims)
         {
             Tensor res = new Tensor(DeduceLayout(src.TLayout, dims));
             res.TLayout.InitContiguousLayout();
-            ExecutePermute(src, res, dims);
+            PermuteInternal(src, res, dims);
             return res;
         }
-        private unsafe static void ExecutePermute(Tensor src, Tensor dst, int[] dims){
+        private unsafe static void PermuteInternal(Tensor src, Tensor dst, int[] dims){
             fixed(int* pdims = dims){
                 PermuteParam p = new PermuteParam() { dims = new IntPtr(pdims) };
                 IntPtr status = Tensor.Execute(NativeApi.Permute, src.TMemory, dst.TMemory, src.TLayout, dst.TLayout, new IntPtr(&p), Tensor.Provider);

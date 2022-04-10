@@ -48,6 +48,9 @@ Status* Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup,
 Status* Permute(NativeTensor* inp, NativeTensor* oup, param::permute* param,
                 ProviderEnum provider);
 
+Status* Transpose(NativeTensor* inp, NativeTensor* oup, param::transpose* param,
+                  ProviderEnum provider);
+
 #if __cplusplus
 }
 #endif
