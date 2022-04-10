@@ -34,4 +34,7 @@ unsafe{
     Console.WriteLine(c);
     c = c.Transpose(0, 1);
     Console.WriteLine(c);
+    c[0, 0] = 999.0;
+    c[5, 7] = -888.0;
+    Console.WriteLine(c);
 }

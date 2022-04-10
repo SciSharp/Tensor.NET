@@ -2,6 +2,8 @@ using System.Buffers;
 using Numnet.Native;
 using System.Text;
 using Numnet.Common;
+using Numnet.Exceptions;
+using System.Runtime.InteropServices;
 
 namespace Numnet{
     public partial class Tensor
@@ -26,6 +28,20 @@ namespace Numnet{
             TLayout = new TensorLayout(shape, dtype);
             TMemory = new TensorMemory(shape.TotalElemCount(), dtype);
         }
+        internal int IndicesToPosition(params int[] indices){
+            if(indices.Length != TLayout.NDim){
+                throw new InvalidArgumentException($"Index does not have same dims with tensor, " + 
+                    "the index is {indices.Length} dims but the tensor is {TLayout.NDim}.");
+            }
+            int res = 0;
+            for (int i = 0; i < TLayout.NDim; i++) {
+                if(indices[i] < -1 || indices[i] >= TLayout.Shape[i]){
+                    throw new InvalidArgumentException($"{i}th dim of the index exceeds the bound of the shape.");
+                }
+                res += indices[i] * TLayout.Stride[i];
+            }
+            return res + TLayout.Offset;
+        }
         internal ValueType GetValue(int idx){
             if(TLayout.DType == DType.Int32){
                 return AsSpan<int>()[idx];
@@ -46,6 +62,26 @@ namespace Numnet{
                 throw new NotImplementedException();
             }
         }
+        internal void SetValue(int idx, ValueType value){
+            if(TLayout.DType == DType.Int32){
+                AsSpan<int>()[idx] = (int)value;
+            }
+            else if(TLayout.DType == DType.Int64){
+                AsSpan<long>()[idx] = (long)value;
+            }
+            else if(TLayout.DType == DType.Float32){
+                AsSpan<float>()[idx] = (float)value;
+            }
+            else if(TLayout.DType == DType.Float64){
+                AsSpan<double>()[idx] = (double)value;
+            }
+            else if(TLayout.DType == DType.Bool){
+                AsSpan<bool>()[idx] = (bool)value;
+            }
+            else{
+                throw new NotImplementedException();
+            }
+        }
         public Span<T> AsSpan<T>() where T:struct{
             return TMemory.AsSpan<T>();
         }
@@ -60,6 +96,16 @@ namespace Numnet{
         }
         public bool IsType(DType dtype){
             return TLayout.DType == dtype;
+        }
+        public ValueType this[params int[] index]{
+            get{
+                Array.Reverse(index);
+                return GetValue(IndicesToPosition(index));
+            }
+            set{
+                Array.Reverse(index);
+                SetValue(IndicesToPosition(index), value);
+            }
         }
         unsafe internal static IntPtr Execute(DoubleInputOperation func, TensorMemory a, TensorMemory b, TensorMemory oup, 
                             TensorLayout layoutA, TensorLayout layoutB, TensorLayout layoutOup, IntPtr param, NativeProvider provider){
@@ -207,6 +253,17 @@ namespace Numnet{
 
         internal Tensor(Tensor source):base(source.TMemory, source.TLayout){
 
+        }
+
+        public new T this[params int[] index]{
+            get{
+                Array.Reverse(index);
+                return AsSpan<T>()[IndicesToPosition(index)];
+            }
+            set{
+                Array.Reverse(index);
+                AsSpan<T>()[IndicesToPosition(index)] = value;
+            }
         }
         // public Tensor(IEnumerable<T> data, Span<int> shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
         //     TMemory = new TensorMemory<T>(data.ToArray());

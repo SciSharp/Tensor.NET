@@ -29,11 +29,11 @@
 | Add Serialization for .npy file | Provide interface to serialize and deserialize with .npy files | p0 | Waiting 🔵 |
 | Support reading of excel | Provide interface to read and write with .csv and excel file | p1 | Waiting 🔵 |
 | Support type convert | Support type convert of ```Tensor``` | p0 | On going 🚀 |
-| Type deduce for double-input ops | Add type deduce of double-input ops in c++ part | p2 | Waiting 🔵 |
+| Type deduce for double-input ops | Add type deduce of double-input ops in c++ part | p2 | Complete ✅ |
 | Add self-manipulated type ops | Except for single input and double input ops, there are some ops directly manipulating itself's data, such as IDentity, Ones and so on. | p0 | Waiting 🔵 |
-| Type deduce in C# part | Add type deduce of C# part | p0 | On going 🚀 |
-| Design exceptions in C# part | Design exceptions in C# part | p0 | On going 🚀 |
-| Add unit tests for C# part | Add unit tests for C# part | p0 | On going 🚀 |
+| Type deduce in C# part | Add type deduce of C# part | p0 | Complete ✅ |
+| Design exceptions in C# part | Design exceptions in C# part | p0 | Complete ✅ |
+| Add unit tests for C# part | Add unit tests for C# part | p0 | Complete ✅ |
 | Add Logger for C# part | Add Logger for C# part, in which new feature of C# 10 could be taken into account | p0 | Waiting 🔵 |
 
 
