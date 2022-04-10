@@ -3,6 +3,7 @@ using Numnet.Native;
 using Numnet.Native.Param;
 using Numnet;
 using Numnet.Algebra;
+using Numnet.Manipulation;
 
 unsafe{
     Tensor<int> a = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
@@ -27,5 +28,8 @@ unsafe{
     // Console.WriteLine(NativeStatus.GetErrorCode(status));
     // Console.WriteLine(NativeStatus.GetErrorMessage(status));
     Console.WriteLine(c);
-    Console.WriteLine(c.Reshape(new int[] { 6, 8 }));
+    c = c.Reshape(new int[] { 6, 8 });
+    Console.WriteLine(c);
+    c = c.Permute(new int[] { 1, 0 });
+    Console.WriteLine(c);
 }

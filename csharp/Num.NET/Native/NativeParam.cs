@@ -5,7 +5,7 @@ namespace Numnet.Native.Param{
         
     }
 
-    internal struct Permute{
+    internal struct PermuteParam{
         internal IntPtr dims;
     }
 }

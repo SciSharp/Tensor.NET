@@ -105,8 +105,8 @@ namespace Numnet{
             return status;
         }
 
-        unsafe internal static IntPtr Execute(TensorMemory inp, TensorMemory oup, TensorLayout layoutInp, TensorLayout layoutOup, 
-                                SingleInputOperation func, IntPtr param, NativeProvider provider){
+        unsafe internal static IntPtr Execute(SingleInputOperation func, TensorMemory inp, TensorMemory oup, TensorLayout layoutInp, 
+                                                    TensorLayout layoutOup, IntPtr param, NativeProvider provider){
             MemoryHandle handleInp, handleOup;
             inp.Pin(out handleInp);
             oup.Pin(out handleOup);
