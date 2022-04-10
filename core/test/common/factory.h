@@ -20,7 +20,7 @@ class NDArrayFactory {
     nn_assert(values.size() == shape.total_elems(),
               "The values used to init the Tensor is not compitable with the "
               "given shape. The element count of initial values is %ld, the "
-              "shape is %s, which means %ld elements.",
+              "shape is %s, which means %d elements.",
               values.size(), shape.to_string().c_str(), shape.total_elems());
     // res.layout = Layout(shape, dtype);
     // res.raw_ptr = static_cast<nn_byte*>(malloc(res.layout.content_bytes()));

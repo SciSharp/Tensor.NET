@@ -16,7 +16,7 @@ using F = NDArrayFactory;
 using Param = param::matmul;
 
 TEST(Naive, Matmul) {
-  OpNaiveImpl oprs;
+  OpBase* oprs = OpNaiveImpl::get_instance();
 
   // Group 1
   Tensor a1 = F::from_list({1, 2, 3, 4, 5, 6}, {2, 3}, dtype::Int32());
@@ -25,7 +25,7 @@ TEST(Naive, Matmul) {
   Param p1;
 
   Tensor pred1;
-  ASSERT_TRUE(oprs.matmul(a1, b1, pred1, p1).is_ok());
+  ASSERT_TRUE(oprs->matmul(a1, b1, pred1, p1).is_ok());
   assert_same_data<int>(pred1, truth1, 0.0001f);
 
   // Group 2
@@ -38,7 +38,7 @@ TEST(Naive, Matmul) {
   Param p2;
 
   Tensor pred2;
-  ASSERT_TRUE(oprs.matmul(a2, b2, pred2, p2).is_ok());
+  ASSERT_TRUE(oprs->matmul(a2, b2, pred2, p2).is_ok());
   assert_same_data<int>(pred2, truth2, 0.0001f);
 
   // Group 3
@@ -95,7 +95,7 @@ TEST(Naive, Matmul) {
   Param p3;
 
   Tensor pred3;
-  ASSERT_TRUE(oprs.matmul(a3, b3, pred3, p3).is_ok());
+  ASSERT_TRUE(oprs->matmul(a3, b3, pred3, p3).is_ok());
   assert_same_data<int>(pred3, truth3, 0.0001f);
 
   // Group 4
@@ -109,7 +109,7 @@ TEST(Naive, Matmul) {
   Param p4;
 
   Tensor pred4;
-  ASSERT_TRUE(oprs.matmul(a4, b4, pred4, p4).is_ok());
+  ASSERT_TRUE(oprs->matmul(a4, b4, pred4, p4).is_ok());
   assert_same_data<int>(pred4, truth4, 0.0001f);
 
   // Group 5
@@ -176,7 +176,7 @@ TEST(Naive, Matmul) {
   Param p5;
 
   Tensor pred5;
-  ASSERT_TRUE(oprs.matmul(a5, b5, pred5, p5).is_ok());
+  ASSERT_TRUE(oprs->matmul(a5, b5, pred5, p5).is_ok());
   assert_same_data<double>(pred5, truth5, 0.000001f);
 
   // Group 6
@@ -201,7 +201,7 @@ TEST(Naive, Matmul) {
   Param p6;
 
   Tensor pred6;
-  ASSERT_TRUE(oprs.matmul(a6, b6, pred6, p6).is_ok());
+  ASSERT_TRUE(oprs->matmul(a6, b6, pred6, p6).is_ok());
   assert_same_data<double>(pred6, truth6, 0.000001);
 
   // Group 7
@@ -225,7 +225,7 @@ TEST(Naive, Matmul) {
   Param p7;
 
   Tensor pred7;
-  ASSERT_TRUE(oprs.matmul(a7, b7, pred7, p7).is_ok());
+  ASSERT_TRUE(oprs->matmul(a7, b7, pred7, p7).is_ok());
   assert_same_data<double>(pred7, truth7, 0.000001);
 
   // Group 8
@@ -256,7 +256,7 @@ TEST(Naive, Matmul) {
   Param p8;
 
   Tensor pred8;
-  ASSERT_TRUE(oprs.matmul(a8, b8, pred8, p8).is_ok());
+  ASSERT_TRUE(oprs->matmul(a8, b8, pred8, p8).is_ok());
   assert_same_data<double>(pred8, truth8, 0.000001);
 
   // Group 9
@@ -266,7 +266,7 @@ TEST(Naive, Matmul) {
   Param p9;
 
   Tensor pred9;
-  ASSERT_TRUE(oprs.matmul(a9, b9, pred9, p9).is_ok());
+  ASSERT_TRUE(oprs->matmul(a9, b9, pred9, p9).is_ok());
   assert_same_data<float>(pred9, truth9, 0.000001);
 
   // Group 10
@@ -276,7 +276,7 @@ TEST(Naive, Matmul) {
   Param p10;
 
   Tensor pred10;
-  ASSERT_TRUE(oprs.matmul(a10, b10, pred10, p10).is_ok());
+  ASSERT_TRUE(oprs->matmul(a10, b10, pred10, p10).is_ok());
   assert_same_data<float>(pred10, truth10, 0.000001);
 
   // Group 11
@@ -286,6 +286,6 @@ TEST(Naive, Matmul) {
   Param p11;
 
   Tensor pred11;
-  ASSERT_TRUE(oprs.matmul(a11, b11, pred11, p11).is_ok());
+  ASSERT_TRUE(oprs->matmul(a11, b11, pred11, p11).is_ok());
   assert_same_data<float>(pred11, truth11, 0.000001);
 }

@@ -14,7 +14,7 @@ using F = NDArrayFactory;
 using Param = param::transpose;
 
 TEST(Naive, Transpose) {
-  OpNaiveImpl oprs;
+  OpBase* oprs = OpNaiveImpl::get_instance();
 
   // Group 1
   Tensor inp1 =
@@ -28,7 +28,7 @@ TEST(Naive, Transpose) {
   Param p1(0, 1);
 
   Tensor pred1;
-  ASSERT_TRUE(oprs.transpose(inp1, pred1, p1).is_ok());
+  ASSERT_TRUE(oprs->transpose(inp1, pred1, p1).is_ok());
   assert_same_data<nn_int32>(pred1, truth1, 0.0001f);
 
   // Group 2
@@ -51,7 +51,7 @@ TEST(Naive, Transpose) {
   Param p2(0, 2);
 
   Tensor pred2;
-  ASSERT_TRUE(oprs.transpose(inp2, pred2, p2).is_ok());
+  ASSERT_TRUE(oprs->transpose(inp2, pred2, p2).is_ok());
   assert_same_data<nn_int32>(pred2, truth2, 0.0001f);
 
   // Group 3
@@ -90,7 +90,7 @@ TEST(Naive, Transpose) {
   Param p3({0, 2});
 
   Tensor mid3, pred3;
-  ASSERT_TRUE(oprs.transpose(inp3, mid3, Param(0, 2)).is_ok());
-  ASSERT_TRUE(oprs.transpose(mid3, pred3, Param(2, 3)).is_ok());
+  ASSERT_TRUE(oprs->transpose(inp3, mid3, Param(0, 2)).is_ok());
+  ASSERT_TRUE(oprs->transpose(mid3, pred3, Param(2, 3)).is_ok());
   assert_same_data<nn_float64>(pred3, truth3, 0.0001f);
 }

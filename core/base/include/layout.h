@@ -11,17 +11,20 @@
 
 namespace nncore {
 
-struct Shape {
-  static constexpr size_t MAX_NDIM = NN_MAX_NDIM;
+#define nn_size int
 
-  size_t shape[MAX_NDIM];
-  size_t ndim = 0;
+struct Shape {
+  static constexpr nn_size MAX_NDIM = NN_MAX_NDIM;
+
+  nn_size shape[MAX_NDIM];
+  nn_size ndim = 0;
 
   // ctor
   Shape() = default;
   Shape(const Shape &rhs) = default;
-  Shape(const std::vector<size_t> &init_shape);
-  Shape(const std::initializer_list<size_t> &init_shape);
+  Shape(nn_size *init_shape, int ndim);
+  Shape(const std::vector<nn_size> &init_shape);
+  Shape(const std::initializer_list<nn_size> &init_shape);
 
   bool is_scalar() const;
   bool is_empty() const;
@@ -35,24 +38,24 @@ struct Shape {
    * and {3, 2, 1} are not, though {1, 2, 3} could be reshaped to {3, 2, 1}.
    */
   bool is_equivalent_shape(const Shape &rhs) const;
-  size_t total_elems() const;
+  nn_size total_elems() const;
 
-  size_t &operator[](size_t i) { return shape[i]; }
-  size_t operator[](size_t i) const { return shape[i]; }
+  nn_size &operator[](nn_size i) { return shape[i]; }
+  nn_size operator[](nn_size i) const { return shape[i]; }
 
   std::string to_string() const;
 };
 
 struct Layout : public Shape {
   DType dtype;
-  size_t stride[MAX_NDIM];
+  nn_size stride[MAX_NDIM];
 
   // ctor
   Layout();
   Layout(const Layout &rhs) = default;
   Layout(const DType &dtype);
   Layout(const Shape &shape, const DType &dtype);
-  Layout(const Shape &shape, const std::vector<size_t> &stride,
+  Layout(const Shape &shape, const std::vector<nn_size> &stride,
          const DType &dtype);
 
   bool is_same_layout(const Layout &rhs) const;
@@ -71,18 +74,18 @@ struct Layout : public Shape {
    * \param indices An array which has same or larger size than the ndim of the
    * current layout.
    */
-  void offset_to_indices(size_t offset, size_t *indices) const;
+  void offset_to_indices(nn_size offset, nn_size *indices) const;
 
   /*
    * \brief Convert offset to indices of the current layout.
    * \param dst An array which has same or larger size than the ndim of the
    * current layout.
    */
-  size_t indices_to_offset(size_t *indices) const;
+  nn_size indices_to_offset(nn_size *indices) const;
 
   std::string to_string() const;
 
-  size_t content_bytes() const;
+  nn_size content_bytes() const;
 
   /* =================== inplace modifiers =================== */
 
@@ -93,32 +96,32 @@ struct Layout : public Shape {
    *
    * \return total number of elements
    */
-  size_t init_contiguous_stride();
+  nn_size init_contiguous_stride();
 
   /*!
    * \brief init stride to be contiguous by first assigning shape
    *
    * Use current format.
    */
-  size_t init_contiguous_stride(const Shape &shape);
+  nn_size init_contiguous_stride(const Shape &shape);
 
   /*!
    * \brief inplace version of remove_axis
    */
-  void remove_axis_inplace(size_t idx);
+  void remove_axis_inplace(nn_size idx);
 
   /*!
    * \brief add an axis before given *axis* with given shape and stride
    *
    * Other shapes and strides would not be changed.
    */
-  void add_axis_inplace(size_t axis, size_t shape, size_t stride);
+  void add_axis_inplace(nn_size axis, nn_size shape, nn_size stride);
 
   /*!
    * \brief add an axis before given *axis*, with shape 1 and contiguous
    *      stride
    */
-  void add_axis_cont_inplace(size_t axis) {
+  void add_axis_cont_inplace(nn_size axis) {
     add_axis_inplace(axis, 1, stride[axis] * shape[axis]);
   }
 
@@ -137,13 +140,13 @@ struct Layout : public Shape {
    * example:
    *  (2, 0, 1) -> AxBxC to CxAxB
    */
-  Layout dimshuffle(const std::vector<size_t> &dims) const;
+  Layout dimshuffle(const std::vector<nn_size> &dims) const;
 
   /**
    * \brief Remove an axis from the layout by moving later shape/stride
    *      elements earlier. No extra check is performed.
    */
-  Layout remove_axis(size_t idx) const;
+  Layout remove_axis(nn_size idx) const;
 
   /**
    * \brief Returns a different view.

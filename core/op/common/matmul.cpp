@@ -21,11 +21,11 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
     b.broadcast_inplace({1, b.shape[0]});
     return Status::OK();
   }
-  size_t dim = a.ndim > b.ndim ? a.ndim : b.ndim;
+  nn_size dim = a.ndim > b.ndim ? a.ndim : b.ndim;
   res.ndim = dim;
-  std::vector<size_t> a_dst_shape;
-  std::vector<size_t> b_dst_shape;
-  for (size_t i = dim - 1; i >= 2; i--) {
+  std::vector<nn_size> a_dst_shape;
+  std::vector<nn_size> b_dst_shape;
+  for (nn_size i = dim - 1; i >= 2; i--) {
     if (i >= a.ndim || i < b.ndim && a.shape[i] == 1) {
       res.shape[i] = b.shape[i];
     } else if (i >= b.ndim || i < a.ndim && b.shape[i] == 1) {

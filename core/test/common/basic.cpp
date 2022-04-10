@@ -80,8 +80,8 @@ TEST(Basic, reshape) {
   Tensor pred4;
   using Param = param::matmul;
   Param p4;
-  opr::naive::OpNaiveImpl oprs;
-  oprs.matmul(a4, b4, pred4, p4);
+  opr::OpBase* oprs = opr::naive::OpNaiveImpl::get_instance();
+  ASSERT_TRUE(oprs->matmul(a4, b4, pred4, p4).is_ok());
 
   assert_same_data<double>(pred4, truth4, 0.000001);
 }

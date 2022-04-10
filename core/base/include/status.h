@@ -5,20 +5,6 @@
 
 namespace nncore {
 
-#define nn_return_status_if_error(_expr)  \
-  do {                                    \
-    Status _status = _expr;               \
-    if (!_status.is_ok()) return _status; \
-  } while (0)
-
-#define nn_throw_if_status_fail(_expr) \
-  do {                                 \
-    Status _status = (_expr);          \
-    if ((!_status.is_ok())) {          \
-      throw _status.error_message();   \
-    }                                  \
-  } while (0)
-
 enum StatusCategory { NONE = 0, SYSTEM = 1, NUMNET = 2 };
 
 /**
