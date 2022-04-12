@@ -12,8 +12,8 @@ IMPL_NAIVE_SINGLE_INPUT_INTERNAL(transpose) {
     for (nn_size j = 0; j < loup.ndim; j++) {
       src_idx[j] = dst_idx[j];
     }
-    src_idx[loup.ndim - param.dimA - 1] = dst_idx[loup.ndim - param.dimB - 1];
-    src_idx[loup.ndim - param.dimB - 1] = dst_idx[loup.ndim - param.dimA - 1];
+    src_idx[param.dimA] = dst_idx[param.dimB];
+    src_idx[param.dimB] = dst_idx[param.dimA];
     nn_size src_pos = linp.indices_to_offset(src_idx);
     ptr_oup[i] = ptr_inp[src_pos];
   }

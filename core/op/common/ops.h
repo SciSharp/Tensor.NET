@@ -29,7 +29,7 @@ using namespace param;
                                                          \
  protected:                                              \
   Status deduce_layout_##_name(Layout& inp, Layout& res, \
-                               const param::_name param);
+                               const param::_name& param);
 
 #define DEF_OP_DOUBLE_INPUT(_name)                                    \
  public:                                                              \
@@ -38,7 +38,7 @@ using namespace param;
                                                                       \
  protected:                                                           \
   Status deduce_layout_##_name(Layout& a, Layout& b, Layout& res,     \
-                               const param::_name param);
+                               const param::_name& param);
 
 class OpBase {
   NN_FOREACH_SINGLE_INPUT_OP(DEF_OP_SINGLE_INPUT)
@@ -53,10 +53,10 @@ class OpBase {
 
 #define IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(_name)                   \
   Status OpBase::deduce_layout_##_name(Layout& inp, Layout& res, \
-                                       const param::_name param)
+                                       const param::_name& param)
 #define IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(_name)                            \
   Status OpBase::deduce_layout_##_name(Layout& a, Layout& b, Layout& res, \
-                                       const param::_name param)
+                                       const param::_name& param)
 
 #define IMPL_OP_SINGLE_INPUT(_name)                                            \
  public:                                                                       \

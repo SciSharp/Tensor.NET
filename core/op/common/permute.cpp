@@ -14,12 +14,12 @@ IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(permute) {
       return Status(StatusCategory::NUMNET, StatusCode::INVALID_PARAM,
                     "Invalid permute param.");
     }
-    res[param.dims[i]] = inp[i];
+    res[i] = inp[param.dims[i]];
     if (duplicated & (1 << param.dims[i])) {
       return Status(StatusCategory::NUMNET, StatusCode::INVALID_PARAM,
                     "Duplicated index in permute param.");
     }
-    duplicated += 1 << param.dims[i];
+    duplicated |= 1 << param.dims[i];
   }
   return Status::OK();
 }

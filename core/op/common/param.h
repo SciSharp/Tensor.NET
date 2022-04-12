@@ -22,8 +22,18 @@ struct permute {
   nn_size* dims;
 
   permute(const std::vector<nn_size>& value) {
+    dims = (nn_size*)malloc(sizeof(nn_size) * NN_MAX_NDIM);
     memcpy(dims, value.data(), value.size() * sizeof(nn_size));
   }
+
+  ~permute() {
+    free(dims);
+    dims = nullptr;
+  }
+
+ private:
+  permute(const permute&) {}
+  void operator=(const permute&) {}
 };
 
 struct matmul {};

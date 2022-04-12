@@ -12,7 +12,7 @@ IMPL_NAIVE_SINGLE_INPUT_INTERNAL(permute) {
   for (nn_size i = 0; i < n; i++) {
     loup.offset_to_indices(i, dst_idx);
     for (int j = 0; j < loup.ndim; j++) {
-      src_idx[j] = dst_idx[param.dims[j]];
+      src_idx[param.dims[j]] = dst_idx[j];
     }
     nn_size src_pos = linp.indices_to_offset(src_idx);
     ptr_oup[i] = ptr_inp[src_pos];
