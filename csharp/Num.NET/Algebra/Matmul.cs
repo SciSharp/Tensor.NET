@@ -26,50 +26,59 @@ namespace Numnet.Algebra{
                 return res;
             }
             if (lhs.NDim == 1 && rhs.NDim == 1) {
-                res.Shape[0] = rhs.Shape[0];
-                res.Shape[1] = lhs.Shape[0];
+                res.Shape[0] = lhs.Shape[0];
+                res.Shape[1] = rhs.Shape[0];
                 res.NDim = 2;
                 lhs.BroadcastInplace(new TensorShape(lhs.Shape[0], 1));
                 rhs.BroadcastInplace(new TensorShape(1, rhs.Shape[0]));
                 return res;
             }
             int dim = lhs.NDim > rhs.NDim ? lhs.NDim : rhs.NDim;
+            int min_dim = lhs.NDim < rhs.NDim ? lhs.NDim : rhs.NDim;
             res.NDim = dim;
-            List<int> leftDstShape = new List<int>();
-            List<int> rightDstShape = new List<int>();
-            for (int i = dim - 1; i >= 2; i--) {
-                if (i >= lhs.NDim || i < rhs.NDim && lhs.Shape[i] == 1) {
-                    res.Shape[i] = rhs.Shape[i];
-                } else if (i >= rhs.NDim || i < lhs.NDim && rhs.Shape[i] == 1) {
-                    res.Shape[i] = lhs.Shape[i];
-                } else if (lhs.Shape[i] == rhs.Shape[i]) {
-                    res.Shape[i] = lhs.Shape[i];
+            TensorShape aDstShape = new TensorShape(lhs);
+            TensorShape bDstShape = new TensorShape(rhs);
+
+            for (int i = 0; i < dim - 2; i++) {
+                int aIdx = lhs.NDim - i - 3;
+                int bIdx = rhs.NDim - i - 3;
+                int targetIdx = dim - i - 3;
+                if (aIdx >= 0 &&
+                    (bIdx < 0 || lhs.Shape[aIdx] == 1 || rhs.Shape[bIdx] == 1 ||
+                    lhs.Shape[aIdx] == rhs.Shape[bIdx])) {
+                if (bIdx < 0)
+                    res.Shape[targetIdx] = rhs.Shape[aIdx];
+                else
+                    res.Shape[targetIdx] =
+                        lhs.Shape[aIdx] == 1 ? rhs.Shape[bIdx] : lhs.Shape[aIdx];
+                } else if (aIdx < 0) {
+                    res.Shape[targetIdx] = rhs.Shape[bIdx];
                 } else {
                     throw new MismatchedShapeException(lhs, rhs, "Matmul");
                 }
-                leftDstShape.Add(res.Shape[i]);
-                rightDstShape.Add(res.Shape[i]);
+                aDstShape.Shape[targetIdx] = res.Shape[targetIdx];
+                bDstShape.Shape[targetIdx] = res.Shape[targetIdx];
             }
-            if (lhs.NDim == 1 && rhs.Shape[1] != lhs.Shape[0] ||
-                rhs.NDim == 1 && rhs.Shape[0] != lhs.Shape[0] ||
-                lhs.NDim != 1 && rhs.NDim != 1 && lhs.Shape[0] != rhs.Shape[1]) {
+            if (lhs.NDim == 1 && rhs.Shape[rhs.NDim - 2] != lhs.Shape[0] ||
+                rhs.NDim == 1 && rhs.Shape[0] != lhs.Shape[lhs.NDim - 1] ||
+                lhs.NDim != 1 && rhs.NDim != 1 &&
+                    lhs.Shape[lhs.NDim - 1] != rhs.Shape[rhs.NDim - 2]) {
                 throw new MismatchedShapeException(lhs, rhs, "Matmul");
             }
-            res.Shape[1] = lhs.NDim == 1 ? 1 : lhs.Shape[1];
-            res.Shape[0] = rhs.NDim == 1 ? 1 : rhs.Shape[0];
-            leftDstShape.Add(lhs.NDim > 1 ? lhs.Shape[1] : 1);
-            rightDstShape.Add(rhs.NDim > 1 ? rhs.Shape[1] : rhs.Shape[0]);
-            leftDstShape.Add(lhs.Shape[0]);
-            rightDstShape.Add(rhs.NDim > 1 ? rhs.Shape[0] : 1);
+            res.Shape[dim - 2] = aDstShape.Shape[dim - 2] =
+                lhs.NDim == 1 ? 1 : lhs.Shape[lhs.NDim - 2];
+            res.Shape[dim - 1] = bDstShape.Shape[dim - 1] =
+                rhs.NDim == 1 ? 1 : rhs.Shape[rhs.NDim - 1];
+            aDstShape.Shape[dim - 1] = bDstShape.Shape[dim - 2] = lhs.Shape[lhs.NDim - 1];
             if (rhs.NDim == 1) {
-                rhs.Shape[1] = rhs.Shape[0];
-                rhs.Shape[0] = 1;
+                rhs.Shape[1] = 1;
                 rhs.NDim = 2;
-                rhs.Stride[1] = 1;
-                rhs.Stride[0] = 0;
+                rhs.Stride[0] = 1;
+                rhs.Stride[1] = 0;
             }
-            lhs.BroadcastInplace(new TensorShape(leftDstShape));
-            rhs.BroadcastInplace(new TensorShape(rightDstShape));
+            aDstShape.NDim = bDstShape.NDim = res.NDim;
+            lhs.BroadcastInplace(aDstShape);
+            rhs.BroadcastInplace(bDstShape);
             return res;
         }
     }

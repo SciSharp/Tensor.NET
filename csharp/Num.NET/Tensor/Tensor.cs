@@ -99,11 +99,9 @@ namespace Numnet{
         }
         public ValueType this[params int[] index]{
             get{
-                Array.Reverse(index);
                 return GetValue(IndicesToPosition(index));
             }
             set{
-                Array.Reverse(index);
                 SetValue(IndicesToPosition(index), value);
             }
         }
@@ -188,12 +186,12 @@ namespace Numnet{
         {
             Func<int, int> getRealPos = idx => {
                 int res = 0;
-                for (int i =  TLayout.NDim - 1; i >= 0; i--) {
+                for (int i = 0; i < TLayout.NDim; i++) {
                     int mod = TLayout.Stride[i];
                     if (mod <= 0){
-                        int j = i - 1;
-                        while(j >= 0 && TLayout.Stride[j] <= 0) j--;
-                        if(j < 0){
+                        int j = i + 1;
+                        while(j < TLayout.NDim && TLayout.Stride[j] == 0) j++;
+                        if(j >= TLayout.NDim){
                             mod = 1;
                         }
                         else{
@@ -257,53 +255,11 @@ namespace Numnet{
 
         public new T this[params int[] index]{
             get{
-                Array.Reverse(index);
                 return AsSpan<T>()[IndicesToPosition(index)];
             }
             set{
-                Array.Reverse(index);
                 AsSpan<T>()[IndicesToPosition(index)] = value;
             }
         }
-        // public Tensor(IEnumerable<T> data, Span<int> shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
-        //     TMemory = new TensorMemory<T>(data.ToArray());
-        // }
-
-        // public Tensor(T[] data, Span<int> shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
-        //     if(data.Length < TLayout.TotalElemCount()){
-        //         // TODO
-        //         throw new Exception();
-        //     }
-        //     TMemory = new TensorMemory<T>(data);
-        // }
-
-        // public Tensor(Array data):base(new TensorLayout()){
-        //     var ndim = data.Rank;
-        //     int[] shape = new int[ndim];
-        //     for (int i = 0; i < ndim; i++){
-        //         shape[i] = data.GetLength(i);
-        //     }
-        //     var dtypeInfo = TensorTypeInfo.GetTypeInfo(data.GetType().GetElementType()!);
-        //     TLayout.NDim = ndim;
-        //     TLayout.DType = dtypeInfo._dtype;
-        //     TLayout.Shape = shape;
-        //     TLayout.InitContiguousLayout();
-        //     TMemory = new TensorMemory<T>(data);
-        // }
-
-        // internal Tensor(int[] shape):base(new TensorLayout(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype, shape)){
-        //     int length = 1;
-        //     foreach(var s in shape){
-        //         length *= s;
-        //     }
-        //     TMemory = new TensorMemory<T>(length);
-        // }
-
-        // internal Tensor(TensorMemory<T> memory, TensorLayout layout):base(layout){
-        //     if(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype != layout.DType){
-        //         throw new NotImplementedException();
-        //     }
-        //     TMemory = memory;
-        // }
     }
 }

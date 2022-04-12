@@ -29,11 +29,11 @@ namespace Numnet.Manipulation{
                 if (dims[i] >= src.NDim) {
                     throw new InvalidParamException("Invalid param for permute.");
                 }
-                res.Shape[dims[i]] = src.Shape[i];
+                res.Shape[i] = src.Shape[dims[i]];
                 if ((duplicated & (1 << dims[i])) != 0) {
                     throw new InvalidParamException("Duplicated index in the param of permute.");
                 }
-                duplicated += 1 << dims[i];
+                duplicated |= 1 << dims[i];
             }
             return res;
         }

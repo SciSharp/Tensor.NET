@@ -28,8 +28,8 @@ namespace Numnet.Manipulation{
             for (int i = 0; i < src.NDim; i++) {
                 res.Shape[i] = src.Shape[i];
             }
-            res.Shape[src.NDim - dimA - 1] = src.Shape[src.NDim - dimB - 1];
-            res.Shape[src.NDim - dimB - 1] = src.Shape[src.NDim - dimA - 1];
+            res.Shape[dimA] = src.Shape[dimB];
+            res.Shape[dimB] = src.Shape[dimA];
             return res;
         }
     }
