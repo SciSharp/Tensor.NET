@@ -10,8 +10,15 @@ namespace Numnet{
     {
         internal delegate IntPtr DoubleInputOperation(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
         internal delegate IntPtr SingleInputOperation(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
-        public TensorLayout TLayout{get; protected set; }
+        internal TensorLayout TLayout{get; set; }
         internal TensorMemory TMemory{ get; set; }
+        public Span<int> Shape{
+            get{
+                return TLayout.Shape.AsSpan(0, TLayout.NDim);
+            }
+        }
+        public int Dim{get { return TLayout.NDim; } }
+        public DType DataType{get { return TLayout.DType; } }
         public static NativeProvider Provider { get; set; } = NativeProvider.Naive;
         protected void Pin(out MemoryHandle handle){
             TMemory.Pin(out handle);
