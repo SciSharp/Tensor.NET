@@ -9,6 +9,10 @@ namespace Numnet{
         // public Tensor<T> BroadCast(int[] targetShape){
         //     return new Tensor<T>(this.TMemory, this.TLayout.BroadcastTo(new TensorShape(targetShape)));
         // }
+        public Tensor Broadcast(Span<int> targetShape){
+            return new Tensor(this.TMemory, this.TLayout.Broadcast(new TensorShape(targetShape)));
+        }
+
         public Tensor Broadcast(TensorShape targetShape){
             return new Tensor(this.TMemory, this.TLayout.Broadcast(targetShape));
         }

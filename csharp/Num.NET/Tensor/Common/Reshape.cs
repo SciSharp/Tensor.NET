@@ -8,6 +8,9 @@ namespace Numnet{
         // public Tensor<T> Reshape(TensorShape shape){
         //     return new Tensor<T>(this.TMemory, this.TLayout.Reshape(shape, false));
         // }
+        public Tensor Reshape(Span<int> shape){
+            return new Tensor(this.TMemory, this.TLayout.Reshape(new TensorShape(shape), false));
+        }
         public Tensor Reshape(int[] shape){
             return new Tensor(this.TMemory, this.TLayout.Reshape(new TensorShape(shape), false));
         }
