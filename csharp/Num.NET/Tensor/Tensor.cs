@@ -43,7 +43,7 @@ namespace Numnet{
             int res = 0;
             for (int i = 0; i < TLayout.NDim; i++) {
                 if(indices[i] < -1 || indices[i] >= TLayout.Shape[i]){
-                    throw new InvalidArgumentException($"{i}th dim of the index exceeds the bound of the shape.");
+                    throw new InvalidArgumentException($"{i}th index exceeds the bound of the shape. Index is {indices[i]}, limit is {TLayout.Shape[i]}.");
                 }
                 res += indices[i] * TLayout.Stride[i];
             }
@@ -191,24 +191,17 @@ namespace Numnet{
 
         public override string ToString()
         {
+            // Somtimes the tensor is not contiguous, so we need to convert the index calculated 
+            // by shape to the real index calculated by sride.
             Func<int, int> getRealPos = idx => {
                 int res = 0;
+                int mod = 1;
+                for (int i = TLayout.NDim - 1; i >= 1; i--) mod *= TLayout.Shape[i];
                 for (int i = 0; i < TLayout.NDim; i++) {
-                    int mod = TLayout.Stride[i];
-                    if (mod <= 0){
-                        int j = i + 1;
-                        while(j < TLayout.NDim && TLayout.Stride[j] == 0) j++;
-                        if(j >= TLayout.NDim){
-                            mod = 1;
-                        }
-                        else{
-                            mod = TLayout.Stride[j] * TLayout.Shape[j];
-                        }
-                    }
-                    else
-                        res += idx / mod * mod;
-                    idx %= mod;
-                    if (idx <= 0) break;
+                    int shape = idx / mod;
+                    idx -= shape * mod;
+                    res += shape * TLayout.Stride[i];
+                    if(i < TLayout.NDim - 1 ) mod /= TLayout.Shape[i + 1];
                 }
                 return res;
             };
@@ -216,7 +209,7 @@ namespace Numnet{
             StringBuilder r = new StringBuilder($"Tensor({TLayout.GetInfoString()}):\n");
             for (int i = 0; i < TLayout.TotalElemCount(); i++) {
                 int mod = 1;
-                for (int j = 0; j < TLayout.NDim; j++) {
+                for (int j = TLayout.NDim - 1; j >= 0; j--) {
                     mod *= TLayout.Shape[j];
                     if (i % mod == 0) {
                         r.Append("[");
@@ -226,12 +219,12 @@ namespace Numnet{
                 }
                 r.Append(" ").Append(GetValue(getRealPos(i)));
 
-                if ((i + 1) % TLayout.Shape[0] != 0) r.Append(",");
+                if ((i + 1) % TLayout.Shape[TLayout.NDim - 1] != 0) r.Append(",");
 
                 r.Append(" ");
                 mod = 1;
                 int hit_times = 0;
-                for (int j = 0; j < TLayout.NDim; j++) {
+                for (int j = TLayout.NDim - 1; j >= 0; j--) {
                     mod *= TLayout.Shape[j];
                     if ((i + 1) % mod == 0) {
                         r.Append("]");
