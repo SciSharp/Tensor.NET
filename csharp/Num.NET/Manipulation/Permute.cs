@@ -6,7 +6,7 @@ using Numnet.Native.Param;
 namespace Numnet.Manipulation{
     public static class PermuteExtension{
 
-        public static Tensor Permute(this Tensor src, int[] dims)
+        public static Tensor Permute(this Tensor src, params int[] dims)
         {
             Tensor res = new Tensor(DeduceLayout(src.TLayout, dims));
             res.TLayout.InitContiguousLayout();
