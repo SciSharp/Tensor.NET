@@ -46,11 +46,11 @@ namespace Numnet.Algebra{
                 if (aIdx >= 0 &&
                     (bIdx < 0 || lhs.Shape[aIdx] == 1 || rhs.Shape[bIdx] == 1 ||
                     lhs.Shape[aIdx] == rhs.Shape[bIdx])) {
-                if (bIdx < 0)
-                    res.Shape[targetIdx] = rhs.Shape[aIdx];
-                else
-                    res.Shape[targetIdx] =
-                        lhs.Shape[aIdx] == 1 ? rhs.Shape[bIdx] : lhs.Shape[aIdx];
+                    if (bIdx < 0)
+                        res.Shape[targetIdx] = lhs.Shape[aIdx];
+                    else
+                        res.Shape[targetIdx] =
+                            lhs.Shape[aIdx] == 1 ? Math.Max(rhs.Shape[bIdx], lhs.Shape[aIdx]) : lhs.Shape[aIdx];
                 } else if (aIdx < 0) {
                     res.Shape[targetIdx] = rhs.Shape[bIdx];
                 } else {

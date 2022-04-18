@@ -295,8 +295,7 @@ namespace Numnet.Common{
             }
 
             if(targetNDim < NDim){
-                throw new InvalidShapeException($"Dimension after broadcast is less than that before braodcast. " +
-                        $"The src shape is ({string.Join(',', Shape.AsSpan(0, NDim).ToArray())}), dst shape is ({string.Join(',', targetShape)}).");
+                throw new InvalidShapeException($"Dimension after broadcast is less than that before braodcast. ");
             }
 
             for (int i = 0; i < targetNDim; i++) {
@@ -304,8 +303,7 @@ namespace Numnet.Common{
                 int cur_shape = i < NDim ? Shape[NDim - i - 1] : 1, cur_stride = i < NDim ? Stride[NDim - i - 1] : 0;
                 if (targetShape.Shape[targetIdx] != cur_shape) {
                     if(cur_shape != 1 && cur_stride != 0){
-                        throw new InvalidShapeException("Broadcast on dim with shape not equal to 1: " + 
-                            $"src_shape=({string.Join(',', Shape.AsSpan(0, NDim).ToArray())}) dst_shape=({string.Join(',', targetShape)})");
+                        throw new InvalidShapeException($"Broadcast on dim {NDim - i - 1} with shape not equal to 0 or 1.");
                     }
                     Shape[targetIdx] = targetShape.Shape[targetIdx];
                     Stride[targetIdx] = 0;
