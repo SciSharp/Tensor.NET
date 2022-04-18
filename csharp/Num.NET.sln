@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Num.NET", "Num.NET\Num.NET.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TensorBasicTest", "TensorBasicTest\TensorBasicTest.csproj", "{95FC7971-7C2D-4606-9044-C21FACB72048}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TensorOpTest", "TensorOpTest\TensorOpTest.csproj", "{36E4E68B-E2A7-4F15-92ED-AE550FA8969D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{95FC7971-7C2D-4606-9044-C21FACB72048}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95FC7971-7C2D-4606-9044-C21FACB72048}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95FC7971-7C2D-4606-9044-C21FACB72048}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36E4E68B-E2A7-4F15-92ED-AE550FA8969D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E4E68B-E2A7-4F15-92ED-AE550FA8969D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E4E68B-E2A7-4F15-92ED-AE550FA8969D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E4E68B-E2A7-4F15-92ED-AE550FA8969D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
