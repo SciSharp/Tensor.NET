@@ -2,7 +2,7 @@ using Numnet.Native;
 using System.Text;
 using Numnet.Exceptions;
 
-namespace Numnet.Common{
+namespace Numnet{
     public class TensorShape{
         public static readonly int MAX_NDIM = 4;
         public int[] Shape { get; internal set; } = new int[MAX_NDIM];
@@ -83,7 +83,7 @@ namespace Numnet.Common{
             return r.ToString();
         }
     }
-    public sealed class TensorLayout:TensorShape
+    public sealed partial class TensorLayout:TensorShape
     {
         public DType DType { get; internal set; }
         public int Offset{ get; internal set; }

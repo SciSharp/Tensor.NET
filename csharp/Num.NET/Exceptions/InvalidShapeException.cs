@@ -13,7 +13,7 @@ namespace Numnet.Exceptions{
         protected string _message;
         public override string Message => _message;
         public DimExceedException(int dim){
-            _message = $"Exceed max dim: the max is {Numnet.Common.TensorShape.MAX_NDIM}, but {dim} is rerquired.";
+            _message = $"Exceed max dim: the max is {TensorShape.MAX_NDIM}, but {dim} is rerquired.";
         }
     }
 }

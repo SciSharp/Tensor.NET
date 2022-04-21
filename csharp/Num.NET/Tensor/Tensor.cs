@@ -203,7 +203,7 @@ namespace Numnet{
                     res += shape * TLayout.Stride[i];
                     if(i < TLayout.NDim - 1 ) mod /= TLayout.Shape[i + 1];
                 }
-                return res;
+                return res + TLayout.Offset;
             };
 
             StringBuilder r = new StringBuilder($"Tensor({TLayout.GetInfoString()}):\n");
