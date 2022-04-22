@@ -14,7 +14,7 @@ namespace Numnet{
         public static Tensor<T> Zeros<T>(int[] shape)where T:struct{
             Tensor res = new Tensor(new TensorLayout(shape, TensorTypeInfo.GetTypeInfo(typeof(T))._dtype));
             res.TMemory.AsSpan().Fill(0);
-            return res.To<T>();
+            return res.AsTensor<T>();
         }
         public static Tensor<T> FromSpan<T>(Span<T> data, TensorShape shape)where T:struct{
             if(shape.TotalElemCount() != data.Length){

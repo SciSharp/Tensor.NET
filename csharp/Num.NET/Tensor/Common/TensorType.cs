@@ -9,21 +9,26 @@ namespace Numnet.Common{
         private static readonly Dictionary<DType, int> _sizeMap;
         public readonly DType _dtype;
         public readonly int _size;
+        /// <summary>
+        /// The priority in type conversion. The larger the value is, the higher priority it has.
+        /// </summary>
+        public readonly int _priority;
         static TensorTypeInfo(){
             _typeInfoMap = new Dictionary<Type, TensorTypeInfo>()
             {
-                { typeof(float), new TensorTypeInfo( DType.Float32, sizeof(float)) },
-                { typeof(int), new TensorTypeInfo( DType.Int32, sizeof(int)) },
-                { typeof(long), new TensorTypeInfo( DType.Int64, sizeof(long)) },
-                { typeof(bool), new TensorTypeInfo( DType.Bool, sizeof(bool)) },
-                { typeof(double), new TensorTypeInfo( DType.Float64, sizeof(double)) }
+                { typeof(float), new TensorTypeInfo( DType.Float32, sizeof(float), 4) },
+                { typeof(int), new TensorTypeInfo( DType.Int32, sizeof(int), 2) },
+                { typeof(long), new TensorTypeInfo( DType.Int64, sizeof(long), 3) },
+                { typeof(bool), new TensorTypeInfo( DType.Bool, sizeof(bool), 1) },
+                { typeof(double), new TensorTypeInfo( DType.Float64, sizeof(double), 5) }
             };
             _dtypeMap = _typeInfoMap.ToDictionary(k => k.Value._dtype, v => v.Key);
             _sizeMap = _typeInfoMap.ToDictionary(k => k.Value._dtype, v => v.Value._size);
         }
-        public TensorTypeInfo(DType dtype, int size){
+        public TensorTypeInfo(DType dtype, int size, int priority){
             _dtype = dtype;
             _size = size;
+            _priority = priority;
         }
         public static TensorTypeInfo GetTypeInfo(Type type){
             TensorTypeInfo res;

@@ -92,11 +92,36 @@ namespace Numnet{
         public Span<T> AsSpan<T>() where T:struct{
             return TMemory.AsSpan<T>();
         }
-        public Tensor<T> To<T>() where T:struct{
-            if(TensorTypeInfo.GetTypeInfo(typeof(T))._dtype != TLayout.DType){
-                throw new NotImplementedException();
-            }
-            return new Tensor<T>(this);
+        public T At<T>(params int[] indices) where T:struct{
+            var targetTypeInfo = TensorTypeInfo.GetTypeInfo(typeof(T));
+            var currentTypeInfo = TensorTypeInfo.GetTypeInfo(TensorTypeInfo.GetTypeInfo(TLayout.DType));
+            if(targetTypeInfo._dtype == TLayout.DType) 
+                return AsSpan<T>()[IndicesToPosition(indices)];
+            if(targetTypeInfo._dtype == DType.Bool)
+                throw new NotImplementedException("The conversion to bool is not suppoted so far. You can get the value and convert it yourself as an alternative.");
+            if(targetTypeInfo._priority >= currentTypeInfo._priority)
+                return (T)this[indices];
+            throw new MismatchedTypeException($"The conversion from {Enum.GetName(typeof(DType), TLayout.DType)} " +
+                        $"to {Enum.GetName(typeof(DType), targetTypeInfo._dtype)} has risk of loss. " +
+                        $"If you really need this operation, please use indexer to get the value and then cast it yourself.");
+        }
+        /// <summary>
+        /// Treat the current Tensor as Tensor<T>. The returned Tensor will share the memory with the current Tensor.
+        /// Note that this operation is not a type conversion. If the generic type T does not match the DataType of the Tensor, 
+        /// an exception will be thrown. If you need a type conversion , please use ConvertTo or ConvertTo<T>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public Tensor<T> AsTensor<T>() where T : struct{
+            return new Tensor<T>(TMemory, TLayout);
+        }
+
+        public Tensor<T> ConvertTo<T>() where T : struct{
+            throw new NotImplementedException();
+        }
+
+        public Tensor ConvertTo(DType targetType){
+            throw new NotImplementedException();
         }
         public bool IsType<T>(){
             return TLayout.DType == TensorTypeInfo.GetTypeInfo(typeof(T))._dtype;

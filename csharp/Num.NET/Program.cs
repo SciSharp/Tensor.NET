@@ -21,3 +21,5 @@ c[5, 7] = -888.0;
 Console.WriteLine(c);
 var s = c[1..3, ^5..^2];
 Console.WriteLine(s);
+
+Console.WriteLine(s.At<int>(0, 1));
