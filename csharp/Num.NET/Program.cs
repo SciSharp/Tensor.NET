@@ -1,7 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using Numnet.Native;
-using Numnet.Native.Param;
-using Numnet;
+﻿using Numnet;
 using Numnet.Algebra;
 using Numnet.Manipulation;
 
@@ -22,14 +19,5 @@ Console.WriteLine(c);
 c[0, 0] = 999.0;
 c[5, 7] = -888.0;
 Console.WriteLine(c);
-var s = c[new Slice(1, 3), new Slice(2)];
+var s = c[1..3, ^5..^2];
 Console.WriteLine(s);
-
-TestSlice t = new TestSlice();
-t.Get(2..^7);
-
-class TestSlice{
-    public void Get(Range r){
-        Console.WriteLine($"Range: {r.Start} to {r.End}");
-    }
-}

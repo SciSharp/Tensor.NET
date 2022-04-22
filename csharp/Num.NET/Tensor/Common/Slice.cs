@@ -15,6 +15,25 @@ namespace Numnet{
             End = end;
             Step = step;
         }
+        public Slice(Range range){
+            Begin = range.Start.IsFromEnd ? -range.Start.Value : range.Start.Value;
+            End = range.End.IsFromEnd ? -range.End.Value : range.End.Value;
+            Step = 1;
+        }
+        public Slice(Index index){
+            Begin = index.IsFromEnd ? -index.Value : index.Value;
+            End = Begin;
+            Step = 0;
+        }
+        public static implicit operator Slice(Range range){
+            return new Slice(range);
+        }
+        public static implicit operator Slice(Index index){
+            return new Slice(index);
+        }
+        public static implicit operator Slice(int index){
+            return new Slice(index);
+        }
     }
 
     public sealed partial class TensorLayout{
@@ -38,7 +57,7 @@ namespace Numnet{
             if(begin < 0) begin += axisDim;
             if(end < 0) end += axisDim;
             if(end < begin){
-                throw new InvalidArgumentException($"The end index of slice should be larger than the begin index.");
+                throw new InvalidArgumentException($"The end index of slice should be larger than the begin index. But the begin is {begin}, the end is {end}.");
             }
             // is not scalar
             if(step > 0){
@@ -74,6 +93,26 @@ namespace Numnet{
                 }
                 for (int i = slices.Length - 1; i >= 0; i--){
                     if(slices[i].Step == 0 && slices[i].Begin == slices[i].End){
+                        layout.RemoveAxisInplace(i);
+                    }
+                }
+                return new Tensor(TMemory, layout);
+            }
+        }
+        public Tensor this[params Range[] slices]{
+            get{
+                if(slices.Length > TLayout.NDim){
+                    throw new InvalidArgumentException("Too many dims of slice.");
+                }
+                else if(slices.Length < TLayout.NDim){
+                    throw new InvalidArgumentException("Too few dims of slice.");
+                }
+                TensorLayout layout = new TensorLayout(TLayout);
+                for (int i = 0; i < slices.Length; i++){
+                    layout = layout.ApplySlice(new Slice(slices[i]), i);
+                }
+                for (int i = slices.Length - 1; i >= 0; i--){
+                    if(slices[i].Start.Value == slices[i].End.Value && slices[i].Start.IsFromEnd == slices[i].End.IsFromEnd){
                         layout.RemoveAxisInplace(i);
                     }
                 }
