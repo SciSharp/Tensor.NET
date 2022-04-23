@@ -7,10 +7,6 @@
 namespace nncore {
 namespace param {
 
-struct reshape {
-  Shape new_shape;
-};
-
 struct transpose {
   nn_size dimA;
   nn_size dimB;

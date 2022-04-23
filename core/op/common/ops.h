@@ -12,7 +12,7 @@ namespace opr {
 
 using namespace param;
 
-#define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(reshape) cb(transpose) cb(permute)
+#define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(transpose) cb(permute)
 
 #define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot)
 
