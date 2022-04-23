@@ -32,6 +32,12 @@ struct permute {
   void operator=(const permute&) {}
 };
 
+struct convert {
+  DTypeEnum target_type;
+
+  convert(DTypeEnum target_type) : target_type(target_type) {}
+};
+
 struct matmul {};
 
 struct dot {};

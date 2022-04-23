@@ -22,6 +22,28 @@ class OpNaiveImpl final : public OpBase {
   NN_FOREACH_SINGLE_INPUT_OP(IMPL_OP_SINGLE_INPUT)
 
   NN_FOREACH_DOUBLE_INPUT_OP(IMPL_OP_DOUBLE_INPUT)
+
+  // Define the implementation of convert op specially
+ public:
+  Status convert(const Tensor& inp, Tensor& oup, const param::convert& param) {
+    Layout linp(inp.layout);
+    if (oup.is_ptr_owner()) {
+      Layout loup;
+      nn_return_status_if_error(deduce_layout_convert(linp, loup, param));
+      loup.init_contiguous_stride();
+      oup.relayout(loup);
+      TYPE_CONVERT_DEDUCE(linp.dtype.enumv(), loup.dtype.enumv(), linp, loup,
+                          param);
+    } else {
+      TYPE_CONVERT_DEDUCE(linp.dtype.enumv(), oup.layout.dtype.enumv(), linp,
+                          oup.layout, param);
+    }
+    return Status::OK();
+  }
+
+  template <typename TA, typename TB>
+  Status convert_internal(const TA* inp, TB* oup, const Layout& linp,
+                          const Layout& loup, const param::convert& param);
 };
 
 #define IMPL_NAIVE_SINGLE_INPUT_INTERNAL(_name)                                \

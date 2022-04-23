@@ -14,8 +14,11 @@ void assert_same_data(const Tensor &a, const Tensor &b, float err = 0.000001f) {
   auto lptr = a.ptr<ctype>();
   auto rptr = b.ptr<ctype>();
   for (nn_size i = 0; i < a.layout.total_elems(); i++) {
-    // std::cout << "a: " << lptr[i] << " , b: " << rptr[i] << std::endl;
-    ASSERT_NEAR(lptr[i], rptr[i], err);
+    if (!a.layout.dtype.is_ctype<bool>() && !b.layout.dtype.is_ctype<bool>()) {
+      ASSERT_NEAR(lptr[i], rptr[i], err);
+    } else {
+      ASSERT_EQ(lptr[i], rptr[i]);
+    }
   }
 }
 

@@ -95,5 +95,54 @@ namespace opr {
       const Layout& la, const Layout& lb, const Layout& loup,                  \
       const param::_op_name& param)
 
+#define SPECIFY_CONVERT_OP_INTERNAL(_typeA, _typeB, _, _class_name) \
+  template Status _class_name::convert_internal<_typeA, _typeB>(    \
+      const _typeA* ptr_inp, _typeB* ptr_oup, const Layout& linp,   \
+      const Layout& loup, const param::convert& param)
+
+#define CONVERT_CASE(_value, _A, _B, ...)                                      \
+  case (_value):                                                               \
+    nn_return_status_if_error((                                                \
+        convert_internal<_A, _B>(inp.ptr<_A>(), oup.ptr<_B>(), __VA_ARGS__))); \
+    break;
+
+#define TYPE_CONVERT_DEDUCE(_DA, _DB, ...)                                  \
+  {                                                                         \
+    int _value = static_cast<int>(_DA) * 10 + static_cast<int>(_DB);        \
+    switch (_value) {                                                       \
+      CONVERT_CASE(11, nn_int32, nn_int32, __VA_ARGS__)                     \
+      CONVERT_CASE(12, nn_int32, nn_float32, __VA_ARGS__)                   \
+      CONVERT_CASE(13, nn_int32, nn_float64, __VA_ARGS__)                   \
+      CONVERT_CASE(21, nn_float32, nn_int32, __VA_ARGS__)                   \
+      CONVERT_CASE(22, nn_float32, nn_float32, __VA_ARGS__)                 \
+      CONVERT_CASE(23, nn_float32, nn_float64, __VA_ARGS__)                 \
+      CONVERT_CASE(31, nn_float64, nn_int32, __VA_ARGS__)                   \
+      CONVERT_CASE(32, nn_float64, nn_float32, __VA_ARGS__)                 \
+      CONVERT_CASE(33, nn_float64, nn_float64, __VA_ARGS__)                 \
+                                                                            \
+      CONVERT_CASE(14, nn_int32, nn_int64, __VA_ARGS__)                     \
+      CONVERT_CASE(41, nn_int64, nn_int32, __VA_ARGS__)                     \
+      CONVERT_CASE(44, nn_int64, nn_int64, __VA_ARGS__)                     \
+                                                                            \
+      CONVERT_CASE(42, nn_int64, nn_float32, __VA_ARGS__)                   \
+      CONVERT_CASE(43, nn_int64, nn_float64, __VA_ARGS__)                   \
+      CONVERT_CASE(24, nn_float32, nn_int64, __VA_ARGS__)                   \
+      CONVERT_CASE(34, nn_float64, nn_int64, __VA_ARGS__)                   \
+                                                                            \
+      CONVERT_CASE(15, nn_int32, nn_bool, __VA_ARGS__)                      \
+      CONVERT_CASE(51, nn_bool, nn_int32, __VA_ARGS__)                      \
+      CONVERT_CASE(25, nn_float32, nn_bool, __VA_ARGS__)                    \
+      CONVERT_CASE(52, nn_bool, nn_float32, __VA_ARGS__)                    \
+      CONVERT_CASE(35, nn_float64, nn_bool, __VA_ARGS__)                    \
+      CONVERT_CASE(53, nn_bool, nn_float64, __VA_ARGS__)                    \
+      CONVERT_CASE(45, nn_int64, nn_bool, __VA_ARGS__)                      \
+      CONVERT_CASE(54, nn_bool, nn_int64, __VA_ARGS__)                      \
+      CONVERT_CASE(55, nn_bool, nn_bool, __VA_ARGS__)                       \
+      default:                                                              \
+        return Status(StatusCategory::NUMNET, StatusCode::MISMATCHED_DTYPE, \
+                      "Type convert failed.");                              \
+    }                                                                       \
+  }
+
 }  // namespace opr
 }  // namespace nncore

@@ -45,6 +45,16 @@ class OpBase {
 
   NN_FOREACH_DOUBLE_INPUT_OP(DEF_OP_DOUBLE_INPUT)
 
+  // The convert op is a single input op but has type convert.
+  // So we specially defined it manually here.
+ public:
+  virtual Status convert(const Tensor& inp, Tensor& oup,
+                         const param::convert& param) = 0;
+
+ protected:
+  Status deduce_layout_convert(Layout& inp, Layout& res,
+                               const param::convert& param);
+
   virtual ~OpBase() = default;
 };
 
@@ -58,6 +68,9 @@ class OpBase {
   Status OpBase::deduce_layout_##_name(Layout& a, Layout& b, Layout& res, \
                                        const param::_name& param)
 
+// If the oup tensor is not the owner of the memory, we cannot deduce and
+// relayout it. The responsibility of layout deduce belongs to the user. The
+// main user is csharp api.
 #define IMPL_OP_SINGLE_INPUT(_name)                                            \
  public:                                                                       \
   Status _name(const Tensor& inp, Tensor& oup, const param::_name& param) {    \
