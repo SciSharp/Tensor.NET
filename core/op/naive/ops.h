@@ -27,6 +27,9 @@ class OpNaiveImpl final : public OpBase {
  public:
   Status convert(const Tensor& inp, Tensor& oup, const param::convert& param) {
     Layout linp(inp.layout);
+    if (linp.dtype.is_same_with(oup.layout.dtype)) {
+      return Status::OK();
+    }
     if (oup.is_ptr_owner()) {
       Layout loup;
       nn_return_status_if_error(deduce_layout_convert(linp, loup, param));
