@@ -36,6 +36,7 @@
 | Add unit tests for C# part | Add unit tests for C# part | p0 | Complete ✅ |
 | Add Logger for C# part | Add Logger for C# part, in which new feature of C# 10 could be taken into account | p0 | Waiting 🔵 |
 | Add squeeze method | Add squeeze method in C#. | p0 | Waiting 🔵 |
+| Use attributes to support multithread of ops is a good idea. | idea | p0 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵
