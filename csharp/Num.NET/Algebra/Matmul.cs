@@ -4,7 +4,6 @@ using Numnet.Exceptions;
 
 namespace Numnet.Algebra{
     public static class MatmulExtension{
-
         public static Tensor Matmul(this Tensor lhs, Tensor rhs)
         {
             TensorLayout leftLayout = new TensorLayout(lhs.TLayout);
