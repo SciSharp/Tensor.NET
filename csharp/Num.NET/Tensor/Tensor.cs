@@ -30,6 +30,14 @@ namespace Numnet{
             TLayout = new TensorLayout(shape, dtype);
             TMemory = new TensorMemory<T>(shape.TotalElemCount());
         }
+        /// <summary>
+        /// Only used to generate a scalar.
+        /// </summary>
+        /// <param name="value"></param>
+        internal Tensor(T value){
+            TMemory = new TensorMemory<T>(new T[] { value });
+            TLayout = new TensorLayout(new int[] { 1 }, TensorTypeInfo.GetTypeInfo(typeof(T))._dtype);
+        }
         internal int IndicesToPosition(params int[] indices){
             if(indices.Length != TLayout.NDim){
                 throw new InvalidArgumentException($"Index does not have same dims with tensor, " + 
@@ -111,5 +119,7 @@ namespace Numnet{
             // r.Append("\n");
             return r.ToString();
         }
+
+        public static explicit operator Tensor<T>(T value) => new Tensor<T>(value);
     }
 }
