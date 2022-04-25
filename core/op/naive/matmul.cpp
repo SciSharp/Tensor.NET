@@ -30,11 +30,14 @@ IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(matmul) {
         for (nn_size j = 0; j < b1; j++) {
           TC r = TC(0);
           for (nn_size k = 0; k < a1; k++) {
-            nn_size a_pos = nc_offset_a + i * la.stride[pre_idx] + k;
-            nn_size b_pos = nc_offset_b + k * lb.stride[pre_idx] + j;
+            nn_size a_pos = nc_offset_a + i * la.stride[pre_idx] +
+                            k * la.stride[pre_idx + 1];
+            nn_size b_pos = nc_offset_b + k * lb.stride[pre_idx] +
+                            j * lb.stride[pre_idx + 1];
             r += ptr_a[a_pos] * ptr_b[b_pos];
           }
-          nn_size oup_pos = nc_offset_oup + i * loup.stride[pre_idx] + j;
+          nn_size oup_pos = nc_offset_oup + i * loup.stride[pre_idx] +
+                            j * loup.stride[pre_idx + 1];
           ptr_oup[oup_pos] = r;
         }
       }
