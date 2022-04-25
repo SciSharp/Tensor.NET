@@ -283,6 +283,17 @@ namespace Numnet{
             }
         }
 
+        internal bool CanBroadCastTo(TensorShape targetShape){
+            int targetNDim = targetShape.NDim;
+            if(targetNDim < NDim) return false;
+            for (int i = 0; i < targetNDim; i++) {
+                int cur_shape = i < NDim ? Shape[NDim - i - 1] : 1, cur_stride = i < NDim ? Stride[NDim - i - 1] : 0;
+                if (targetShape.Shape[targetNDim - i - 1] != cur_shape && cur_shape != 1 && cur_stride != 0)
+                    return false;
+            }
+            return true;
+        }
+
         internal void BroadcastInplace(TensorShape targetShape){
             int targetNDim = targetShape.NDim;
             if(NDim <= 0 || targetNDim <= 0){

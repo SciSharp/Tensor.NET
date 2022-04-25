@@ -1,6 +1,7 @@
 ﻿using Numnet;
 using Numnet.Algebra;
 using Numnet.Manipulation;
+using Numnet.Common;
 
 Tensor<int> a = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
 Tensor<double> b = Tensor.FromArray<double>(new double[]{1.2, 2.6, 3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6, 1.2, 2.6, 
@@ -22,7 +23,11 @@ Console.WriteLine(c);
 var s = c[1..3, ^5..^2];
 Console.WriteLine(s);
 
-Tensor<int> aa = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
+Tensor<int> aa = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 3, 2 });
+Tensor<int> bb = Tensor.FromArray<int>(new int[]{6, 5, 4, 3, 2, 1}, new int[] { 3, 2 });
 var cs = s.ToTensor<int>();
 Console.WriteLine(cs.Dim);
 Console.WriteLine(cs);
+
+var cc = InterElemOperation.Execute<int, int, int>(aa, bb, (x, y) => x * 2 - y);
+Console.WriteLine(cc);
