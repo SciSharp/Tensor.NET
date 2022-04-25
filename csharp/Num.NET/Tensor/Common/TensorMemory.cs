@@ -4,29 +4,34 @@ using System.Linq;
 using Numnet.Native;
 
 namespace Numnet.Common{
-    internal class TensorMemory{
-        private Memory<byte> _memory;
-        public TensorMemory(int length, DType dtype){
-            var size = TensorTypeInfo.GetTypeSize(dtype);
-            _memory = new byte[length * size];
+    internal interface ITensorMemory{
+        void Pin(out MemoryHandle handle);
+    }
+    internal class TensorMemory<T> : ITensorMemory where T : struct{
+        private Memory<T> _memory;
+        public TensorMemory(int length){
+            _memory = new T[length];
         }
-        public Span<T> AsSpan<T>() where T: struct{
-            return MemoryMarshal.Cast<byte, T>(_memory.Span);
+        public TensorMemory(T[] data, bool reuse = false){
+            if(reuse){
+                _memory = data;
+            }
+            else{
+                _memory = new T[data.Length];
+                data.CopyTo(AsSpan());
+            }
         }
-        internal Span<byte> AsSpan(){
+        public TensorMemory(Span<T> data){
+            data.CopyTo(AsSpan());
+        }
+        public Span<T> AsSpan(){
             return _memory.Span;
+        }
+        public Span<Byte> AsByteSpan(){
+            return MemoryMarshal.Cast<T, byte>(_memory.Span);
         }
         public void Pin(out MemoryHandle handle){
             handle = _memory.Pin();
-        }
-    }
-    internal class TensorMemory<T>:TensorMemory where T :struct
-    {
-        public TensorMemory(T[] data):base(data.Length, TensorTypeInfo.GetTypeInfo(typeof(T))._dtype){
-            data.CopyTo(AsSpan<T>());
-        }
-        public TensorMemory(Span<T> data):base(data.Length, TensorTypeInfo.GetTypeInfo(typeof(T))._dtype){
-            data.CopyTo(AsSpan<T>());
         }
     }
 }

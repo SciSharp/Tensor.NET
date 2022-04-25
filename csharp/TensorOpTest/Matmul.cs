@@ -15,28 +15,28 @@ public class MatmulTest
     [Test]
     public void Test1()
     {
-        Tensor a = Tensor.FromArray<int>(new int[] { 1, 2, 3, 4, 5, 6 }, new TensorShape(2, 3));
-        Tensor b = Tensor.FromArray<int>(new int[] { -1, 1, 2, 1, -1, 3 }, new TensorShape(3, 2));
-        Tensor t = Tensor.FromArray<int>(new int[] { 0, 12, 0, 27 }, new TensorShape(2, 2));
-        Tensor p = a.Matmul(b);
+        var a = Tensor.FromArray<int>(new int[] { 1, 2, 3, 4, 5, 6 }, new TensorShape(2, 3));
+        var b = Tensor.FromArray<int>(new int[] { -1, 1, 2, 1, -1, 3 }, new TensorShape(3, 2));
+        var t = Tensor.FromArray<int>(new int[] { 0, 12, 0, 27 }, new TensorShape(2, 2));
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test2()
     {
-        Tensor a = Tensor.FromArray<int>(new int[] { 1, 3, 5, 7, 9 }, new TensorShape(5, 1));
-        Tensor b = Tensor.FromArray<int>(new int[] { 2, 4, 6, 8, 10 }, new TensorShape(1, 5));
-        Tensor t = Tensor.FromArray<int>(new int[] { 2,  4,  6,  8,  10, 6,  12, 18, 24, 30, 10, 20, 30,
+        var a = Tensor.FromArray<int>(new int[] { 1, 3, 5, 7, 9 }, new TensorShape(5, 1));
+        var b = Tensor.FromArray<int>(new int[] { 2, 4, 6, 8, 10 }, new TensorShape(1, 5));
+        var t = Tensor.FromArray<int>(new int[] { 2,  4,  6,  8,  10, 6,  12, 18, 24, 30, 10, 20, 30,
                     40, 50, 14, 28, 42, 56, 70, 18, 36, 54, 72, 90 }, new TensorShape(5, 5));
-        Tensor p = a.Matmul(b);
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test3()
     {
-        Tensor a = Tensor.FromArray<double>(
+        var a = Tensor.FromArray<double>(
             new double[] { -8.437620268739593,  7.740016490265845,   -2.718748159717318,
                             4.076362360501086,   -11.623399100527902, 15.142754042231019,
                             -4.661652444132063,  19.803787411892657,  18.034918544512493,
@@ -57,7 +57,7 @@ public class MatmulTest
                             6.146827389030513,   -3.1127053415670645, -0.3788329301429343,
                             5.065047819715378,   -19.485494518339422, -7.790652261044851,
                             -15.76467722046241,  6.909490596651025,   4.4873495672112185 }, new TensorShape(1, 3, 4, 5));
-        Tensor b = Tensor.FromArray<double>(
+        var b = Tensor.FromArray<double>(
             new double[] { -7.5827876234067375, -6.13534310952798,   -24.61466531083513,
                             -29.340869427040992, -20.037274582710047, -4.86314945103641,
                             -11.253241065283067, -21.142395003734165, -15.938173042067664,
@@ -68,7 +68,7 @@ public class MatmulTest
                             15.072039322092493,  -1.996775358994629,  -19.848550070097502,
                             16.3165181043086,    -25.318784739981893, 16.939771280984424,
                             0.4214739129998719,  1.7633298382284686,  17.659133993124158 }, new TensorShape(2, 1, 5, 3));
-        Tensor t = Tensor.FromArray<double>(
+        var t = Tensor.FromArray<double>(
             new double[] { 204.6451028610454,   -245.47588653769554, 254.63190599885453,
                             -200.2528671581401,  -403.6714795350363,  -1037.0382604531853,
                             -100.41452696082848, 444.1237337203991,   -50.28014887069747,
@@ -93,15 +93,15 @@ public class MatmulTest
                             -597.8253632135093,  -247.82132339109492, -704.737830027385,
                             -201.36741048315838, -105.36851711908248, -275.5465735989572,
                             -539.9063120367825,  -649.9585535562818,  135.97787257080606 }, new TensorShape(2, 3, 4, 3));
-        Tensor p = a.Matmul(b);
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test4()
     {
-        Tensor a = Tensor.FromArray<double>(new double[] { 13.801236798018898, 0.20150833845125504, 4.106608693856746 }, new TensorShape(3));
-        Tensor b = Tensor.FromArray<double>(
+        var a = Tensor.FromArray<double>(new double[] { 13.801236798018898, 0.20150833845125504, 4.106608693856746 }, new TensorShape(3));
+        var b = Tensor.FromArray<double>(
             new double[] { -6.029940749041376, 20.753970138217923, -8.327858181118444,
                             -5.188661244672758, -9.050311859739129, 25.823909953964076,
                             24.2141803580204,   7.639806832295562,  22.544197020059514,
@@ -110,18 +110,18 @@ public class MatmulTest
                             -7.532337394669419, -21.94777113362987, -29.979519975059393,
                             27.491684686351228, 26.58821611324877,  7.474320930137196,
                             -20.15631608790095, -4.565966677821834, -3.5342800710705866 }, new TensorShape(2, 2, 3, 2));
-        Tensor t = Tensor.FromArray<double>(
+        var t = Tensor.FromArray<double>(
             new double[] { -122.06486238579787, 391.4335909966807, 348.1135285464756,
                             206.4382766323594, -407.9122636772442, 91.88104632149431,
                             362.1747498694832, 348.3746955852936 }, new TensorShape(2, 2, 1, 2));
-        Tensor p = a.Matmul(b);
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test5()
     {
-        Tensor a = Tensor.FromArray<double>(
+        var a = Tensor.FromArray<double>(
             new double[] { -6.863911328798498,  6.285950807000905,  -4.551999714397429,
                             2.9442452537987336,  7.518547665868375,  12.767654916974834,
                             -16.77109517963331,  3.498415848555169,  -18.854288913388295,
@@ -130,32 +130,32 @@ public class MatmulTest
                             -10.513158897654233, -7.516722402630762, 9.963182036346243,
                             18.06872709287783,   9.18873334694911,   18.883364891458918,
                             -9.276501048623139,  -6.907303739816237, -18.57553847557326 }, new TensorShape(3, 1, 2, 4));
-        Tensor b = Tensor.FromArray<double>(new double[] { 7.893349570547649, 20.824402386134224,
+        var b = Tensor.FromArray<double>(new double[] { 7.893349570547649, 20.824402386134224,
                                                            12.672536168019768, 18.002556060079307 }, new TensorShape(4));
-        Tensor t = Tensor.FromArray<double>(
+        var t = Tensor.FromArray<double>(
             new double[] { 72.04047666360029, 175.67342570179252, 217.1761421082951,
                            -83.73215691205462, 542.5424790165914, -466.06481963441973 }, new TensorShape(3, 1, 2, 1));
-        Tensor p = a.Matmul(b);
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test6()
     {
-        Tensor a = Tensor.FromArray<double>(new double[] { 99.89 }, new TensorShape(1, 1));
-        Tensor b = Tensor.FromArray<float>(new float[] { 65.32f }, new TensorShape(1, 1, 1));
-        Tensor t = Tensor.FromArray<double>(new double[] { 6524.8148 }, new TensorShape(1, 1, 1));
-        Tensor p = a.Matmul(b);
+        var a = Tensor.FromArray<double>(new double[] { 99.89 }, new TensorShape(1, 1));
+        var b = Tensor.FromArray<float>(new float[] { 65.32f }, new TensorShape(1, 1, 1));
+        var t = Tensor.FromArray<double>(new double[] { 6524.8148 }, new TensorShape(1, 1, 1));
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p, 1e-4));
     }
 
     [Test]
     public void Test7()
     {
-        Tensor a = Tensor.FromArray<double>(new double[] { 99.89 }, new TensorShape(1, 1, 1, 1));
-        Tensor b = Tensor.FromArray<float>(new float[] { 65.32f }, new TensorShape(1));
-        Tensor t = Tensor.FromArray<double>(new double[] { 6524.8148 }, new TensorShape(1, 1, 1, 1));
-        Tensor p = a.Matmul(b);
+        var a = Tensor.FromArray<double>(new double[] { 99.89 }, new TensorShape(1, 1, 1, 1));
+        var b = Tensor.FromArray<float>(new float[] { 65.32f }, new TensorShape(1));
+        var t = Tensor.FromArray<double>(new double[] { 6524.8148 }, new TensorShape(1, 1, 1, 1));
+        var p = a.Matmul(b);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p, 1e-4));
     }
 }

@@ -4,14 +4,76 @@ using Numnet.Exceptions;
 
 namespace Numnet.Algebra{
     public static class MatmulExtension{
-
-        public static Tensor Matmul(this Tensor lhs, Tensor rhs)
+        public static Tensor<T> Matmul<T>(this Tensor<T> lhs, Tensor<T> rhs) where T : struct{
+            return MatmulInternal<T, T, T>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<double> lhs, Tensor<int> rhs){
+            return MatmulInternal<double, int, double>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<double> lhs, Tensor<float> rhs){
+            return MatmulInternal<double, float, double>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<double> lhs, Tensor<long> rhs){
+            return MatmulInternal<double, long, double>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<double> lhs, Tensor<bool> rhs){
+            return MatmulInternal<double, bool, double>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<int> lhs, Tensor<double> rhs){
+            return MatmulInternal<int, double, double>(lhs, rhs);
+        }
+        public static Tensor<float> Matmul(this Tensor<int> lhs, Tensor<float> rhs){
+            return MatmulInternal<int, float, float>(lhs, rhs);
+        }
+        public static Tensor<long> Matmul(this Tensor<int> lhs, Tensor<long> rhs){
+            return MatmulInternal<int, long, long>(lhs, rhs);
+        }
+        public static Tensor<int> Matmul(this Tensor<int> lhs, Tensor<bool> rhs){
+            return MatmulInternal<int, bool, int>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<long> lhs, Tensor<double> rhs){
+            return MatmulInternal<long, double, double>(lhs, rhs);
+        }
+        public static Tensor<float> Matmul(this Tensor<long> lhs, Tensor<float> rhs){
+            return MatmulInternal<long, float, float>(lhs, rhs);
+        }
+        public static Tensor<long> Matmul(this Tensor<long> lhs, Tensor<int> rhs){
+            return MatmulInternal<long, int, long>(lhs, rhs);
+        }
+        public static Tensor<long> Matmul(this Tensor<long> lhs, Tensor<bool> rhs){
+            return MatmulInternal<long, bool, long>(lhs, rhs);
+        }
+        public static Tensor<float> Matmul(this Tensor<float> lhs, Tensor<long> rhs){
+            return MatmulInternal<float, long, float>(lhs, rhs);
+        }
+        public static Tensor<float> Matmul(this Tensor<float> lhs, Tensor<int> rhs){
+            return MatmulInternal<float, int, float>(lhs, rhs);
+        }
+        public static Tensor<float> Matmul(this Tensor<float> lhs, Tensor<bool> rhs){
+            return MatmulInternal<float, bool, float>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<float> lhs, Tensor<double> rhs){
+            return MatmulInternal<float, double, double>(lhs, rhs);
+        }
+        public static Tensor<double> Matmul(this Tensor<bool> lhs, Tensor<double> rhs){
+            return MatmulInternal<bool, double, double>(lhs, rhs);
+        }
+        public static Tensor<float> Matmul(this Tensor<bool> lhs, Tensor<float> rhs){
+            return MatmulInternal<bool, float, float>(lhs, rhs);
+        }
+        public static Tensor<long> Matmul(this Tensor<bool> lhs, Tensor<long> rhs){
+            return MatmulInternal<bool, long, long>(lhs, rhs);
+        }
+        public static Tensor<int> Matmul(this Tensor<bool> lhs, Tensor<int> rhs){
+            return MatmulInternal<bool, int, int>(lhs, rhs);
+        }
+        private static Tensor<TC> MatmulInternal<TA, TB, TC>(Tensor<TA> lhs, Tensor<TB> rhs) where TA : struct where TB : struct where TC : struct
         {
             TensorLayout leftLayout = new TensorLayout(lhs.TLayout);
             TensorLayout rightLayout = new TensorLayout(rhs.TLayout);
-            Tensor res = new Tensor(DeduceLayout(leftLayout, rightLayout));
+            Tensor<TC> res = new Tensor<TC>(DeduceLayout(leftLayout, rightLayout));
             res.TLayout.InitContiguousLayout();
-            IntPtr status = Tensor.Execute(NativeApi.Matmul, lhs.TMemory, rhs.TMemory, res.TMemory, leftLayout, rightLayout, res.TLayout, IntPtr.Zero, Tensor.Provider);
+            IntPtr status = NativeExecutor.Execute(NativeApi.Matmul, lhs.TMemory, rhs.TMemory, res.TMemory, leftLayout, rightLayout, res.TLayout, IntPtr.Zero, Tensor<TC>.Provider);
             NativeStatus.AssertOK(status);
             return res;
         }

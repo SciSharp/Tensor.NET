@@ -78,8 +78,8 @@ namespace Numnet{
         }
     }
 
-    public partial class Tensor{
-        public Tensor this[params Slice[] slices]{
+    public partial class Tensor<T> where T : struct{
+        public Tensor<T> this[params Slice[] slices]{
             get{
                 if(slices.Length > TLayout.NDim){
                     throw new InvalidArgumentException("Too many dims of slice.");
@@ -96,10 +96,10 @@ namespace Numnet{
                         layout.RemoveAxisInplace(i);
                     }
                 }
-                return new Tensor(TMemory, layout);
+                return new Tensor<T>(TMemory, layout);
             }
         }
-        public Tensor this[params Range[] slices]{
+        public Tensor<T> this[params Range[] slices]{
             get{
                 if(slices.Length > TLayout.NDim){
                     throw new InvalidArgumentException("Too many dims of slice.");
@@ -116,7 +116,7 @@ namespace Numnet{
                         layout.RemoveAxisInplace(i);
                     }
                 }
-                return new Tensor(TMemory, layout);
+                return new Tensor<T>(TMemory, layout);
             }
         }
     }

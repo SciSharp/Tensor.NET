@@ -15,41 +15,41 @@ public class TransposeTest
     [Test]
     public void Test1()
     {
-        Tensor s = Tensor.FromArray<int>(
+        var s = Tensor.FromArray<int>(
             new int[] { 116,  -50, 79,  -180, -28,  -96, -165, -27,  -2,  10,
                         -176, 113, -30, 122,  -116, -51, -48,  -142, 198, -108 }, new TensorShape(4, 5));
-        Tensor t = Tensor.FromArray<int>(
+        var t = Tensor.FromArray<int>(
             new int[] { 116, -96,  -176, -51, -50, -165, 113, -48, 79,   -27,
                         -30, -142, -180, -2,  122, 198,  -28, 10,  -116, -108 }, new TensorShape(5, 4));
-        Tensor p = s.Transpose(0, 1);
+        var p = s.Transpose(0, 1);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test2()
     {
-        Tensor s = Tensor.FromArray<int>(
+        var s = Tensor.FromArray<int>(
             new int[] { -149, 141, 6,    -5,   47,   -183, 95,  53,   -149, -129, 186,  99,
                         21,   84,  -14,  175,  -53,  62,   140, 59,   -14,  50,   -169, -189,
                         61,   -7,  129,  -125, 120,  -109, 118, 162,  -80,  58,   -91,  115,
                         127,  173, -140, -95,  0,    192,  66,  -83,  -188, -29,  -92,  -145,
                         -6,   6,   -149, 159,  155,  93,   -74, -147, -37,  182,  123,  -49,
                         112,  -23, -157, -73,  -182, -120, -45, 31,   -119, -2,   18,   -199 }, new TensorShape(3, 4, 6));
-        Tensor t = Tensor.FromArray<int>(
+        var t = Tensor.FromArray<int>(
             new int[] { -149, 61,   -6,   95,   118, -74,  21,  127,  112,  140,  66,   -45,
                         141,  -7,   6,    53,   162, -147, 84,  173,  -23,  59,   -83,  31,
                         6,    129,  -149, -149, -80, -37,  -14, -140, -157, -14,  -188, -119,
                         -5,   -125, 159,  -129, 58,  182,  175, -95,  -73,  50,   -29,  -2,
                         47,   120,  155,  186,  -91, 123,  -53, 0,    -182, -169, -92,  18,
                         -183, -109, 93,   99,   115, -49,  62,  192,  -120, -189, -145, -199 }, new TensorShape(6, 4, 3));
-        Tensor p = s.Transpose(0, 2);
+        var p = s.Transpose(0, 2);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 
     [Test]
     public void Test3()
     {
-        Tensor s = Tensor.FromArray<double>(
+        var s = Tensor.FromArray<double>(
             new double[] { -184.47836822007747, -135.77934833640774, -131.5692045780147,
                             -139.88637591883548, 7.378481161197385,   -194.85200685695676,
                             124.72624465928914,  135.32088057645922,  -149.63309464031306,
@@ -64,7 +64,7 @@ public class TransposeTest
                             20.311576166940227,  -15.716149646852216, 147.9009927690924,
                             152.8980211985887,   -195.4208022280849,  98.5139649928654,
                             16.655507860783615 }, new TensorShape(2, 1, 4, 5));
-        Tensor t = Tensor.FromArray<double>(
+        var t = Tensor.FromArray<double>(
             new double[] { -184.47836822007747, -17.19642705834329,  -135.77934833640774,
                             -177.23101755020787, -131.5692045780147,  126.42885351936985,
                             -139.88637591883548, 77.86682388216076,   7.378481161197385,
@@ -79,7 +79,7 @@ public class TransposeTest
                             152.8980211985887,   97.66633377665073,   -195.4208022280849,
                             68.78419424070898,   98.5139649928654,    181.3987014174778,
                             16.655507860783615 }, new TensorShape(4, 1, 5, 2));
-        Tensor p = s.Transpose(0, 2).Transpose(2, 3);
+        var p = s.Transpose(0, 2).Transpose(2, 3);
         Assert.IsTrue(TensorUtils.IsValueEqual(t, p));
     }
 }

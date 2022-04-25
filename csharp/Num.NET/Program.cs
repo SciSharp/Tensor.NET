@@ -8,7 +8,7 @@ Tensor<double> b = Tensor.FromArray<double>(new double[]{1.2, 2.6, 3.9, 4.1, 5.0
 a.BroadcastTo(new int[]{4, 3, 2});
 Console.WriteLine(a);
 
-Tensor c = a.Matmul(b);
+var c = a.Matmul(b);
 Console.WriteLine(c);
 c = c.Reshape(new int[] { 6, 8 });
 Console.WriteLine(c);
@@ -21,5 +21,3 @@ c[5, 7] = -888.0;
 Console.WriteLine(c);
 var s = c[1..3, ^5..^2];
 Console.WriteLine(s);
-
-Console.WriteLine(s.At<int>(0, 1));
