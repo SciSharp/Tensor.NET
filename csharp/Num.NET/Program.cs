@@ -31,3 +31,5 @@ Console.WriteLine(cs);
 
 var cc = InterElemOperation.Execute<int, int, int>(aa, bb, (x, y) => x * 2 - y);
 Console.WriteLine(cc);
+var nn = OnElemOperation.Execute<int, double>(cc, x => Math.Pow(x, 2));
+Console.WriteLine(nn);
