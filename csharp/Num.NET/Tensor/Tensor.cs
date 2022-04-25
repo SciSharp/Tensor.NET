@@ -48,10 +48,6 @@ namespace Numnet{
             return TMemory.AsSpan();
         }
 
-        public Tensor<TD> ToTensor<TD>() where TD : struct{
-            throw new NotImplementedException();
-        }
-
         public T this[params int[] index]{
             get{
                 return AsSpan()[IndicesToPosition(index)];

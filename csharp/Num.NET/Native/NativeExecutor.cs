@@ -19,7 +19,7 @@ namespace Numnet.Native{
                 {
                     dtype = layoutA.DType,
                     ndim = layoutA.NDim,
-                    offset = layoutA.Offset,
+                    offset = layoutA.Offset * TensorTypeInfo.GetTypeSize(layoutA.DType),
                     shape = new IntPtr(shapeAPtr),
                     stride = new IntPtr(strideAPtr),
                     data = new IntPtr(handleA.Pointer)
@@ -28,7 +28,7 @@ namespace Numnet.Native{
                 {
                     dtype = layoutB.DType,
                     ndim = layoutB.NDim,
-                    offset = layoutB.Offset,
+                    offset = layoutB.Offset * TensorTypeInfo.GetTypeSize(layoutB.DType),
                     shape = new IntPtr(shapeBPtr),
                     stride = new IntPtr(strideBPtr),
                     data = new IntPtr(handleB.Pointer)
@@ -37,7 +37,7 @@ namespace Numnet.Native{
                 {
                     dtype = layoutOup.DType,
                     ndim = layoutOup.NDim,
-                    offset = layoutOup.Offset,
+                    offset = layoutOup.Offset * TensorTypeInfo.GetTypeSize(layoutOup.DType),
                     shape = new IntPtr(shapeOupPtr),
                     stride = new IntPtr(strideOupPtr),
                     data = new IntPtr(handleOup.Pointer)
@@ -62,7 +62,7 @@ namespace Numnet.Native{
                 {
                     dtype = layoutInp.DType,
                     ndim = layoutInp.NDim,
-                    offset = layoutInp.Offset,
+                    offset = layoutInp.Offset * TensorTypeInfo.GetTypeSize(layoutInp.DType),
                     shape = new IntPtr(shapeInpPtr),
                     stride = new IntPtr(strideInpPtr),
                     data = new IntPtr(handleInp.Pointer)
@@ -71,7 +71,7 @@ namespace Numnet.Native{
                 {
                     dtype = layoutOup.DType,
                     ndim = layoutOup.NDim,
-                    offset = layoutOup.Offset,
+                    offset = layoutOup.Offset * TensorTypeInfo.GetTypeSize(layoutOup.DType),
                     shape = new IntPtr(shapeOupPtr),
                     stride = new IntPtr(strideOupPtr),
                     data = new IntPtr(handleOup.Pointer)

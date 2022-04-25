@@ -21,3 +21,8 @@ c[5, 7] = -888.0;
 Console.WriteLine(c);
 var s = c[1..3, ^5..^2];
 Console.WriteLine(s);
+
+Tensor<int> aa = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
+var cs = s.ToTensor<int>();
+Console.WriteLine(cs.Dim);
+Console.WriteLine(cs);

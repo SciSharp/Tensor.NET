@@ -86,6 +86,10 @@ namespace Numnet{
     public sealed partial class TensorLayout:TensorShape
     {
         public DType DType { get; internal set; }
+        /// <summary>
+        /// The offset here is by mean of element, while the offset in c++ means the offset of bytes.
+        /// So when calling native apis, a conversion needs to be done to interop.
+        /// </summary>
         public int Offset{ get; internal set; }
         public int[] Stride { get; internal set; } = new int[MAX_NDIM];
         public TensorLayout()

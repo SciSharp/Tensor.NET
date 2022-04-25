@@ -1,4 +1,6 @@
 #pragma once
+#include <iostream>
+
 #include "core/base/include/macro.h"
 #include "core/op/common/ops.h"
 
@@ -27,9 +29,6 @@ class OpNaiveImpl final : public OpBase {
  public:
   Status convert(const Tensor& inp, Tensor& oup, const param::convert& param) {
     Layout linp(inp.layout);
-    if (linp.dtype.is_same_with(oup.layout.dtype)) {
-      return Status::OK();
-    }
     if (oup.is_ptr_owner()) {
       Layout loup;
       nn_return_status_if_error(deduce_layout_convert(linp, loup, param));
@@ -38,6 +37,7 @@ class OpNaiveImpl final : public OpBase {
       TYPE_CONVERT_DEDUCE(linp.dtype.enumv(), loup.dtype.enumv(), linp, loup,
                           param);
     } else {
+      std::cout << "here." << std::endl;
       TYPE_CONVERT_DEDUCE(linp.dtype.enumv(), oup.layout.dtype.enumv(), linp,
                           oup.layout, param);
     }
