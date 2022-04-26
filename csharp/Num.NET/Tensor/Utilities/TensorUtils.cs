@@ -8,7 +8,7 @@ namespace Numnet{
             if(!a.TLayout.IsSameShape(b.TLayout)) return false;
             int[] indices = new int[a.TLayout.NDim];
             for (int i = 0; i < a.TLayout.TotalElemCount(); i++){
-                if(Math.Abs(Convert.ToDouble(a[indices]) - Convert.ToDouble(b[indices])) > err){
+                if(System.Math.Abs(Convert.ToDouble(a[indices]) - Convert.ToDouble(b[indices])) > err){
                     return false;
                 }
                 indices[a.TLayout.NDim - 1]++;

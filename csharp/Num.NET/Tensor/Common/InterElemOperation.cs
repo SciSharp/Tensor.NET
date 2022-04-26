@@ -5,7 +5,7 @@ namespace Numnet.Common{
         public static Tensor<TResult> Execute<TA, TB, TResult>(Tensor<TA> a, Tensor<TB> b, Func<TA, TB, TResult> operation) where TA : struct where TB : struct where TResult : struct{
             TensorLayout resLayout = new TensorLayout();
             resLayout.DType = TensorTypeInfo.GetTypeInfo(typeof(TResult))._dtype;
-            resLayout.NDim = Math.Max(a.TLayout.NDim, b.TLayout.NDim);
+            resLayout.NDim = System.Math.Max(a.TLayout.NDim, b.TLayout.NDim);
             for (int i = a.TLayout.NDim - 1, j = b.TLayout.NDim - 1, idx = resLayout.NDim - 1; i >= 0 || j >= 0; i--, j--, idx--){
                 if(i < 0){
                     resLayout.Shape[idx] = b.TLayout.Shape[j];

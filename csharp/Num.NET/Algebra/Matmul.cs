@@ -112,7 +112,7 @@ namespace Numnet.Algebra{
                         res.Shape[targetIdx] = lhs.Shape[aIdx];
                     else
                         res.Shape[targetIdx] =
-                            lhs.Shape[aIdx] == 1 ? Math.Max(rhs.Shape[bIdx], lhs.Shape[aIdx]) : lhs.Shape[aIdx];
+                            lhs.Shape[aIdx] == 1 ? System.Math.Max(rhs.Shape[bIdx], lhs.Shape[aIdx]) : lhs.Shape[aIdx];
                 } else if (aIdx < 0) {
                     res.Shape[targetIdx] = rhs.Shape[bIdx];
                 } else {

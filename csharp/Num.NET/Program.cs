@@ -2,6 +2,7 @@
 using Numnet.Algebra;
 using Numnet.Manipulation;
 using Numnet.Common;
+using Numnet.Math;
 
 Tensor<int> a = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
 Tensor<double> b = Tensor.FromArray<double>(new double[]{1.2, 2.6, 3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6, 1.2, 2.6, 
@@ -33,3 +34,6 @@ var cc = InterElemOperation.Execute<int, int, int>(aa, bb, (x, y) => x * 2 - y);
 Console.WriteLine(cc);
 var nn = OnElemOperation.Execute<int, double>(cc, x => Math.Pow(x, 2));
 Console.WriteLine(nn);
+
+var mm = nn.Add(nn);
+Console.WriteLine(mm);
