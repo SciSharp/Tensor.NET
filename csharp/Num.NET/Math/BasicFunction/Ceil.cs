@@ -6,10 +6,7 @@ namespace Numnet.Math{
             return OnElemOperation.Execute<double, double>(inp, x => System.Math.Ceiling(x));
         }
         public static Tensor<float> Ceil(this Tensor<float> inp){
-            return OnElemOperation.Execute<float, float>(inp, x =>{
-                int y = (int)x;
-                return x > y ? y + 1 : y;
-            });
+            return OnElemOperation.Execute<float, float>(inp, x => System.MathF.Ceiling(x));
         }
     }
 }

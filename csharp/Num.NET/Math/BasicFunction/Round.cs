@@ -6,10 +6,7 @@ namespace Numnet.Math{
             return OnElemOperation.Execute<double, double>(inp, x => System.Math.Round(x));
         }
         public static Tensor<float> Round(this Tensor<float> inp){
-            return OnElemOperation.Execute<float, float>(inp, x =>{
-                int y = (int)x;
-                return (x - y > 0.5f) ? y + 1 : y;
-            });
+            return OnElemOperation.Execute<float, float>(inp, x => System.MathF.Round(x));
         }
     }
 }
