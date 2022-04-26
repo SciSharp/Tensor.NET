@@ -12,7 +12,7 @@ template <typename TA, typename TB>
 Status OpNaiveImpl::convert_internal(const TA* inp, TB* oup, const Layout& linp,
                                      const Layout& loup,
                                      const param::convert& param) {
-  nn_size idx_offset = loup.ndim - 4;
+  nn_size idx_offset = loup.ndim - NN_MAX_NDIM;
   for (nn_size n = 0; n < (idx_offset == 0 ? loup[idx_offset] : 1); n++) {
     nn_size n_offset_inp = n * linp.stride[idx_offset];
     nn_size n_offset_oup = n * loup.stride[idx_offset];
