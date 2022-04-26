@@ -1,0 +1,16 @@
+
+public static Tensor<double> Floor(this Tensor<double> inp){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Floor(x));
+}
+public static Tensor<float> Floor(this Tensor<float> inp){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Floor(x));
+}
+public static Tensor<long> Floor(this Tensor<long> inp){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Floor(x));
+}
+public static Tensor<int> Floor(this Tensor<int> inp){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Floor(x));
+}
+public static Tensor<bool> Floor(this Tensor<bool> inp){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Floor(x));
+}

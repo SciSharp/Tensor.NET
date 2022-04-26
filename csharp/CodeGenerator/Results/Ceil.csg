@@ -1,0 +1,16 @@
+
+public static Tensor<double> Ceil(this Tensor<double> inp){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Ceil(x));
+}
+public static Tensor<float> Ceil(this Tensor<float> inp){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Ceil(x));
+}
+public static Tensor<long> Ceil(this Tensor<long> inp){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Ceil(x));
+}
+public static Tensor<int> Ceil(this Tensor<int> inp){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Ceil(x));
+}
+public static Tensor<bool> Ceil(this Tensor<bool> inp){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Ceil(x));
+}

@@ -13,7 +13,7 @@ namespace CodeGenerator{
             foreach(var typeInp in _types){
                 string typeRes = _targetType??typeInp;
                 builder.Append(@"
-public static Tensor<" + typeRes + @"> Add(this Tensor<" + typeInp + @"> inp" + (Parameters is null ? "": ", ") + 
+public static Tensor<" + typeRes + $"> {Name}(this Tensor<" + typeInp + @"> inp" + (Parameters is null ? "": ", ") + 
                                     (Parameters is null ? "": string.Join(',', Parameters)) + @"){
     return OnElemOperation.Execute<" + $"{typeInp}, {typeRes}" + $">(inp, x => {Expr});" + @"
 }");

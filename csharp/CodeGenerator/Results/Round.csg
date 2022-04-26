@@ -1,0 +1,16 @@
+
+public static Tensor<double> Round(this Tensor<double> inp){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Round(x));
+}
+public static Tensor<float> Round(this Tensor<float> inp){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Round(x));
+}
+public static Tensor<long> Round(this Tensor<long> inp){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Round(x));
+}
+public static Tensor<int> Round(this Tensor<int> inp){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Round(x));
+}
+public static Tensor<bool> Round(this Tensor<bool> inp){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Round(x));
+}
