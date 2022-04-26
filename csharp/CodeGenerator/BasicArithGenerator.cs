@@ -22,10 +22,9 @@ namespace CodeGenerator{
                         throw new System.Exception();
                     }
                     builder.Append(@"
-public static Tensor<" + typeRes + @"> Add(this Tensor<" + typeA + @"> a, Tensor<" + typeB + @"> b){
+public static Tensor<" + typeRes + $"> {Name}(this Tensor<" + typeA + @"> a, Tensor<" + typeB + @"> b){
     return InterElemOperation.Execute<" + $"{typeA}, {typeB}, {typeRes}" + $">(a, b, (x, y) => {Expr});" + @"
-}
-                    ");
+}");
                 }
             }
             return builder.ToString();
