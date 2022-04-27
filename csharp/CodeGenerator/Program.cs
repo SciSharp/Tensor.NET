@@ -65,3 +65,9 @@ var Log10Generator = new StaticUtilGenerator() {
     Name = "Log10", 
     Expr = "System.Math.Log10(x)" };
 CodeWriter.Write("Log10", Log10Generator.GetCode());
+
+var MaxGenerator = new BasicArithGenerator() { Name = "Max", Expr = "x > y ? x : y" };
+CodeWriter.Write("Max", MaxGenerator.GetCode());
+
+var MinGenerator = new BasicArithGenerator() { Name = "Min", Expr = "x > y ? y : x" };
+CodeWriter.Write("Min", MinGenerator.GetCode());
