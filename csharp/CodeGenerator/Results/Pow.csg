@@ -1,0 +1,31 @@
+
+public static Tensor<double> Pow(Tensor<double> inp, int y){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Pow(x, y));
+}
+public static Tensor<float> Pow(Tensor<float> inp, int y){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Pow(x, y));
+}
+public static Tensor<long> Pow(Tensor<long> inp, int y){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Pow(x, y));
+}
+public static Tensor<int> Pow(Tensor<int> inp, int y){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Pow(x, y));
+}
+public static Tensor<bool> Pow(Tensor<bool> inp, int y){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Pow(x, y));
+}
+public static Tensor<double> Pow(int y, Tensor<double> inp){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Pow(y, x));
+}
+public static Tensor<float> Pow(int y, Tensor<float> inp){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Pow(y, x));
+}
+public static Tensor<long> Pow(int y, Tensor<long> inp){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Pow(y, x));
+}
+public static Tensor<int> Pow(int y, Tensor<int> inp){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Pow(y, x));
+}
+public static Tensor<bool> Pow(int y, Tensor<bool> inp){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Pow(y, x));
+}

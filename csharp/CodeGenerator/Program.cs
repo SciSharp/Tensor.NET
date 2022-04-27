@@ -1,4 +1,5 @@
 ﻿using CodeGenerator;
+using System.Collections.Generic;
 
 var AddGenerator = new BasicArithGenerator() { Name = "Add", Expr = "x + y" };
 CodeWriter.Write("Add", AddGenerator.GetCode());
@@ -23,3 +24,13 @@ CodeWriter.Write("Ceil", CeilGenerator.GetCode());
 
 var RoundGenerator = new BasicFunctionGenerator() { Name = "Round", Expr = "System.Math.Round(x)" };
 CodeWriter.Write("Round", RoundGenerator.GetCode());
+
+var PowGenerator1 = new StaticUtilGenerator() { 
+    Name = "Pow", 
+    Parameters = new List<string>(new string[]{"int y"}), 
+    Expr = "System.Math.Pow(x, y)" };
+var PowGenerator2 = new ReversedStaticUtilGenerator() { 
+    Name = "Pow", 
+    Parameters = new List<string>(new string[]{"int y"}), 
+    Expr = "System.Math.Pow(y, x)" };
+CodeWriter.Write("Pow", PowGenerator1.GetCode() + PowGenerator2.GetCode());
