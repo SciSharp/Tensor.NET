@@ -55,3 +55,13 @@ var LogGenerator2 = new ReversedStaticUtilGenerator() {
     Parameters = new List<string>(new string[]{"double baseValue"}), 
     Expr = "System.Math.Log(x, baseValue)" };
 CodeWriter.Write("Log", LogGenerator1.GetCode() + LogGenerator2.GetCode());
+
+var Log2Generator = new StaticUtilGenerator() { 
+    Name = "Log2", 
+    Expr = "System.Math.Log2(x)" };
+CodeWriter.Write("Log2", Log2Generator.GetCode());
+
+var Log10Generator = new StaticUtilGenerator() { 
+    Name = "Log10", 
+    Expr = "System.Math.Log10(x)" };
+CodeWriter.Write("Log10", Log10Generator.GetCode());

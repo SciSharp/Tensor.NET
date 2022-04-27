@@ -1,0 +1,16 @@
+
+public static Tensor<double> Log2(Tensor<double> inp){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Log2(x));
+}
+public static Tensor<float> Log2(Tensor<float> inp){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Log2(x));
+}
+public static Tensor<long> Log2(Tensor<long> inp){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Log2(x));
+}
+public static Tensor<int> Log2(Tensor<int> inp){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Log2(x));
+}
+public static Tensor<bool> Log2(Tensor<bool> inp){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Log2(x));
+}
