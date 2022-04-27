@@ -1,0 +1,16 @@
+
+public static Tensor<double> Clamp(Tensor<double> inp, T min,T max){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Clamp(x, min, max));
+}
+public static Tensor<float> Clamp(Tensor<float> inp, T min,T max){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Clamp(x, min, max));
+}
+public static Tensor<long> Clamp(Tensor<long> inp, T min,T max){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Clamp(x, min, max));
+}
+public static Tensor<int> Clamp(Tensor<int> inp, T min,T max){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Clamp(x, min, max));
+}
+public static Tensor<bool> Clamp(Tensor<bool> inp, T min,T max){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Clamp(x, min, max));
+}

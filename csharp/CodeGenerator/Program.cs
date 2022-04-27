@@ -34,3 +34,9 @@ var PowGenerator2 = new ReversedStaticUtilGenerator() {
     Parameters = new List<string>(new string[]{"int y"}), 
     Expr = "System.Math.Pow(y, x)" };
 CodeWriter.Write("Pow", PowGenerator1.GetCode() + PowGenerator2.GetCode());
+
+var ClampGenerator = new StaticUtilGenerator(){
+    Name = "Clamp", 
+    Parameters = new List<string>(new string[]{"T min", "T max"}), 
+    Expr = "System.Math.Clamp(x, min, max)" };
+CodeWriter.Write("Clamp", ClampGenerator.GetCode());
