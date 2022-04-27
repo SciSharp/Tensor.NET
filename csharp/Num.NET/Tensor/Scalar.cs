@@ -3,13 +3,17 @@ using Numnet.Common;
 using Numnet.Exceptions;
 
 namespace Numnet{
-    public abstract class Scalar : IEquatable<Scalar>{
+    public class Scalar : IEquatable<Scalar>{
         public DType DataType{ get; internal set; }
         public Scalar<T> AsScalar<T>() where T : struct{
             return new Scalar<T>(GetValue<T>());
         }
-        public abstract T GetValue<T>() where T : struct;
-        public abstract void SetValue<T>(T value);
+        public virtual T GetValue<T>() where T : struct{
+            throw new NotImplementedException();
+        }
+        public virtual void SetValue<T>(T value){
+            throw new NotImplementedException();
+        }
         public static implicit operator Scalar(int value){
             return new Scalar<int>(value);
         }
@@ -346,23 +350,23 @@ namespace Numnet{
                 throw new InvalidArgumentException("Null value is not allowed to be set to scalar.");
             }
             if(typeof(T) == typeof(double)){
-                    Value = (T)(Convert.ToDouble(value) as ValueType);
-                }
-                else if(typeof(T) == typeof(float)){
-                    Value = (T)(Convert.ToSingle(value) as ValueType);
-                }
-                else if(typeof(T) == typeof(long)){
-                    Value = (T)(Convert.ToInt64(value) as ValueType);
-                }
-                else if(typeof(T) == typeof(int)){
-                    Value = (T)(Convert.ToInt32(value) as ValueType);
-                }
-                else if(typeof(T) == typeof(Boolean)){
-                    Value = (T)(Convert.ToBoolean(value) as ValueType);
-                }
-                else{
-                    throw new NotImplementedException();
-                }
+                Value = (T)(Convert.ToDouble(value) as ValueType);
+            }
+            else if(typeof(T) == typeof(float)){
+                Value = (T)(Convert.ToSingle(value) as ValueType);
+            }
+            else if(typeof(T) == typeof(long)){
+                Value = (T)(Convert.ToInt64(value) as ValueType);
+            }
+            else if(typeof(T) == typeof(int)){
+                Value = (T)(Convert.ToInt32(value) as ValueType);
+            }
+            else if(typeof(T) == typeof(Boolean)){
+                Value = (T)(Convert.ToBoolean(value) as ValueType);
+            }
+            else{
+                throw new NotImplementedException();
+            }
         }
     }
 }

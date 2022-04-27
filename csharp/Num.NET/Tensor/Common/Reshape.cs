@@ -1,7 +1,7 @@
 using Numnet.Common;
 
 namespace Numnet{
-    public partial class Tensor<T> where T : struct{
+    public partial class Tensor<T>{
         public Tensor<T> Reshape(Span<int> shape){
             return new Tensor<T>(this.TMemory, this.TLayout.Reshape(new TensorShape(shape), false));
         }

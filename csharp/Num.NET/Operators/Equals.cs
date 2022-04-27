@@ -3,7 +3,7 @@ using Numnet.Common;
 using Numnet.Native;
 
 namespace Numnet{
-    public partial class Tensor<T> where T : struct, IEquatable<T>, IConvertible{
+    public partial class Tensor<T>{
         public static Tensor<bool> operator==(Tensor<T> lhs, Tensor<double> rhs){
             return InterElemOperation.Execute<T, double, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) == y);
         }

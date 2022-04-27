@@ -37,3 +37,5 @@ Console.WriteLine(nn);
 
 var mm = nn.Add(nn);
 Console.WriteLine(mm);
+
+Console.WriteLine(mm > new Temp(15));

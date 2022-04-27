@@ -78,7 +78,7 @@ namespace Numnet{
         }
     }
 
-    public partial class Tensor<T> where T : struct{
+    public partial class Tensor<T>{
         public Tensor<T> this[params Slice[] slices]{
             get{
                 if(slices.Length > TLayout.NDim){
