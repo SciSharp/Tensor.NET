@@ -40,3 +40,8 @@ var ClampGenerator = new StaticUtilGenerator(){
     Parameters = new List<string>(new string[]{"T min", "T max"}), 
     Expr = "System.Math.Clamp(x, min, max)" };
 CodeWriter.Write("Clamp", ClampGenerator.GetCode());
+
+var ExpGenerator = new StaticUtilGenerator() { 
+    Name = "Exp", 
+    Expr = "System.Math.Exp(x)" };
+CodeWriter.Write("Exp", ExpGenerator.GetCode());
