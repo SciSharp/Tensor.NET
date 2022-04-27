@@ -1,8 +1,9 @@
 
 namespace Numnet.Common{
     public static class OnElemOperation{
-        public static Tensor<TResult> Execute<TInput, TResult>(Tensor<TInput> inp, Func<TInput, TResult> operation) where TInput : struct where TResult : struct{
-
+        public static Tensor<TResult> Execute<TInput, TResult>(Tensor<TInput> inp, Func<TInput, TResult> operation) 
+            where TInput : struct, IEquatable<TInput>, IConvertible 
+            where TResult : struct, IEquatable<TResult>, IConvertible{
             Tensor<TResult> res = new Tensor<TResult>(inp.TLayout);
             int idxOffset = res.TLayout.NDim - TensorLayout.MAX_NDIM;
             Span<TResult> spanRes = res.AsSpan();

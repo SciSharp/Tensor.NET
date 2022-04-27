@@ -1,7 +1,7 @@
 using Numnet.Common;
 
 namespace Numnet{
-    public partial class Tensor<T> where T : struct{
+    public partial class Tensor<T> where T : struct, IEquatable<T>, IConvertible{
         public Tensor<T> Broadcast(Span<int> targetShape){
             return new Tensor<T>(this.TMemory, this.TLayout.Broadcast(new TensorShape(targetShape)));
         }

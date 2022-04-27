@@ -6,7 +6,7 @@ using Numnet.Exceptions;
 using System.Runtime.InteropServices;
 
 namespace Numnet{
-    public partial class Tensor<T> where T : struct
+    public partial class Tensor<T> where T : struct, IEquatable<T>, IConvertible
     {
         internal TensorLayout TLayout{get; set; }
         internal TensorMemory<T> TMemory{ get; set; }

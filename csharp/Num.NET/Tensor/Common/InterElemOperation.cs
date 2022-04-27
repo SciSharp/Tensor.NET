@@ -2,7 +2,10 @@ using Numnet.Exceptions;
 
 namespace Numnet.Common{
     public static class InterElemOperation{
-        public static Tensor<TResult> Execute<TA, TB, TResult>(Tensor<TA> a, Tensor<TB> b, Func<TA, TB, TResult> operation) where TA : struct where TB : struct where TResult : struct{
+        public static Tensor<TResult> Execute<TA, TB, TResult>(Tensor<TA> a, Tensor<TB> b, Func<TA, TB, TResult> operation) 
+            where TA : struct, IEquatable<TA>, IConvertible 
+            where TB : struct, IEquatable<TB>, IConvertible 
+            where TResult : struct, IEquatable<TResult>, IConvertible{
             TensorLayout resLayout = new TensorLayout();
             resLayout.DType = TensorTypeInfo.GetTypeInfo(typeof(TResult))._dtype;
             resLayout.NDim = System.Math.Max(a.TLayout.NDim, b.TLayout.NDim);

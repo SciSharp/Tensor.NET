@@ -4,7 +4,7 @@ using Numnet.Exceptions;
 
 namespace Numnet.Algebra{
     public static class MatmulExtension{
-        public static Tensor<T> Matmul<T>(this Tensor<T> lhs, Tensor<T> rhs) where T : struct{
+        public static Tensor<T> Matmul<T>(this Tensor<T> lhs, Tensor<T> rhs) where T : struct, IEquatable<T>, IConvertible{
             return MatmulInternal<T, T, T>(lhs, rhs);
         }
         public static Tensor<double> Matmul(this Tensor<double> lhs, Tensor<int> rhs){
@@ -67,7 +67,10 @@ namespace Numnet.Algebra{
         public static Tensor<int> Matmul(this Tensor<bool> lhs, Tensor<int> rhs){
             return MatmulInternal<bool, int, int>(lhs, rhs);
         }
-        private static Tensor<TC> MatmulInternal<TA, TB, TC>(Tensor<TA> lhs, Tensor<TB> rhs) where TA : struct where TB : struct where TC : struct
+        private static Tensor<TC> MatmulInternal<TA, TB, TC>(Tensor<TA> lhs, Tensor<TB> rhs) 
+        where TA : struct, IEquatable<TA>, IConvertible
+        where TB : struct, IEquatable<TB>, IConvertible
+        where TC : struct, IEquatable<TC>, IConvertible
         {
             TensorLayout leftLayout = new TensorLayout(lhs.TLayout);
             TensorLayout rightLayout = new TensorLayout(rhs.TLayout);
