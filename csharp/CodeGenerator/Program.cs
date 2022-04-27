@@ -45,3 +45,13 @@ var ExpGenerator = new StaticUtilGenerator() {
     Name = "Exp", 
     Expr = "System.Math.Exp(x)" };
 CodeWriter.Write("Exp", ExpGenerator.GetCode());
+
+var LogGenerator1 = new StaticUtilGenerator() { 
+    Name = "Log", 
+    Parameters = new List<string>(new string[]{"double y"}), 
+    Expr = "System.Math.Log(y, x)" };
+var LogGenerator2 = new ReversedStaticUtilGenerator() { 
+    Name = "Log", 
+    Parameters = new List<string>(new string[]{"double baseValue"}), 
+    Expr = "System.Math.Log(x, baseValue)" };
+CodeWriter.Write("Log", LogGenerator1.GetCode() + LogGenerator2.GetCode());

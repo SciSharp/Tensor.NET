@@ -1,0 +1,31 @@
+
+public static Tensor<double> Log(Tensor<double> inp, double y){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Log(y, x));
+}
+public static Tensor<float> Log(Tensor<float> inp, double y){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Log(y, x));
+}
+public static Tensor<long> Log(Tensor<long> inp, double y){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Log(y, x));
+}
+public static Tensor<int> Log(Tensor<int> inp, double y){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Log(y, x));
+}
+public static Tensor<bool> Log(Tensor<bool> inp, double y){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Log(y, x));
+}
+public static Tensor<double> Log(double baseValue, Tensor<double> inp){
+    return OnElemOperation.Execute<double, double>(inp, x => System.Math.Log(x, baseValue));
+}
+public static Tensor<float> Log(double baseValue, Tensor<float> inp){
+    return OnElemOperation.Execute<float, float>(inp, x => System.Math.Log(x, baseValue));
+}
+public static Tensor<long> Log(double baseValue, Tensor<long> inp){
+    return OnElemOperation.Execute<long, long>(inp, x => System.Math.Log(x, baseValue));
+}
+public static Tensor<int> Log(double baseValue, Tensor<int> inp){
+    return OnElemOperation.Execute<int, int>(inp, x => System.Math.Log(x, baseValue));
+}
+public static Tensor<bool> Log(double baseValue, Tensor<bool> inp){
+    return OnElemOperation.Execute<bool, bool>(inp, x => System.Math.Log(x, baseValue));
+}
