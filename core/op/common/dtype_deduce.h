@@ -76,12 +76,23 @@ namespace opr {
   cb(nn_bool, nn_int64, nn_int64, __VA_ARGS__);        \
   cb(nn_bool, nn_bool, nn_bool, __VA_ARGS__);
 
+#define TYPE_SELECT_SELF_MODIFY(_type, _name)                      \
+  if (t.layout.dtype.is_ctype<_type>()) {                          \
+    nn_return_status_if_error(                                     \
+        _name##_internal<_type>(t.ptr<_type>(), t.layout, param)); \
+    return Status::OK();                                           \
+  }
+
 #define TYPE_SELECT_SINGLE_INPUT(_type, _name, _loup)             \
   if (_loup.dtype.is_ctype<_type>()) {                            \
     nn_return_status_if_error(_name##_internal<_type>(            \
         inp.ptr<_type>(), oup.ptr<_type>(), linp, _loup, param)); \
     return Status::OK();                                          \
   }
+
+#define SPECIFY_SELF_MODIFY_OP_INTERNAL(_type, _class_name, _op_name) \
+  template Status _class_name::_op_name##_internal<_type>(            \
+      _type * t, const Layout& layout, const param::_op_name& param);
 
 #define SPECIFY_SINGLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name)     \
   template Status _class_name::_op_name##_internal<_type>(                  \

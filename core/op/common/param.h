@@ -38,6 +38,13 @@ struct convert {
   convert(DTypeEnum target_type) : target_type(target_type) {}
 };
 
+struct normal {
+  double avg;
+  double std;
+
+  normal(double avg, double std) : avg(avg), std(std) {}
+};
+
 struct matmul {};
 
 struct dot {};

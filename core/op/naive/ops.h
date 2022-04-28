@@ -21,6 +21,8 @@ class OpNaiveImpl final : public OpBase {
     return &instance;
   }
 
+  NN_FOREACH_SELF_MODIFY_OP(IMPL_OP_SELF_MODIFY)
+
   NN_FOREACH_SINGLE_INPUT_OP(IMPL_OP_SINGLE_INPUT)
 
   NN_FOREACH_DOUBLE_INPUT_OP(IMPL_OP_DOUBLE_INPUT)
@@ -48,6 +50,14 @@ class OpNaiveImpl final : public OpBase {
   Status convert_internal(const TA* inp, TB* oup, const Layout& linp,
                           const Layout& loup, const param::convert& param);
 };
+
+#define IMPL_NAIVE_SELF_MODIFY_INTERNAL(_name)                              \
+  NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SELF_MODIFY_OP_INTERNAL, OpNaiveImpl, \
+                              _name)                                        \
+                                                                            \
+  template <typename T>                                                     \
+  Status OpNaiveImpl::_name##_internal(T* t, const Layout& layout,          \
+                                       const param::_name& param)
 
 #define IMPL_NAIVE_SINGLE_INPUT_INTERNAL(_name)                                \
   NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SINGLE_OUTPUT_OP_INTERNAL, OpNaiveImpl,  \

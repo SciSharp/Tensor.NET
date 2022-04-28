@@ -12,6 +12,8 @@ namespace opr {
 
 using namespace param;
 
+#define NN_FOREACH_SELF_MODIFY_OP(cb) cb(normal)
+
 #define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(transpose) cb(permute)
 
 #define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot)
@@ -21,6 +23,10 @@ using namespace param;
 
 #define NN_FOREACH_DOUBLE_INPUT_OP_WITH_PARAM(cb, ...) \
   cb(matmul, __VA_ARGS__) cb(dot, __VA_ARGS__)
+
+#define DEF_OP_SELF_MODIFY(_name) \
+ public:                          \
+  virtual Status _name(Tensor& t, const param::_name& param) = 0;
 
 #define DEF_OP_SINGLE_INPUT(_name)                       \
  public:                                                 \
@@ -41,6 +47,8 @@ using namespace param;
                                const param::_name& param);
 
 class OpBase {
+  NN_FOREACH_SELF_MODIFY_OP(DEF_OP_SELF_MODIFY)
+
   NN_FOREACH_SINGLE_INPUT_OP(DEF_OP_SINGLE_INPUT)
 
   NN_FOREACH_DOUBLE_INPUT_OP(DEF_OP_DOUBLE_INPUT)
@@ -67,6 +75,23 @@ class OpBase {
 #define IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(_name)                            \
   Status OpBase::deduce_layout_##_name(Layout& a, Layout& b, Layout& res, \
                                        const param::_name& param)
+
+#define IMPL_OP_SELF_MODIFY(_name)                                         \
+ public:                                                                   \
+  Status _name(Tensor& t, const param::_name& param) {                     \
+    if (!t.is_mutable()) {                                                 \
+      return Status(                                                       \
+          StatusCategory::NUMNET, StatusCode::RUNTIME_EXCEPTION,           \
+          "Self-modify op could only be used to create the Tensor, which " \
+          "means the current tensor should be mutable.");                  \
+    }                                                                      \
+    NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SELF_MODIFY, _name)            \
+    return Status::OK();                                                   \
+  }                                                                        \
+                                                                           \
+  template <typename T>                                                    \
+  Status _name##_internal(T* ptr, const Layout& layout,                    \
+                          const param::_name& param);
 
 // If the oup tensor is not the owner of the memory, we cannot deduce and
 // relayout it. The responsibility of layout deduce belongs to the user. The
