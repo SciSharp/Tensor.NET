@@ -45,6 +45,13 @@ struct normal {
   normal(double avg, double std) : avg(avg), std(std) {}
 };
 
+struct uniform {
+  double min_value;
+  double max_value;
+  uniform(double min_value, double max_value)
+      : min_value(min_value), max_value(max_value) {}
+};
+
 struct matmul {};
 
 struct dot {};
