@@ -5,6 +5,7 @@ namespace Numnet.Native{
     internal class NativeExecutor{
         internal delegate IntPtr DoubleInputOperation(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
         internal delegate IntPtr SingleInputOperation(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
+        internal delegate IntPtr SelfModifyOperation(IntPtr t, IntPtr param, NativeProvider provider);
         private NativeExecutor() { }
         unsafe internal static IntPtr Execute(DoubleInputOperation func, ITensorMemory a, ITensorMemory b, ITensorMemory oup, 
                             TensorLayout layoutA, TensorLayout layoutB, TensorLayout layoutOup, IntPtr param, NativeProvider provider){
@@ -80,6 +81,27 @@ namespace Numnet.Native{
             }
             handleInp.Dispose();
             handleOup.Dispose();
+            return status;
+        }
+
+        unsafe internal static IntPtr Execute(SelfModifyOperation func, ITensorMemory tm, TensorLayout layout, IntPtr param, NativeProvider provider){
+            MemoryHandle mhandle;
+            tm.Pin(out mhandle);
+            IntPtr status;
+            fixed(int* shapeInpPtr = layout.Shape, shapeOupPtr = layout.Shape, 
+                        strideInpPtr = layout.Stride, strideOupPtr = layout.Stride){
+                NativeTensor nativeTensor = new NativeTensor()
+                {
+                    dtype = layout.DType,
+                    ndim = layout.NDim,
+                    offset = layout.Offset * TensorTypeInfo.GetTypeSize(layout.DType),
+                    shape = new IntPtr(shapeInpPtr),
+                    stride = new IntPtr(strideInpPtr),
+                    data = new IntPtr(mhandle.Pointer)
+                };
+                status = func(new IntPtr(&nativeTensor), param, provider);
+            }
+            mhandle.Dispose();
             return status;
         }
     }

@@ -14,4 +14,8 @@ namespace Numnet.Native.Param{
     internal struct TypeConvertParam{
         internal DType targetType;
     }
+    internal struct NormalParam{
+        internal double mean;
+        internal double std;
+    }
 }

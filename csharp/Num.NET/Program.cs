@@ -38,4 +38,5 @@ Console.WriteLine(nn);
 var mm = nn.Add(nn);
 Console.WriteLine(mm);
 
-Console.WriteLine(mm > new Temp(15));
+var gaussian = Tensor.Normal<bool>(new TensorShape(5, 6), 0, 2);
+Console.WriteLine(gaussian);

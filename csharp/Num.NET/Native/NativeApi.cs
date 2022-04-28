@@ -18,5 +18,8 @@ namespace Numnet.Native{
         public static extern IntPtr Transpose(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         public static extern IntPtr TypeConvert(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
+
+        [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
+        public static extern IntPtr Normal(IntPtr t, IntPtr param, NativeProvider provider);
     }
 }
