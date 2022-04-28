@@ -21,5 +21,7 @@ namespace Numnet.Native{
 
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         public static extern IntPtr Normal(IntPtr t, IntPtr param, NativeProvider provider);
+        [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
+        public static extern IntPtr Uniform(IntPtr t, IntPtr param, NativeProvider provider);
     }
 }

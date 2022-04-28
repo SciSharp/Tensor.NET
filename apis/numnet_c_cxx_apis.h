@@ -56,6 +56,8 @@ Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
 
 Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider);
 
+Status* Uniform(NativeTensor* nt, param::uniform* param, ProviderEnum provider);
+
 #if __cplusplus
 }
 #endif

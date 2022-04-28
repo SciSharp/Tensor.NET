@@ -38,5 +38,7 @@ Console.WriteLine(nn);
 var mm = nn.Add(nn);
 Console.WriteLine(mm);
 
-var gaussian = Tensor.Normal<bool>(new TensorShape(5, 6), 0, 2);
+var gaussian = Tensor.Normal<int>(new TensorShape(5, 6), 0, 5);
 Console.WriteLine(gaussian);
+var avg = Tensor.Uniform<int>(new TensorShape(5, 6), -5, 5);
+Console.WriteLine(avg);

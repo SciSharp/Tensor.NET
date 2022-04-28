@@ -18,4 +18,8 @@ namespace Numnet.Native.Param{
         internal double mean;
         internal double std;
     }
+    internal struct UniformParam{
+        internal double minValue;
+        internal double maxValue;
+    }
 }

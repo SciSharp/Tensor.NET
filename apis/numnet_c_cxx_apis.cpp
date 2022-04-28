@@ -176,3 +176,20 @@ Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider) {
     return new Status(status);
   }
 }
+
+Status* Uniform(NativeTensor* nt, param::uniform* param,
+                ProviderEnum provider) {
+  Tensor t;
+  nt->ToTensor(t, true);
+  OpBase* impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->uniform(t, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
