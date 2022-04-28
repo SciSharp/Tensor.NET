@@ -24,7 +24,6 @@ public class BroadcastTest
     public void Test1()
     {
         foreach(var (inp, truth) in _map){
-            Console.WriteLine(inp.Broadcast(truth.Shape));
             Assert.IsTrue(TensorUtils.IsValueEqual(inp.Broadcast(truth.Shape), truth));
         }
     }

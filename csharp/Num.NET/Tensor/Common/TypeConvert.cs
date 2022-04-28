@@ -6,7 +6,6 @@ namespace Numnet{
     public partial class Tensor<T>{
         public Tensor<TD> ToTensor<TD>() where TD : struct, IEquatable<TD>, IConvertible{
             Tensor<TD> res = new Tensor<TD>(new TensorLayout(TLayout, TensorTypeInfo.GetTypeInfo(typeof(TD))._dtype));
-            Console.WriteLine($"res dim : {res.Dim}");
             TypeConvertInternal(TMemory, res.TMemory, TLayout, res.TLayout);
             return res;
         }

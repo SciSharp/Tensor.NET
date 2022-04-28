@@ -335,7 +335,6 @@ namespace Numnet{
                 return (V)(Convert.ToInt32(Value) as ValueType);
             }
             else{
-                Console.WriteLine(typeof(V));
                 throw new NotImplementedException();
             }
         }

@@ -37,7 +37,6 @@ namespace Numnet.Native{
 
 
         public static StatusCode GetErrorCode(IntPtr status){
-            Console.WriteLine("Get!");
             return status == IntPtr.Zero?StatusCode.OK : NativeApi.GetErrorCode(status);
         }
 

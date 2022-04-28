@@ -39,7 +39,6 @@ class OpNaiveImpl final : public OpBase {
       TYPE_CONVERT_DEDUCE(linp.dtype.enumv(), loup.dtype.enumv(), linp, loup,
                           param);
     } else {
-      std::cout << "here." << std::endl;
       TYPE_CONVERT_DEDUCE(linp.dtype.enumv(), oup.layout.dtype.enumv(), linp,
                           oup.layout, param);
     }

@@ -71,10 +71,7 @@ void print_data(const Tensor& src) {
   std::cout << std::endl;
 }
 
-int GetErrorCode(Status* status) {
-  std::cout << "Jump in code to get error code." << std::endl;
-  return status->code();
-}
+int GetErrorCode(Status* status) { return status->code(); }
 
 const char* GetErrorMessage(Status* status) {
   return status->error_message().c_str();
@@ -147,7 +144,6 @@ Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
   oup->ToTensor(t_oup, true);
-  print_data<double>(t_inp);
   OpBase* impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
