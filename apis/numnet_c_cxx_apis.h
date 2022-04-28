@@ -21,7 +21,7 @@ struct NativeTensor {
   nn_size* stride;
   void* data;
 
-  void ToTensor(Tensor& t, bool is_mutable = true) {
+  void ToTensor(Tensor& t, bool is_mutable) {
     t.reset_ptr(data, offset, is_mutable, false);
     t.layout.ndim = ndim;
     memcpy(t.layout.shape, shape, sizeof(nn_size) * ndim);
@@ -53,6 +53,8 @@ Status* Transpose(NativeTensor* inp, NativeTensor* oup, param::transpose* param,
 
 Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
                     ProviderEnum provider);
+
+Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider);
 
 #if __cplusplus
 }

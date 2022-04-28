@@ -110,7 +110,7 @@ Status* Permute(NativeTensor* inp, NativeTensor* oup, param::permute* param,
                 ProviderEnum provider) {
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
-  oup->ToTensor(t_oup, false);
+  oup->ToTensor(t_oup, true);
   OpBase* impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
@@ -128,7 +128,7 @@ Status* Transpose(NativeTensor* inp, NativeTensor* oup, param::transpose* param,
                   ProviderEnum provider) {
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
-  oup->ToTensor(t_oup, false);
+  oup->ToTensor(t_oup, true);
   OpBase* impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
@@ -146,7 +146,7 @@ Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
                     ProviderEnum provider) {
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
-  oup->ToTensor(t_oup, false);
+  oup->ToTensor(t_oup, true);
   print_data<double>(t_inp);
   OpBase* impl = GetImpl(provider);
   if (impl == nullptr) {
@@ -154,6 +154,22 @@ Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
                       "Unsupported provider.");
   }
   auto status = impl->convert(t_inp, t_oup, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
+Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider) {
+  Tensor t;
+  nt->ToTensor(t, true);
+  OpBase* impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->normal(t, *param);
   if (status.is_ok()) {
     return nullptr;
   } else {

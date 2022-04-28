@@ -115,7 +115,9 @@ struct Tensor {
 
   void reset_ptr(void *ptr, nn_size offset, bool is_mutable, bool is_owner);
 
-  bool is_ptr_owner() { return m_ref_ptr.is_owned(); }
+  bool is_ptr_owner() const { return m_ref_ptr.is_owned(); }
+
+  bool is_mutable() const { return m_ref_ptr.is_mutable(); }
 
  private:
   RefPtr m_ref_ptr;
