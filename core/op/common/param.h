@@ -57,6 +57,11 @@ struct eye {
   eye(int k) : k(k) {}
 };
 
+struct fill {
+  double value;
+  fill(double value) : value(value) {}
+};
+
 struct matmul {};
 
 struct dot {};
