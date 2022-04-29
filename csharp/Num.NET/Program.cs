@@ -45,3 +45,6 @@ Console.WriteLine(avg);
 
 var eye = Tensor.Eye<int>(4, 5, 2);
 Console.WriteLine(eye);
+
+eye.Fill(258);
+Console.WriteLine(eye);

@@ -25,4 +25,7 @@ namespace Numnet.Native.Param{
     internal struct EyeParam{
         internal int k;
     }
+    internal struct FillParam{
+        internal double value;
+    }
 }

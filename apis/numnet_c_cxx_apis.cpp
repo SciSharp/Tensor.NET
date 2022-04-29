@@ -205,3 +205,19 @@ Status* Eye(NativeTensor* nt, param::eye* param, ProviderEnum provider) {
     return new Status(status);
   }
 }
+
+Status* Fill(NativeTensor* nt, param::fill* param, ProviderEnum provider) {
+  Tensor t;
+  nt->ToTensor(t, true);
+  OpBase* impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->fill(t, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}

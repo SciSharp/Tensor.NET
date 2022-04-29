@@ -60,6 +60,8 @@ Status* Uniform(NativeTensor* nt, param::uniform* param, ProviderEnum provider);
 
 Status* Eye(NativeTensor* nt, param::eye* param, ProviderEnum provider);
 
+Status* Fill(NativeTensor* nt, param::fill* param, ProviderEnum provider);
+
 #if __cplusplus
 }
 #endif
