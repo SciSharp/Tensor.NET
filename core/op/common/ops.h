@@ -12,7 +12,7 @@ namespace opr {
 
 using namespace param;
 
-#define NN_FOREACH_SELF_MODIFY_OP(cb) cb(normal) cb(uniform)
+#define NN_FOREACH_SELF_MODIFY_OP(cb) cb(normal) cb(uniform) cb(eye)
 
 #define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(transpose) cb(permute)
 

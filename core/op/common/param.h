@@ -52,6 +52,11 @@ struct uniform {
       : min_value(min_value), max_value(max_value) {}
 };
 
+struct eye {
+  int k;
+  eye(int k) : k(k) {}
+};
+
 struct matmul {};
 
 struct dot {};
