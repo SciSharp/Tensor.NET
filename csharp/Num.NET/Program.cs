@@ -42,3 +42,6 @@ var gaussian = Tensor.Normal<int>(new TensorShape(5, 6), 0, 5);
 Console.WriteLine(gaussian);
 var avg = Tensor.Uniform<int>(new TensorShape(5, 6), -5, 5);
 Console.WriteLine(avg);
+
+var eye = Tensor.Eye<int>(4, 5, 2);
+Console.WriteLine(eye);

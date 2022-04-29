@@ -58,6 +58,8 @@ Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider);
 
 Status* Uniform(NativeTensor* nt, param::uniform* param, ProviderEnum provider);
 
+Status* Eye(NativeTensor* nt, param::eye* param, ProviderEnum provider);
+
 #if __cplusplus
 }
 #endif

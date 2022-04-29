@@ -22,4 +22,7 @@ namespace Numnet.Native.Param{
         internal double minValue;
         internal double maxValue;
     }
+    internal struct EyeParam{
+        internal int k;
+    }
 }
