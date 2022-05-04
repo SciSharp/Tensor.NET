@@ -7,7 +7,7 @@ using opr::OpBase;
 
 /***************Common Implementations****************/
 
-opr::OpBase* GetImpl(ProviderEnum provider) {
+opr::OpBase *GetImpl(ProviderEnum provider) {
   if (provider == ProviderEnum::Naive) {
     return opr::naive::OpNaiveImpl::get_instance();
   } else {
@@ -15,17 +15,18 @@ opr::OpBase* GetImpl(ProviderEnum provider) {
   }
 }
 
-template <typename ctype>
-void print_data(const Tensor& src) {
+template <typename ctype> void print_data(const Tensor &src) {
   auto get_real_pos = [&src](int idx) {
     int res = 0;
     int mod = 1;
-    for (int i = src.layout.ndim - 1; i >= 1; i--) mod *= src.layout.shape[i];
+    for (int i = src.layout.ndim - 1; i >= 1; i--)
+      mod *= src.layout.shape[i];
     for (int i = 0; i < src.layout.ndim; i++) {
       int shape = idx / mod;
       idx -= shape * mod;
       res += shape * src.layout.stride[i];
-      if (i < src.layout.ndim - 1) mod /= src.layout.shape[i + 1];
+      if (i < src.layout.ndim - 1)
+        mod /= src.layout.shape[i + 1];
     }
     return res;
   };
@@ -47,7 +48,8 @@ void print_data(const Tensor& src) {
 
     std::cout << ptr[get_real_pos(i)];
 
-    if ((i + 1) % src.layout.shape[src.layout.ndim - 1] != 0) std::cout << ",";
+    if ((i + 1) % src.layout.shape[src.layout.ndim - 1] != 0)
+      std::cout << ",";
 
     std::cout << " ";
     mod = 1;
@@ -71,26 +73,26 @@ void print_data(const Tensor& src) {
   std::cout << std::endl;
 }
 
-int GetErrorCode(Status* status) { return status->code(); }
+int GetErrorCode(Status *status) { return status->code(); }
 
-const char* GetErrorMessage(Status* status) {
+const char *GetErrorMessage(Status *status) {
   return status->error_message().c_str();
 }
 
-void FreeStatusMemory(Status* status) {
+void FreeStatusMemory(Status *status) {
   free(status);
   status = nullptr;
 }
 
 /*************Operator Implementations*************/
 
-Status* Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup,
-               param::matmul* param, ProviderEnum provider) {
+Status *Matmul(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
+               param::matmul *param, ProviderEnum provider) {
   Tensor t_a, t_b, t_oup;
   a->ToTensor(t_a, false);
   b->ToTensor(t_b, false);
   oup->ToTensor(t_oup, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -103,12 +105,12 @@ Status* Matmul(NativeTensor* a, NativeTensor* b, NativeTensor* oup,
   }
 }
 
-Status* Permute(NativeTensor* inp, NativeTensor* oup, param::permute* param,
+Status *Permute(NativeTensor *inp, NativeTensor *oup, param::permute *param,
                 ProviderEnum provider) {
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
   oup->ToTensor(t_oup, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -121,12 +123,12 @@ Status* Permute(NativeTensor* inp, NativeTensor* oup, param::permute* param,
   }
 }
 
-Status* Transpose(NativeTensor* inp, NativeTensor* oup, param::transpose* param,
+Status *Transpose(NativeTensor *inp, NativeTensor *oup, param::transpose *param,
                   ProviderEnum provider) {
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
   oup->ToTensor(t_oup, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -139,12 +141,12 @@ Status* Transpose(NativeTensor* inp, NativeTensor* oup, param::transpose* param,
   }
 }
 
-Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
+Status *TypeConvert(NativeTensor *inp, NativeTensor *oup, param::convert *param,
                     ProviderEnum provider) {
   Tensor t_inp, t_oup;
   inp->ToTensor(t_inp, false);
   oup->ToTensor(t_oup, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -157,10 +159,10 @@ Status* TypeConvert(NativeTensor* inp, NativeTensor* oup, param::convert* param,
   }
 }
 
-Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider) {
+Status *Normal(NativeTensor *nt, param::normal *param, ProviderEnum provider) {
   Tensor t;
   nt->ToTensor(t, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -173,11 +175,11 @@ Status* Normal(NativeTensor* nt, param::normal* param, ProviderEnum provider) {
   }
 }
 
-Status* Uniform(NativeTensor* nt, param::uniform* param,
+Status *Uniform(NativeTensor *nt, param::uniform *param,
                 ProviderEnum provider) {
   Tensor t;
   nt->ToTensor(t, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -190,10 +192,10 @@ Status* Uniform(NativeTensor* nt, param::uniform* param,
   }
 }
 
-Status* Eye(NativeTensor* nt, param::eye* param, ProviderEnum provider) {
+Status *Eye(NativeTensor *nt, param::eye *param, ProviderEnum provider) {
   Tensor t;
   nt->ToTensor(t, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
@@ -206,15 +208,32 @@ Status* Eye(NativeTensor* nt, param::eye* param, ProviderEnum provider) {
   }
 }
 
-Status* Fill(NativeTensor* nt, param::fill* param, ProviderEnum provider) {
+Status *Fill(NativeTensor *nt, param::fill *param, ProviderEnum provider) {
   Tensor t;
   nt->ToTensor(t, true);
-  OpBase* impl = GetImpl(provider);
+  OpBase *impl = GetImpl(provider);
   if (impl == nullptr) {
     return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
                       "Unsupported provider.");
   }
   auto status = impl->fill(t, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
+Status *Linspace(NativeTensor *nt, param::linspace *param,
+                 ProviderEnum provider) {
+  Tensor t;
+  nt->ToTensor(t, true);
+  OpBase *impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->linspace(t, *param);
   if (status.is_ok()) {
     return nullptr;
   } else {

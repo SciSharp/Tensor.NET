@@ -28,4 +28,10 @@ namespace Numnet.Native.Param{
     internal struct FillParam{
         internal double value;
     }
+    internal struct LinspaceParam{
+        internal double start;
+        internal double stop;
+        internal int num;
+        internal bool isEndpoint;
+    }
 }

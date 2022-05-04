@@ -48,3 +48,6 @@ Console.WriteLine(eye);
 
 eye.Fill(258);
 Console.WriteLine(eye);
+
+var linspace = Tensor.Linspace<double>(0, 10, 5);
+Console.WriteLine(linspace);
