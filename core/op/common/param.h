@@ -15,10 +15,10 @@ struct transpose {
 };
 
 struct permute {
-  nn_size* dims;
+  nn_size *dims;
 
-  permute(const std::vector<nn_size>& value) {
-    dims = (nn_size*)malloc(sizeof(nn_size) * NN_MAX_NDIM);
+  permute(const std::vector<nn_size> &value) {
+    dims = (nn_size *)malloc(sizeof(nn_size) * NN_MAX_NDIM);
     memcpy(dims, value.data(), value.size() * sizeof(nn_size));
   }
 
@@ -27,9 +27,9 @@ struct permute {
     dims = nullptr;
   }
 
- private:
-  permute(const permute&) {}
-  void operator=(const permute&) {}
+private:
+  permute(const permute &) {}
+  void operator=(const permute &) {}
 };
 
 struct convert {
@@ -62,9 +62,19 @@ struct fill {
   fill(double value) : value(value) {}
 };
 
+struct linspace {
+  double start;
+  double stop;
+  int num;
+  bool is_endpoint;
+
+  linspace(double start, double stop, int num, bool is_endpoint)
+      : start(start), stop(stop), num(num), is_endpoint(is_endpoint) {}
+};
+
 struct matmul {};
 
 struct dot {};
-}  // namespace param
+} // namespace param
 
-}  // namespace nncore
+} // namespace nncore

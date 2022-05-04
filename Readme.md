@@ -40,6 +40,7 @@
 | Add concat method | Add squeeze method and op. | p0 | Waiting 🔵 |
 | Use attributes to support multithread of ops is a good idea. | idea | p0 | Waiting 🔵 |
 | Use attributes to control the provider. | idea | p0 | Waiting 🔵 |
+| Use c++20 format in macros   | idea | p1 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵
