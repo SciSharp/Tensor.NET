@@ -54,9 +54,9 @@ Console.WriteLine(linspace);
 
 var ones = Tensor.Ones<int>(new int[] { 2, 3 });
 Console.WriteLine(ones);
-var onesd = Tensor.Ones<double>(new int[] { 2, 3 });
-Console.WriteLine(onesd);
-var onesf = Tensor.Zeros<float>(new int[] { 2, 3 });
-Console.WriteLine(onesf);
-var onesb = Tensor.Ones<bool>(new int[] { 2, 3 });
-Console.WriteLine(onesb);
+ones = ones.Unsqueeze(1);
+Console.WriteLine(ones);
+ones = ones.Unsqueeze(3);
+Console.WriteLine(ones);
+ones = ones.Squeeze();
+Console.WriteLine(ones);

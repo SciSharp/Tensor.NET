@@ -292,6 +292,31 @@ namespace Numnet{
             }
         }
 
+        internal TensorLayout RemoveAxis(int axis){
+            var res = new TensorLayout(this);
+            res.RemoveAxisInplace(axis);
+            return res;
+        }
+
+        internal void AddAxisInplace(int axis, int shape, int stride) {
+            if(NDim + 1 > MAX_NDIM){
+                throw new InvalidArgumentException($"can not add axis at {axis} (current ndim is {NDim}, MAX_NDIM is {MAX_NDIM})");
+            }
+            NDim++;
+            for (int i = NDim- 1; i > axis; i--) {
+                Shape[i] = Shape[i - 1];
+                Stride[i] = Stride[i - 1];
+            }
+            Shape[axis] = shape;
+            Stride[axis] = stride;
+        }
+
+        internal TensorLayout AddAxis(int axis, int shape, int stride){
+            var res = new TensorLayout(this);
+            res.AddAxisInplace(axis, shape, stride);
+            return res;
+        }
+
         internal bool CanBroadCastTo(TensorShape targetShape){
             int targetNDim = targetShape.NDim;
             if(targetNDim < NDim) return false;

@@ -34,9 +34,8 @@
 | Type deduce in C# part | Add type deduce of C# part | p0 | Complete ✅ |
 | Design exceptions in C# part | Design exceptions in C# part | p0 | Complete ✅ |
 | Add unit tests for C# part | Add unit tests for C# part | p0 | Complete ✅ |
-| Add Logger for C# part | Add Logger for C# part, in which new feature of C# 10 could be taken into account | p0 | Waiting 🔵 |
-| Add squeeze method | Add squeeze method in C#. | p0 | Waiting 🔵 |
-| Add unsqueeze method | Add unsqueeze method in C#. | p0 | Waiting 🔵 |
+| Add squeeze method | Add squeeze method in C#. | p0 | Complete ✅ |
+| Add unsqueeze method | Add unsqueeze method in C#. | p0 | Complete ✅ |
 | Add concat method | Add squeeze method and op. | p0 | Waiting 🔵 |
 | Use attributes to support multithread of ops is a good idea. | idea | p0 | Waiting 🔵 |
 | Use attributes to control the provider. | idea | p0 | Waiting 🔵 |
