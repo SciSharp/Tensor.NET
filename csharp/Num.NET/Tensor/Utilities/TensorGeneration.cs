@@ -6,11 +6,6 @@ using Numnet.Common;
 namespace Numnet{
     public partial class Tensor
     {
-        public static Tensor<T> Zeros<T>(int[] shape) where T : struct, IEquatable<T>, IConvertible{
-            Tensor<T> res = new Tensor<T>(new TensorLayout(shape, TensorTypeInfo.GetTypeInfo(typeof(T))._dtype));
-            res.TMemory.AsByteSpan().Fill(0);
-            return res;
-        }
         public static Tensor<T> FromSpan<T>(Span<T> data, TensorShape shape) where T : struct, IEquatable<T>, IConvertible{
             if(shape.TotalElemCount() != data.Length){
                 // TODO

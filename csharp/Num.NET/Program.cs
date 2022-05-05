@@ -51,3 +51,12 @@ Console.WriteLine(eye);
 
 var linspace = Tensor.Linspace<double>(0, 10, 5);
 Console.WriteLine(linspace);
+
+var ones = Tensor.Ones<int>(new int[] { 2, 3 });
+Console.WriteLine(ones);
+var onesd = Tensor.Ones<double>(new int[] { 2, 3 });
+Console.WriteLine(onesd);
+var onesf = Tensor.Zeros<float>(new int[] { 2, 3 });
+Console.WriteLine(onesf);
+var onesb = Tensor.Ones<bool>(new int[] { 2, 3 });
+Console.WriteLine(onesb);
