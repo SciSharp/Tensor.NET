@@ -1,12 +1,11 @@
-using System.Buffers;
 using Numnet.Native;
 using System.Text;
 using Numnet.Common;
 using Numnet.Exceptions;
-using System.Runtime.InteropServices;
+using System.Collections;
 
 namespace Numnet{
-    public partial class Tensor<T> where T : struct, IEquatable<T>, IConvertible
+    public partial class Tensor<T> : IEnumerable, IEnumerable<T> where T : struct, IEquatable<T>, IConvertible
     {
         internal TensorLayout TLayout{get; set; }
         internal TensorMemory<T> TMemory{ get; set; }
@@ -64,6 +63,20 @@ namespace Numnet{
                 AsSpan()[IndicesToPosition(index)] = value;
             }
         }
+
+        // Returns an enumerator for this list with the given
+        // permission for removal of elements. If modifications made to the list
+        // while an enumeration is in progress, the MoveNext and
+        // GetObject methods of the enumerator will throw an exception.
+        //
+        public TensorEnumerator<T> GetEnumerator()
+            => new TensorEnumerator<T>(this);
+ 
+        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+            => new TensorEnumerator<T>(this);
+ 
+        IEnumerator IEnumerable.GetEnumerator()
+            => new TensorEnumerator<T>(this);
 
         public override string ToString()
         {

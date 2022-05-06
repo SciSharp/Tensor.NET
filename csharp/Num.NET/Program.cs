@@ -3,6 +3,7 @@ using Numnet.Algebra;
 using Numnet.Manipulation;
 using Numnet.Common;
 using Numnet.Math;
+using System.Text;
 
 Tensor<int> a = Tensor.FromArray<int>(new int[]{1, 2, 3, 4, 5, 6}, new int[] { 1, 3, 2 });
 Tensor<double> b = Tensor.FromArray<double>(new double[]{1.2, 2.6, 3.9, 4.1, 5.0, 6.5, 1.7, 2, 3, 4, 5, 6, 1.2, 2.6, 
@@ -60,3 +61,12 @@ ones = ones.Unsqueeze(3);
 Console.WriteLine(ones);
 ones = ones.Squeeze();
 Console.WriteLine(ones);
+
+var e = Tensor.Eye<int>(4, 5, 1);
+Console.WriteLine(e);
+var eList = e.ToList();
+StringBuilder builder = new StringBuilder();
+foreach(var item in eList){
+    builder.Append($"{item} ");
+}
+Console.WriteLine(builder.ToString());
