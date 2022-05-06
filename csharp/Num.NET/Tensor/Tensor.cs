@@ -5,7 +5,7 @@ using Numnet.Exceptions;
 using System.Collections;
 
 namespace Numnet{
-    public partial class Tensor<T> : IEnumerable, IEnumerable<T> where T : struct, IEquatable<T>, IConvertible
+    public partial class Tensor<T> : IEnumerable, IEnumerable<T>, ICloneable where T : struct, IEquatable<T>, IConvertible
     {
         internal TensorLayout TLayout{get; set; }
         internal TensorMemory<T> TMemory{ get; set; }
@@ -77,6 +77,10 @@ namespace Numnet{
  
         IEnumerator IEnumerable.GetEnumerator()
             => new TensorEnumerator<T>(this);
+
+        public object Clone(){
+            return new Tensor<T>(new TensorMemory<T>(TMemory.AsSpan()), new TensorLayout(TLayout));
+        }
 
         public override string ToString()
         {

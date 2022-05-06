@@ -14,23 +14,22 @@
 | Add naive op ```dot``` | Add naive implementation for op ```dot``` | p0 | Waiting 🔵 |
 | Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | Complete ✅ |
 | Add naive op ```permute``` | Add naive implementation for op ```permute``` | p0 | Complete ✅ |
-| Add naive op ```add``` | Add naive implementation for op ```add``` | p0 | Waiting 🔵 |
-| Add naive op ```sub``` | Add naive implementation for op ```sub``` | p0 | Waiting 🔵 |
-| Add naive op ```mul``` | Add naive implementation for op ```mul``` | p0 | Waiting 🔵 |
-| Add naive op ```div``` | Add naive implementation for op ```div``` | p0 | Waiting 🔵 |
+| Add naive op ```add``` | Add naive implementation for op ```add``` | p0 | Complete ✅ |
+| Add naive op ```sub``` | Add naive implementation for op ```sub``` | p0 | Complete ✅ |
+| Add naive op ```mul``` | Add naive implementation for op ```mul``` | p0 | Complete ✅ |
+| Add naive op ```div``` | Add naive implementation for op ```div``` | p0 | Complete ✅ |
 | Add ```type_deduce``` | Add deduce method for type of layout to decide the ```dtype``` of the output Array. | p0 | Complete ✅ |
 | Add ```Status``` | Add a status struct to tell the caller if the call success and return error message if failed. | p0 | Complete ✅ |
 | Define actions on Debug and Release mode | define different actions for one expr on different mode. For instance, ```nn_assert``` should not take action on release mode | p0 | Waiting 🔵 |
 | Add ```Checker``` for test | Add a checker class to judge if the pred and result are matched. | p0 | On going 🚀 |
 | Add Process for overflow | Add process to deal with overflow, show user NAN instead of completely wrong data. | p0 | Waiting 🔵 |
-| Automatically squeeze the shape of scalar to one-dim | Mainly for result of matmul. | p2 | Waiting 🔵 |
-| Add ```slice``` | Add support of ```slice``` | p0 | Waiting 🔵 |
+| Add ```slice``` | Add support of ```slice``` | p0 | Complete ✅ |
 | Add CSharp interop | Test CSharp interop, with a few basic apis | p0 | Complete ✅ |
 | Add Serialization for .npy file | Provide interface to serialize and deserialize with .npy files | p0 | Waiting 🔵 |
 | Support reading of excel | Provide interface to read and write with .csv and excel file | p1 | Waiting 🔵 |
 | Support type convert | Support type convert of ```Tensor``` | p0 | On going 🚀 |
 | Type deduce for double-input ops | Add type deduce of double-input ops in c++ part | p2 | Complete ✅ |
-| Add self-manipulated type ops | Except for single input and double input ops, there are some ops directly manipulating itself's data, such as IDentity, Ones and so on. | p0 | Waiting 🔵 |
+| Add self-manipulated type ops | Except for single input and double input ops, there are some ops directly manipulating itself's data, such as IDentity, Ones and so on. | p0 | Complete ✅ |
 | Type deduce in C# part | Add type deduce of C# part | p0 | Complete ✅ |
 | Design exceptions in C# part | Design exceptions in C# part | p0 | Complete ✅ |
 | Add unit tests for C# part | Add unit tests for C# part | p0 | Complete ✅ |
