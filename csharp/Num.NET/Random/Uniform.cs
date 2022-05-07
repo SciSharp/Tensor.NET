@@ -12,7 +12,7 @@ namespace Numnet{
         /// <param name="minValue"></param>
         /// <param name="maxValue"></param>
         /// <returns></returns>
-        public static Tensor<T> Uniform<T>(TensorShape shape, double minValue = .0, double maxValue = .1) where T : struct, IConvertible, IEquatable<T>{
+        public static Tensor<T> Uniform<T>(TensorShape shape, double minValue = .0, double maxValue = 1.0) where T : struct, IConvertible, IEquatable<T>{
             Tensor<T> res = new Tensor<T>(shape, TensorTypeInfo.GetTypeInfo(typeof(T))._dtype);
             UniformInternal<T>(res, minValue, maxValue);
             return res;
