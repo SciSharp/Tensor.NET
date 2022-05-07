@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "core/base/include/status.h"
 #include "core/base/include/tensor.h"
@@ -12,7 +13,8 @@ namespace opr {
 
 using namespace param;
 
-#define NN_FOREACH_SELF_MODIFY_OP(cb) cb(normal) cb(uniform) cb(eye) cb(fill) cb(linspace)
+#define NN_FOREACH_SELF_MODIFY_OP(cb) \
+  cb(normal) cb(uniform) cb(eye) cb(fill) cb(linspace)
 
 #define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(transpose) cb(permute)
 
@@ -62,6 +64,14 @@ class OpBase {
  protected:
   Status deduce_layout_convert(Layout& inp, Layout& res,
                                const param::convert& param);
+
+ public:
+  virtual Status concat(const std::vector<const Tensor*>& inp, Tensor& oup,
+                        const param::concat& param) = 0;
+
+ protected:
+  Status deduce_layout_concat(const std::vector<const Tensor*>& inp,
+                              Layout& res, const param::concat& param);
 
   virtual ~OpBase() = default;
 };

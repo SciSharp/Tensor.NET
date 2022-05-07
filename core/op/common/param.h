@@ -27,7 +27,7 @@ struct permute {
     dims = nullptr;
   }
 
-private:
+ private:
   permute(const permute &) {}
   void operator=(const permute &) {}
 };
@@ -72,9 +72,15 @@ struct linspace {
       : start(start), stop(stop), num(num), is_endpoint(is_endpoint) {}
 };
 
+struct concat {
+  int axis;
+
+  concat(int axis) : axis(axis) {}
+};
+
 struct matmul {};
 
 struct dot {};
-} // namespace param
+}  // namespace param
 
-} // namespace nncore
+}  // namespace nncore

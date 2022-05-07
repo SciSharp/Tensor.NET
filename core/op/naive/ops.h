@@ -48,6 +48,25 @@ class OpNaiveImpl final : public OpBase {
   template <typename TA, typename TB>
   Status convert_internal(const TA* inp, TB* oup, const Layout& linp,
                           const Layout& loup, const param::convert& param);
+
+ public:
+  Status concat(const std::vector<const Tensor*>& inp, Tensor& oup,
+                const param::concat& param) {
+    if (oup.is_ptr_owner()) {
+      Layout loup;
+      nn_return_status_if_error(deduce_layout_concat(inp, loup, param));
+      loup.init_contiguous_stride();
+      oup.relayout(loup);
+      NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_CONCAT, loup)
+    } else {
+      NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_CONCAT, oup.layout)
+    }
+    return Status::OK();
+  }
+
+  template <typename T>
+  Status concat_internal(const std::vector<const Tensor*>& inp, T* oup,
+                         const Layout& loup, const param::concat& param);
 };
 
 #define IMPL_NAIVE_SELF_MODIFY_INTERNAL(_name)                              \

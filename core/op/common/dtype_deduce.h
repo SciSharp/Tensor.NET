@@ -90,6 +90,13 @@ namespace opr {
     return Status::OK();                                          \
   }
 
+#define TYPE_SELECT_CONCAT(_type, _loup)                              \
+  if (_loup.dtype.is_ctype<_type>()) {                                \
+    nn_return_status_if_error(                                        \
+        concat_internal<_type>(inp, oup.ptr<_type>(), _loup, param)); \
+    return Status::OK();                                              \
+  }
+
 #define SPECIFY_SELF_MODIFY_OP_INTERNAL(_type, _class_name, _op_name) \
   template Status _class_name::_op_name##_internal<_type>(            \
       _type * t, const Layout& layout, const param::_op_name& param);
