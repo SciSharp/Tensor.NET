@@ -1,5 +1,4 @@
 using Numnet.Common;
-using Numnet.Manipulation;
 using Numnet.Native.Param;
 using Numnet.Native;
 

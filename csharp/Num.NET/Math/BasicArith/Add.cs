@@ -1,6 +1,6 @@
 using Numnet.Common;
 
-namespace Numnet.Math{
+namespace Numnet{
     public static class AddExtension{
         public static Tensor<double> Add(this Tensor<double> a, Tensor<double> b){
             return InterElemOperation.Execute<double, double, double>(a, b, (x, y) => x + y);

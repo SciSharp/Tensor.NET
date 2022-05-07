@@ -3,7 +3,7 @@ using Numnet.Native;
 using Numnet.Exceptions;
 using Numnet.Native.Param;
 
-namespace Numnet.Manipulation{
+namespace Numnet{
     public static class TransposeExtension{
 
         public static Tensor<T> Transpose<T>(this Tensor<T> src, int dimA, int dimB) where T : struct, IEquatable<T>, IConvertible

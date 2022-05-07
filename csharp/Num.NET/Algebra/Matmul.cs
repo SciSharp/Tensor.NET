@@ -2,7 +2,7 @@ using Numnet.Common;
 using Numnet.Native;
 using Numnet.Exceptions;
 
-namespace Numnet.Algebra{
+namespace Numnet{
     public static class MatmulExtension{
         public static Tensor<T> Matmul<T>(this Tensor<T> lhs, Tensor<T> rhs) where T : struct, IEquatable<T>, IConvertible{
             return MatmulInternal<T, T, T>(lhs, rhs);

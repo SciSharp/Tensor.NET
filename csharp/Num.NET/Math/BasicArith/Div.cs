@@ -1,6 +1,6 @@
 using Numnet.Common;
 
-namespace Numnet.Math{
+namespace Numnet{
     public static class DivExtension{
         public static Tensor<double> Div(this Tensor<double> a, Tensor<double> b){
             return InterElemOperation.Execute<double, double, double>(a, b, (x, y) => x / y);

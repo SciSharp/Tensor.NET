@@ -3,7 +3,7 @@ using Numnet.Native;
 using Numnet.Exceptions;
 using Numnet.Native.Param;
 
-namespace Numnet.Manipulation{
+namespace Numnet{
     public static class PermuteExtension{
 
         public static Tensor<T> Permute<T>(this Tensor<T> src, params int[] dims) where T : struct, IEquatable<T>, IConvertible

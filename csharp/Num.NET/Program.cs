@@ -1,6 +1,4 @@
 ﻿using Numnet;
-using Numnet.Algebra;
-using Numnet.Manipulation;
 using Numnet.Common;
 using Numnet.Math;
 using System.Text;

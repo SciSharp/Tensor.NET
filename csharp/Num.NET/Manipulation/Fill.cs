@@ -3,7 +3,7 @@ using Numnet.Native;
 using Numnet.Exceptions;
 using Numnet.Native.Param;
 
-namespace Numnet.Manipulation{
+namespace Numnet{
     public static class FillExtension{
 
         public static void Fill<T>(this Tensor<T> src, T value) where T : struct, IEquatable<T>, IConvertible
