@@ -34,4 +34,7 @@ namespace Numnet.Native.Param{
         internal int num;
         internal bool isEndpoint;
     }
+    internal struct ConcatParam{
+        internal int axis;
+    }
 }

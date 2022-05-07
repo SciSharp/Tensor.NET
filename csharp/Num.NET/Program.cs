@@ -70,3 +70,12 @@ foreach(var item in eList){
     builder.Append($"{item} ");
 }
 Console.WriteLine(builder.ToString());
+
+var ta = Tensor.Uniform<int>(new int[] { 2, 3, 3 }, 0, 50);
+var tb = Tensor.Uniform<int>(new int[] { 2, 2, 3 }, 0, 50);
+var tc = Tensor.Uniform<int>(new int[] { 2, 4, 3 }, 0, 50);
+var tconcat = Tensor.Concat(new Tensor<int>[] { ta, tb, tc }, 1);
+Console.WriteLine(ta);
+Console.WriteLine(tb);
+Console.WriteLine(tc);
+Console.WriteLine(tconcat);

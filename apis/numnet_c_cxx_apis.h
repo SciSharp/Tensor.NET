@@ -54,6 +54,9 @@ Status *Transpose(NativeTensor *inp, NativeTensor *oup, param::transpose *param,
 Status *TypeConvert(NativeTensor *inp, NativeTensor *oup, param::convert *param,
                     ProviderEnum provider);
 
+Status *Concat(NativeTensor *inp, int size, NativeTensor *oup,
+               param::concat *param, ProviderEnum provider);
+
 Status *Normal(NativeTensor *nt, param::normal *param, ProviderEnum provider);
 
 Status *Uniform(NativeTensor *nt, param::uniform *param, ProviderEnum provider);

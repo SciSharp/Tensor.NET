@@ -15,18 +15,17 @@ opr::OpBase *GetImpl(ProviderEnum provider) {
   }
 }
 
-template <typename ctype> void print_data(const Tensor &src) {
+template <typename ctype>
+void print_data(const Tensor &src) {
   auto get_real_pos = [&src](int idx) {
     int res = 0;
     int mod = 1;
-    for (int i = src.layout.ndim - 1; i >= 1; i--)
-      mod *= src.layout.shape[i];
+    for (int i = src.layout.ndim - 1; i >= 1; i--) mod *= src.layout.shape[i];
     for (int i = 0; i < src.layout.ndim; i++) {
       int shape = idx / mod;
       idx -= shape * mod;
       res += shape * src.layout.stride[i];
-      if (i < src.layout.ndim - 1)
-        mod /= src.layout.shape[i + 1];
+      if (i < src.layout.ndim - 1) mod /= src.layout.shape[i + 1];
     }
     return res;
   };
@@ -48,8 +47,7 @@ template <typename ctype> void print_data(const Tensor &src) {
 
     std::cout << ptr[get_real_pos(i)];
 
-    if ((i + 1) % src.layout.shape[src.layout.ndim - 1] != 0)
-      std::cout << ",";
+    if ((i + 1) % src.layout.shape[src.layout.ndim - 1] != 0) std::cout << ",";
 
     std::cout << " ";
     mod = 1;
@@ -152,6 +150,29 @@ Status *TypeConvert(NativeTensor *inp, NativeTensor *oup, param::convert *param,
                       "Unsupported provider.");
   }
   auto status = impl->convert(t_inp, t_oup, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
+Status *Concat(NativeTensor *inp, int size, NativeTensor *oup,
+               param::concat *param, ProviderEnum provider) {
+  std::vector<Tensor> tensors(size);
+  std::vector<const Tensor *> tensor_ptrs(size);
+  for (int i = 0; i < size; i++) {
+    (inp + i)->ToTensor(tensors[i], false);
+    tensor_ptrs[i] = &tensors[i];
+  }
+  Tensor t_oup;
+  oup->ToTensor(t_oup, true);
+  OpBase *impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->concat(tensor_ptrs, t_oup, *param);
   if (status.is_ok()) {
     return nullptr;
   } else {
