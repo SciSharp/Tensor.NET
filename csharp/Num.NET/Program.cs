@@ -39,9 +39,9 @@ Console.WriteLine(nn);
 var mm = nn.Add(nn);
 Console.WriteLine(mm);
 
-var gaussian = Tensor.Normal<int>(new TensorShape(5, 6), 0, 5);
+var gaussian = Tensor.Random.Normal<int>(new TensorShape(5, 6), 0, 5);
 Console.WriteLine(gaussian);
-var avg = Tensor.Uniform<int>(new TensorShape(5, 6), -5, 5);
+var avg = Tensor.Random.Uniform<int>(new TensorShape(5, 6), -5, 5);
 Console.WriteLine(avg);
 
 var eye = Tensor.Eye<int>(4, 5, 2);
@@ -71,9 +71,9 @@ foreach(var item in eList){
 }
 Console.WriteLine(builder.ToString());
 
-var ta = Tensor.Uniform<int>(new int[] { 2, 3, 3 }, 0, 50);
-var tb = Tensor.Uniform<int>(new int[] { 2, 2, 3 }, 0, 50);
-var tc = Tensor.Uniform<int>(new int[] { 2, 4, 3 }, 0, 50);
+var ta = Tensor.Random.Uniform<int>(new int[] { 2, 3, 3 }, 0, 50);
+var tb = Tensor.Random.Uniform<int>(new int[] { 2, 2, 3 }, 0, 50);
+var tc = Tensor.Random.Uniform<int>(new int[] { 2, 4, 3 }, 0, 50);
 var tconcat = Tensor.Concat(new Tensor<int>[] { ta, tb, tc }, 1);
 Console.WriteLine(ta);
 Console.WriteLine(tb);
