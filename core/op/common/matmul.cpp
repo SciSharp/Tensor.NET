@@ -4,7 +4,8 @@ namespace nncore {
 namespace opr {
 
 IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
-  res.dtype = a.dtype;
+  res.dtype = DType::from_enum(
+      deduce_double_input_op(a.dtype.enumv(), b.dtype.enumv()));
   if (!a.ndim || !b.ndim)
     return Status(StatusCategory::NUMNET, StatusCode::MISMATCHED_SHAPE,
                   "Encountered empty tensor during deduce.");
