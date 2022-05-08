@@ -18,7 +18,7 @@ using namespace param;
 
 #define NN_FOREACH_SINGLE_INPUT_OP(cb) cb(transpose) cb(permute)
 
-#define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot)
+#define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot) cb(boolindex)
 
 #define NN_FOREACH_SINGLE_INPUT_OP_WITH_PARAM(cb, ...) \
   cb(reshape, __VA_ARGS__) cb(transpose, __VA_ARGS__)

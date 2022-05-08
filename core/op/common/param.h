@@ -81,6 +81,8 @@ struct concat {
 struct matmul {};
 
 struct dot {};
+
+struct boolindex {};
 }  // namespace param
 
 }  // namespace nncore
