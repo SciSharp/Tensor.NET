@@ -13,6 +13,8 @@ namespace Numnet.Native{
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         public static extern IntPtr Matmul(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
+        public static extern IntPtr Dot(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
+        [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         public static extern IntPtr BoolIndex(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
 
 

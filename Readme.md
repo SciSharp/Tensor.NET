@@ -11,7 +11,7 @@
 | Add broadcast | Add broadcast with stride and wrap it | p0 | Complete ✅ |
 | Add script to auto build and test | Write a script on linux to build and run all tests automatically | p2 | Waiting 🔵 |
 | Add ```reshape``` | Add ```reshape``` for ```NDArray``` | p0 | Complete ✅ |
-| Add naive op ```dot``` | Add naive implementation for op ```dot``` | p0 | Waiting 🔵 |
+| Add naive op ```dot``` | Add naive implementation for op ```dot``` | p0 | Complete ✅ |
 | Add naive op ```transpose``` | Add naive implementation for op ```transpose``` | p0 | Complete ✅ |
 | Add naive op ```permute``` | Add naive implementation for op ```permute``` | p0 | Complete ✅ |
 | Add naive op ```add``` | Add naive implementation for op ```add``` | p0 | Complete ✅ |
@@ -35,10 +35,22 @@
 | Add unit tests for C# part | Add unit tests for C# part | p0 | Complete ✅ |
 | Add squeeze method | Add squeeze method in C#. | p0 | Complete ✅ |
 | Add unsqueeze method | Add unsqueeze method in C#. | p0 | Complete ✅ |
-| Add concat method | Add squeeze method and op. | p0 | Waiting 🔵 |
+| Add concat method | Add squeeze method and op. | p0 | Complete ✅ |
 | Use attributes to support multithread of ops is a good idea. | idea | p0 | Waiting 🔵 |
 | Use attributes to control the provider. | idea | p0 | Waiting 🔵 |
 | Use c++20 format in macros   | idea | p1 | Waiting 🔵 |
+| Add flip op |  | p0 | Waiting 🔵 |
+| Add ratate op |  | p0 | Waiting 🔵 |
+| Add argwhere op |  | p0 | Waiting 🔵 |
+| Add argmax op |  | p0 | Waiting 🔵 |
+| Add argmin op |  | p0 | Waiting 🔵 |
+| Add matrix inverse op |  | p0 | Waiting 🔵 |
+| Add mesh indexing op |  | p0 | Waiting 🔵 |
+| Add indexing onehot op |  | p0 | Waiting 🔵 |
+| Add padding op |  | p0 | Waiting 🔵 |
+| Add repeat op |  | p0 | Waiting 🔵 |
+| Add sort op |  | p0 | Waiting 🔵 |
+| Add topk op |  | p0 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵

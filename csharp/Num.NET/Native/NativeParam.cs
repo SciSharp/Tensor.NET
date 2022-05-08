@@ -4,6 +4,9 @@ namespace Numnet.Native.Param{
     internal struct MatmulParam{
         
     }
+    internal struct DotParam{
+        
+    }
     internal struct PermuteParam{
         internal IntPtr dims;
     }

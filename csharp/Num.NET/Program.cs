@@ -89,3 +89,10 @@ Console.WriteLine(twhere);
 var trefer = Tensor.Random.Uniform<int>(new int[] { 2, 3, 3 }, -100, -50);
 ta[ta > 20] = trefer;
 Console.WriteLine(ta);
+
+var da = Tensor.Random.Uniform<int>(new int[] { 2, 3 }, 0, 10);
+var db = Tensor.Random.Uniform<int>(new int[] { 2, 3 }, 0, 10);
+var dres = da.Dot(db);
+Console.WriteLine(da);
+Console.WriteLine(db);
+Console.WriteLine(dres);
