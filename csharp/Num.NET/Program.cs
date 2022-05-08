@@ -77,3 +77,9 @@ Console.WriteLine(ta);
 Console.WriteLine(tb);
 Console.WriteLine(tc);
 Console.WriteLine(tconcat);
+
+var bidx = Tensor.Random.Uniform<bool>(new int[] { 3, 3 }, 0, 1);
+var bres = ta[ta > 20];
+Console.WriteLine(ta);
+Console.WriteLine(bidx);
+Console.WriteLine(bres);

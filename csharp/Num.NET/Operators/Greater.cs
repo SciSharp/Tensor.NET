@@ -34,5 +34,11 @@ namespace Numnet{
         public static Tensor<bool> operator>=(Tensor<T> lhs, Tensor<bool> rhs){
             return InterElemOperation.Execute<T, bool, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) >= (y ? 1 : 0));
         }
+        public static Tensor<bool> operator>(Tensor<T> lhs, double rhs){
+            return OnElemOperation.Execute<T, bool>(lhs, x => Convert.ToDouble(x) > rhs);
+        }
+        public static Tensor<bool> operator>=(Tensor<T> lhs, double rhs){
+            return OnElemOperation.Execute<T, bool>(lhs, x => Convert.ToDouble(x) >= rhs);
+        }
     }
 }

@@ -5,34 +5,41 @@ using Numnet.Native;
 namespace Numnet{
     public partial class Tensor<T>{
         public static Tensor<bool> operator==(Tensor<T> lhs, Tensor<double> rhs){
-            return InterElemOperation.Execute<T, double, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) == y);
+            return InterElemOperation.Execute<T, double, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) < 1e-9);
         }
         public static Tensor<bool> operator!=(Tensor<T> lhs, Tensor<double> rhs){
-            return InterElemOperation.Execute<T, double, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) != y);
+            return InterElemOperation.Execute<T, double, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) >= 1e-9);
         }
         public static Tensor<bool> operator==(Tensor<T> lhs, Tensor<float> rhs){
-            return InterElemOperation.Execute<T, float, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) == y);
+            return InterElemOperation.Execute<T, float, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) < 1e-9);
         }
         public static Tensor<bool> operator!=(Tensor<T> lhs, Tensor<float> rhs){
-            return InterElemOperation.Execute<T, float, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) != y);
+            return InterElemOperation.Execute<T, float, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) >= 1e-9);
         }
         public static Tensor<bool> operator==(Tensor<T> lhs, Tensor<long> rhs){
-            return InterElemOperation.Execute<T, long, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) == y);
+            return InterElemOperation.Execute<T, long, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) < 1e-9);
         }
         public static Tensor<bool> operator!=(Tensor<T> lhs, Tensor<long> rhs){
-            return InterElemOperation.Execute<T, long, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) != y);
+            return InterElemOperation.Execute<T, long, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) >= 1e-9);
         }
         public static Tensor<bool> operator==(Tensor<T> lhs, Tensor<int> rhs){
-            return InterElemOperation.Execute<T, int, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) == y);
+            return InterElemOperation.Execute<T, int, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) < 1e-9);
         }
         public static Tensor<bool> operator!=(Tensor<T> lhs, Tensor<int> rhs){
-            return InterElemOperation.Execute<T, int, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) != y);
+            return InterElemOperation.Execute<T, int, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - y) >= 1e-9);
         }
         public static Tensor<bool> operator==(Tensor<T> lhs, Tensor<bool> rhs){
-            return InterElemOperation.Execute<T, bool, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) == (y ? 1 : 0));
+            return InterElemOperation.Execute<T, bool, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - (y ? 1 : 0)) < 1e-9);
         }
         public static Tensor<bool> operator!=(Tensor<T> lhs, Tensor<bool> rhs){
-            return InterElemOperation.Execute<T, bool, bool>(lhs, rhs, (x, y) => Convert.ToDouble(x) != (y ? 1 : 0));
+            return InterElemOperation.Execute<T, bool, bool>(lhs, rhs, (x, y) => System.Math.Abs(Convert.ToDouble(x) - (y ? 1 : 0)) >= 1e-9);
+        }
+
+        public static Tensor<bool> operator==(Tensor<T> lhs, double rhs){
+            return OnElemOperation.Execute<T, bool>(lhs, x => System.Math.Abs(Convert.ToDouble(x) - rhs) < 1e-9);
+        }
+        public static Tensor<bool> operator!=(Tensor<T> lhs, double rhs){
+            return OnElemOperation.Execute<T, bool>(lhs, x => System.Math.Abs(Convert.ToDouble(x) - rhs) >= 1e-9);
         }
 
         public override bool Equals(object? obj)

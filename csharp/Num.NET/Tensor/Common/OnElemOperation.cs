@@ -4,7 +4,7 @@ namespace Numnet.Common{
         public static Tensor<TResult> Execute<TInput, TResult>(Tensor<TInput> inp, Func<TInput, TResult> operation) 
             where TInput : struct, IEquatable<TInput>, IConvertible 
             where TResult : struct, IEquatable<TResult>, IConvertible{
-            Tensor<TResult> res = new Tensor<TResult>(inp.TLayout);
+            Tensor<TResult> res = new Tensor<TResult>(new TensorLayout(inp.TLayout, TensorTypeInfo.GetTypeInfo(typeof(TResult))._dtype));
             int idxOffset = res.TLayout.NDim - TensorLayout.MAX_NDIM;
             Span<TResult> spanRes = res.AsSpan();
             Span<TInput> spanInp = inp.AsSpan();
