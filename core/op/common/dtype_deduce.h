@@ -5,6 +5,22 @@
 namespace nncore {
 namespace opr {
 
+inline DTypeEnum deduce_double_input_op(DTypeEnum a, DTypeEnum b) {
+  if (a == DTypeEnum::Float64 || b == DTypeEnum::Float64) {
+    return DTypeEnum::Float64;
+  } else if (a == DTypeEnum::Float32 || b == DTypeEnum::Float32) {
+    return DTypeEnum::Float32;
+  } else if (a == DTypeEnum::Int64 || b == DTypeEnum::Int64) {
+    return DTypeEnum::Int64;
+  } else if (a == DTypeEnum::Int32 || b == DTypeEnum::Int32) {
+    return DTypeEnum::Int32;
+  } else if (a == DTypeEnum::Bool || b == DTypeEnum::Bool) {
+    return DTypeEnum::Bool;
+  } else {
+    nn_throw("Type deduce failed.");
+  }
+}
+
 #define DEDUCE_CASE(_value, _A, _B, _C, _name, ...)              \
   case (_value):                                                 \
     nn_return_status_if_error((_name##_internal<_A, _B, _C>(     \
