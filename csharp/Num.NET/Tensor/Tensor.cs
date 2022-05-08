@@ -55,12 +55,12 @@ namespace Numnet{
             return TMemory.AsSpan();
         }
 
-        public T this[params int[] index]{
+        public T this[params int[] indices]{
             get{
-                return AsSpan()[IndicesToPosition(index)];
+                return AsSpan()[IndicesToPosition(indices)];
             }
             set{
-                AsSpan()[IndicesToPosition(index)] = value;
+                AsSpan()[IndicesToPosition(indices)] = value;
             }
         }
 
