@@ -83,3 +83,9 @@ var bres = ta[ta > 20];
 Console.WriteLine(ta);
 Console.WriteLine(bidx);
 Console.WriteLine(bres);
+
+var twhere = ta.Where(x => x > 20, 999, -555);
+Console.WriteLine(twhere);
+var trefer = Tensor.Random.Uniform<int>(new int[] { 2, 3, 3 }, -100, -50);
+ta[ta > 20] = trefer;
+Console.WriteLine(ta);
