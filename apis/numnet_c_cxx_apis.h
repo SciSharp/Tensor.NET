@@ -45,6 +45,9 @@ void FreeStatusMemory(Status *status);
 Status *Matmul(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
                param::matmul *param, ProviderEnum provider);
 
+Status *BoolIndex(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
+                  param::boolindex *param, ProviderEnum provider);
+
 Status *Permute(NativeTensor *inp, NativeTensor *oup, param::permute *param,
                 ProviderEnum provider);
 

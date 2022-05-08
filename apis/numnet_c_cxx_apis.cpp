@@ -103,6 +103,28 @@ Status *Matmul(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
   }
 }
 
+Status *BoolIndex(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
+                  param::boolindex *param, ProviderEnum provider) {
+  printf("Enter!\n");
+  Tensor t_a, t_b, t_oup;
+  a->ToTensor(t_a, false);
+  b->ToTensor(t_b, false);
+  oup->ToTensor(t_oup, true);
+  print_data<bool>(t_b);
+  OpBase *impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->boolindex(t_a, t_b, t_oup, *param);
+  print_data<int>(t_oup);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
 Status *Permute(NativeTensor *inp, NativeTensor *oup, param::permute *param,
                 ProviderEnum provider) {
   Tensor t_inp, t_oup;

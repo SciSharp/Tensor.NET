@@ -128,12 +128,17 @@ namespace Numnet{
             InitContiguousLayout();
         }
 
-        public TensorLayout(TensorLayout rhs){
+        public TensorLayout(TensorLayout rhs, bool initContiguous = false){
             DType = rhs.DType;
             Offset = rhs.Offset;
             NDim = rhs.NDim;
             rhs.Shape.CopyTo(Shape.AsSpan());
-            rhs.Stride.CopyTo(Stride.AsSpan());
+            if(!initContiguous){
+                rhs.Stride.CopyTo(Stride.AsSpan());
+            }
+            else{
+                InitContiguousLayout();
+            }
         }
 
         public bool IsSameLayout(TensorLayout rhs){
