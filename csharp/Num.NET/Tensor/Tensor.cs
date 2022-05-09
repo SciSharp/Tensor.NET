@@ -64,6 +64,33 @@ namespace Numnet{
             }
         }
 
+        public Tensor<T> ToContiguousTensor(){
+            Tensor<T> res = new Tensor<T>(new TensorLayout(TLayout.Shape, TLayout.DType));
+            this.CopyTo(res);
+            return res;
+        }
+
+        /// <summary>
+        /// Copy the data from one tensor to another tensor.
+        /// Please note that it will only check the total element count instead of the whole shape.
+        /// </summary>
+        /// <param name="target"> A contiguous target tensor</param>
+        /// <exception cref="InvalidArgumentException"></exception>
+        /// <exception cref="MismatchedShapeException"></exception>
+        public void CopyTo(Tensor<T> target){
+            if(!target.TLayout.IsContiguous()){
+                throw new InvalidArgumentException("Cannot copy the data to a tensor which is not contiguous.");
+            }
+            if(target.TLayout.TotalElemCount() != TLayout.TotalElemCount()){
+                throw new MismatchedShapeException("Cannot copy a tensor to another tensor whose total element count is different.");
+            }
+            var spanTarget = target.AsSpan();
+            int i = 0;
+            foreach(var data in this){
+                spanTarget[i++] = data;
+            }
+        }
+
         // Returns an enumerator for this list with the given
         // permission for removal of elements. If modifications made to the list
         // while an enumeration is in progress, the MoveNext and
@@ -78,6 +105,7 @@ namespace Numnet{
         IEnumerator IEnumerable.GetEnumerator()
             => new TensorEnumerator<T>(this);
 
+        [Obsolete("This method need to be revised in the future because the tensor may not be contiguous", true)]
         public object Clone(){
             return new Tensor<T>(new TensorMemory<T>(TMemory.AsSpan()), new TensorLayout(TLayout));
         }

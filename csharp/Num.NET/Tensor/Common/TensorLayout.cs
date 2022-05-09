@@ -179,6 +179,18 @@ namespace Numnet{
                 s *= Shape[NDim - i - 1];
             }
         }
+
+        public bool IsContiguous(){
+            int expected = 1;
+            for (int i = 0; i < NDim; ++i) {
+                if (Shape[NDim - i - 1] != 1 && Stride[NDim - i - 1] != expected)
+                    return false;
+                expected *= Shape[NDim - i - 1];
+            }
+            // empty tensors are not contiguous
+            return expected != 0;
+        }
+
         internal TensorLayout Reshape(TensorShape targetShape, bool isImage){
             int targetNDim = targetShape.NDim;
             if(targetNDim <= 0){
