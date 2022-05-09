@@ -91,6 +91,10 @@ namespace Numnet{
             }
         }
 
+        public void Save(string path, TensorSerializationMode mode = TensorSerializationMode.NumNET){
+            TensorWriter.Write(path, this, mode);
+        }
+
         // Returns an enumerator for this list with the given
         // permission for removal of elements. If modifications made to the list
         // while an enumeration is in progress, the MoveNext and

@@ -96,3 +96,9 @@ var dres = da.Dot(db);
 Console.WriteLine(da);
 Console.WriteLine(db);
 Console.WriteLine(dres);
+
+var ts = Tensor.Random.Uniform<int>(new int[] { 2, 3 }, 0, 20);
+TensorWriter.Write("test.nn", ts);
+var tr = TensorReader.Read<float>("test.nn");
+Console.WriteLine(ts);
+Console.WriteLine(tr);
