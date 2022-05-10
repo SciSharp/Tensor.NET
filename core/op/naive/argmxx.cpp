@@ -6,7 +6,7 @@ namespace naive {
 
 IMPL_NAIVE_SINGLE_INPUT_SPECIFIED_TYPE_INTERNAL(argmxx, nn_int64) {
   nn_size n = loup.total_elems();
-  nn_size src_idx[NN_MAX_NDIM], dst_idx[NN_MAX_NDIM];
+  nn_size src_idx[NN_MAX_NDIM];
   nn_size idx_offset[NN_MAX_NDIM];
   for (nn_size i = 0; i < linp.ndim; i++) {
     src_idx[i] = 0;
@@ -30,12 +30,12 @@ IMPL_NAIVE_SINGLE_INPUT_SPECIFIED_TYPE_INTERNAL(argmxx, nn_int64) {
     T value = ptr_inp[base_offset];
     nn_int64 idx = 0;
 
-    for (int i = 1; i < linp.shape[param.axis]; i++) {
+    for (nn_size j = 1; j < linp.shape[param.axis]; j++) {
       base_offset += linp.stride[param.axis];
       if (ptr_inp[base_offset] > value && param.is_max ||
           ptr_inp[base_offset] < value && !param.is_max) {
         value = ptr_inp[base_offset];
-        idx = i;
+        idx = j;
       }
     }
 
