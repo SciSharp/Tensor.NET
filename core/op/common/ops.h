@@ -21,7 +21,7 @@ using namespace param;
 #define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot) cb(boolindex)
 
 #define NN_FOREACH_SINGLE_INPUT_OP_WITH_PARAM(cb, ...) \
-  cb(reshape, __VA_ARGS__) cb(transpose, __VA_ARGS__)
+  cb(permute, __VA_ARGS__) cb(transpose, __VA_ARGS__)
 
 #define NN_FOREACH_DOUBLE_INPUT_OP_WITH_PARAM(cb, ...) \
   cb(matmul, __VA_ARGS__) cb(dot, __VA_ARGS__)
@@ -64,6 +64,14 @@ class OpBase {
  protected:
   Status deduce_layout_convert(Layout& inp, Layout& res,
                                const param::convert& param);
+
+ public:
+  virtual Status argmxx(const Tensor& inp, Tensor& oup,
+                        const param::argmxx& param) = 0;
+
+ protected:
+  Status deduce_layout_argmxx(Layout& inp, Layout& res,
+                              const param::argmxx& param);
 
  public:
   virtual Status concat(const std::vector<const Tensor*>& inp, Tensor& oup,

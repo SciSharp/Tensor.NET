@@ -32,6 +32,13 @@ struct permute {
   void operator=(const permute &) {}
 };
 
+struct argmxx {
+  int axis;
+  bool is_max;
+
+  argmxx(int axis, bool is_max) : axis(axis), is_max(is_max) {}
+};
+
 struct convert {
   DTypeEnum target_type;
 

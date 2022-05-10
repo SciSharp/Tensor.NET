@@ -106,6 +106,13 @@ inline DTypeEnum deduce_double_input_op(DTypeEnum a, DTypeEnum b) {
     return Status::OK();                                          \
   }
 
+#define TYPE_SELECT_SINGLE_INPUT_SPECIFIED_TYPE(_type, _name, _loup, _typeOup) \
+  if (linp.dtype.is_ctype<_type>()) {                                          \
+    nn_return_status_if_error(_name##_internal<_type>(                         \
+        inp.ptr<_type>(), oup.ptr<_typeOup>(), linp, _loup, param));           \
+    return Status::OK();                                                       \
+  }
+
 #define TYPE_SELECT_CONCAT(_type, _loup)                              \
   if (_loup.dtype.is_ctype<_type>()) {                                \
     nn_return_status_if_error(                                        \
@@ -120,6 +127,12 @@ inline DTypeEnum deduce_double_input_op(DTypeEnum a, DTypeEnum b) {
 #define SPECIFY_SINGLE_OUTPUT_OP_INTERNAL(_type, _class_name, _op_name)     \
   template Status _class_name::_op_name##_internal<_type>(                  \
       const _type* inp, _type* oup, const Layout& linp, const Layout& loup, \
+      const param::_op_name& param);
+
+#define SPECIFY_SINGLE_OUTPUT_SPECIFIED_TYPE_OP_INTERNAL(_type, _class_name,   \
+                                                         _op_name, _typeOup)   \
+  template Status _class_name::_op_name##_internal<_type>(                     \
+      const _type* inp, _typeOup* oup, const Layout& linp, const Layout& loup, \
       const param::_op_name& param);
 
 #define SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL(_typeA, _typeB, _typeC, _class_name, \
