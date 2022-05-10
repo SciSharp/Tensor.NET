@@ -180,6 +180,24 @@ Status *Transpose(NativeTensor *inp, NativeTensor *oup, param::transpose *param,
   }
 }
 
+Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
+               ProviderEnum provider) {
+  Tensor t_inp, t_oup;
+  inp->ToTensor(t_inp, false);
+  oup->ToTensor(t_oup, true);
+  OpBase *impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->argmxx(t_inp, t_oup, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
 Status *TypeConvert(NativeTensor *inp, NativeTensor *oup, param::convert *param,
                     ProviderEnum provider) {
   Tensor t_inp, t_oup;

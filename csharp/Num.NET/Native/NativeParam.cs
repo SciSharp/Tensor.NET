@@ -14,6 +14,10 @@ namespace Numnet.Native.Param{
         internal int dimA;
         internal int dimB;
     }
+    internal struct ArgmxxParam{
+        internal int axis;
+        internal bool isMax;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }
