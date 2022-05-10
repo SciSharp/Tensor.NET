@@ -30,4 +30,15 @@ TEST(Naive, Argmxx) {
   Tensor pred1;
   ASSERT_TRUE(oprs->argmxx(inp1, pred1, p1).is_ok());
   assert_same_data<nn_int64>(pred1, truth1, 0.0001f);
+
+  // Group 2
+  Tensor inp2 = F::from_list({10, 9,  14, 14, 41, 36, 39, 17, 39, 23,
+                              48, 35, 44, 23, 45, 49, 42, 27, 23, 4},
+                             {4, 5}, dtype::Int32());
+  Tensor truth2 = F::from_list({3, 3, 2, 1, 2}, {1, 5}, dtype::Int64());
+  Param p2(0, true);
+
+  Tensor pred2;
+  ASSERT_TRUE(oprs->argmxx(inp2, pred2, p2).is_ok());
+  assert_same_data<nn_int64>(pred2, truth2, 0.0001f);
 }

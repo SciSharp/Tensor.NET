@@ -12,7 +12,7 @@ IMPL_NAIVE_SINGLE_INPUT_SPECIFIED_TYPE_INTERNAL(argmxx, nn_int64) {
     src_idx[i] = 0;
     idx_offset[i] = (i + 1) == param.axis ? 2 : 1;
   }
-  src_idx[0] = -1;
+  src_idx[!param.axis] = -1;
 
   auto increase_idx = [&]() {
     src_idx[!param.axis]++;  // if axis = 0, increase src_idx[1]
