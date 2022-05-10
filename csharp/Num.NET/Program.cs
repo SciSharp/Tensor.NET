@@ -109,3 +109,6 @@ var amin = src.Argmin(1);
 Console.WriteLine(src);
 Console.WriteLine(amax);
 Console.WriteLine(amin);
+
+var repeat = src.Repeat(2, 1);
+Console.WriteLine(repeat);

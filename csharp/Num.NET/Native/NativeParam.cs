@@ -18,6 +18,10 @@ namespace Numnet.Native.Param{
         internal int axis;
         internal bool isMax;
     }
+    internal struct RepeatParam{
+        internal int repeats;
+        internal int axis;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

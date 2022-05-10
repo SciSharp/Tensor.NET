@@ -57,6 +57,9 @@ Status *Permute(NativeTensor *inp, NativeTensor *oup, param::permute *param,
 Status *Transpose(NativeTensor *inp, NativeTensor *oup, param::transpose *param,
                   ProviderEnum provider);
 
+Status *Repeat(NativeTensor *inp, NativeTensor *oup, param::repeat *param,
+               ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 
