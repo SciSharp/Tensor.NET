@@ -32,6 +32,13 @@ struct permute {
   void operator=(const permute &) {}
 };
 
+struct repeat {
+  int repeats;
+  int axis;
+
+  repeat(int repeats, int axis) : repeats(repeats), axis(axis) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
