@@ -120,3 +120,8 @@ src = Tensor.Random.Uniform<int>(new int[] { 3, 3 }, 0, 20);
 var inverse = src.Inverse();
 Console.WriteLine(src);
 Console.WriteLine(inverse);
+
+src = Tensor.Random.Uniform<int>(new int[] { 3, 4 }, 0, 20);
+var rotate = src.Rotate(3, 0, 1);
+Console.WriteLine(src);
+Console.WriteLine(rotate);

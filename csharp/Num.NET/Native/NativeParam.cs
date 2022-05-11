@@ -25,6 +25,20 @@ namespace Numnet.Native.Param{
     internal struct FlipParam{
         internal IntPtr dims;
     }
+    internal struct RotateParam{
+        internal int k;
+        internal int dimA;
+        internal int dimB;
+        internal RotateParam(int k, int dimA, int dimB){
+            this.k = k;
+            if(dimA > dimB){
+                (this.dimA, this.dimB) = (dimB, dimA);
+            }
+            else{
+                (this.dimA, this.dimB) = (dimA, dimB);
+            }
+        }
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

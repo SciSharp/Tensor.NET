@@ -66,6 +66,9 @@ Status *Flip(NativeTensor *inp, NativeTensor *oup, param::flip *param,
 Status *MatrixInverse(NativeTensor *inp, NativeTensor *oup,
                       param::matrix_inverse *param, ProviderEnum provider);
 
+Status *Rotate(NativeTensor *inp, NativeTensor *oup, param::rotate *param,
+               ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

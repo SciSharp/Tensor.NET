@@ -40,7 +40,7 @@
 | Use attributes to control the provider. | idea | p0 | Waiting 🔵 |
 | Use c++20 format in macros   | idea | p1 | Waiting 🔵 |
 | Add flip op |  | p0 | Complete ✅ |
-| Add ratate op |  | p0 | Waiting 🔵 |
+| Add ratate op |  | p0 | Complete ✅ |
 | Add argwhere op |  | p1 | Waiting 🔵 |
 | Add argmax op |  | p0 | Complete ✅ |
 | Add argmin op |  | p0 | Complete ✅ |
