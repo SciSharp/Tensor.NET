@@ -57,6 +57,8 @@ struct flip {
   void operator=(const flip &) {}
 };
 
+struct matrix_inverse {};
+
 struct argmxx {
   int axis;
   bool is_max;
