@@ -22,15 +22,14 @@ IMPL_NAIVE_SINGLE_INPUT_INTERNAL(flip) {
   };
 
   auto increase_without_axis = [&](nn_size axis) {
+    src_idx[!axis]++;  // if axis = 0, increase src_idx[1]
     for (nn_size i = !axis; i < linp.ndim; i += (i + 1) == axis ? 2 : 1) {
       if (src_idx[i] == linp.shape[i]) {
         src_idx[i] = 0;
         src_idx[i + ((i + 1) == axis ? 2 : 1)]++;
       }
     }
-    auto res = linp.indices_to_offset(src_idx);
-    src_idx[!axis]++;  // if axis = 0, increase src_idx[1]
-    return res;
+    return loup.indices_to_offset(src_idx);
   };
 
   for (nn_size i = 0; i < n; i++) {
@@ -43,6 +42,7 @@ IMPL_NAIVE_SINGLE_INPUT_INTERNAL(flip) {
     if (!param.dims[i]) continue;
     auto cnt = n / loup.shape[i];
     memset(src_idx, 0, sizeof src_idx);
+    src_idx[!i] = -1;
     for (nn_size j = 0; j < cnt; j++) {
       auto dst_offset = increase_without_axis(i);
       for (nn_size k = 0; k < loup.shape[i] / 2; k++) {
