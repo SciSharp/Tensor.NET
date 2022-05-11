@@ -39,6 +39,24 @@ struct repeat {
   repeat(int repeats, int axis) : repeats(repeats), axis(axis) {}
 };
 
+struct flip {
+  nn_byte *dims;
+
+  flip(const std::vector<nn_byte> &value) {
+    dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
+    memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
+  }
+
+  ~flip() {
+    free(dims);
+    dims = nullptr;
+  }
+
+ private:
+  flip(const flip &) {}
+  void operator=(const flip &) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
