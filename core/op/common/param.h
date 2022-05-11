@@ -59,6 +59,16 @@ struct flip {
 
 struct matrix_inverse {};
 
+struct rotate {
+  int k;
+  int dimA;
+  int dimB;
+
+  rotate(int k, int dimA, int dimB) : k(k), dimA(dimA), dimB(dimB) {
+    if (dimA > dimB) std::swap(dimA, dimB);
+  }
+};
+
 struct argmxx {
   int axis;
   bool is_max;

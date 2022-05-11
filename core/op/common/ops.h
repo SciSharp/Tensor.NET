@@ -17,7 +17,7 @@ using namespace param;
   cb(normal) cb(uniform) cb(eye) cb(fill) cb(linspace)
 
 #define NN_FOREACH_SINGLE_INPUT_OP(cb) \
-  cb(transpose) cb(permute) cb(repeat) cb(flip) cb(matrix_inverse)
+  cb(transpose) cb(permute) cb(repeat) cb(flip) cb(matrix_inverse) cb(rotate)
 
 #define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot) cb(boolindex)
 
