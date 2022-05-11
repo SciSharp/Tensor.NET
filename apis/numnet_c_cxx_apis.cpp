@@ -216,6 +216,24 @@ Status *Flip(NativeTensor *inp, NativeTensor *oup, param::flip *param,
   }
 }
 
+Status *MatrixInverse(NativeTensor *inp, NativeTensor *oup,
+                      param::matrix_inverse *param, ProviderEnum provider) {
+  Tensor t_inp, t_oup;
+  inp->ToTensor(t_inp, false);
+  oup->ToTensor(t_oup, true);
+  OpBase *impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->matrix_inverse(t_inp, t_oup, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider) {
   Tensor t_inp, t_oup;

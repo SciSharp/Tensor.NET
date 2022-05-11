@@ -28,6 +28,8 @@ namespace Numnet.Native{
         public static extern IntPtr Repeat(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         public static extern IntPtr Flip(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
+        [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
+        public static extern IntPtr MatrixInverse(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
 
 
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]

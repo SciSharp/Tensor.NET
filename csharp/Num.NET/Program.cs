@@ -115,3 +115,8 @@ Console.WriteLine(repeat);
 
 var flip = src.Flip(0, 1);
 Console.WriteLine(flip);
+
+src = Tensor.Random.Uniform<int>(new int[] { 3, 3 }, 0, 20);
+var inverse = src.Inverse();
+Console.WriteLine(src);
+Console.WriteLine(inverse);

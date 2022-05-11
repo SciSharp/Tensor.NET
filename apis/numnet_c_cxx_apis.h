@@ -63,6 +63,9 @@ Status *Repeat(NativeTensor *inp, NativeTensor *oup, param::repeat *param,
 Status *Flip(NativeTensor *inp, NativeTensor *oup, param::flip *param,
              ProviderEnum provider);
 
+Status *MatrixInverse(NativeTensor *inp, NativeTensor *oup,
+                      param::matrix_inverse *param, ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

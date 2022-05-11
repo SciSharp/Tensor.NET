@@ -44,7 +44,7 @@
 | Add argwhere op |  | p1 | Waiting 🔵 |
 | Add argmax op |  | p0 | Complete ✅ |
 | Add argmin op |  | p0 | Complete ✅ |
-| Add matrix inverse op |  | p0 | Waiting 🔵 |
+| Add matrix inverse op |  | p0 | Complete ✅ |
 | Add mesh indexing op |  | p0 | Waiting 🔵 |
 | Add indexing onehot op |  | p0 | Waiting 🔵 |
 | Add padding op |  | p0 | Waiting 🔵 |
