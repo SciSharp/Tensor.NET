@@ -112,3 +112,6 @@ Console.WriteLine(amin);
 
 var repeat = src.Repeat(2, 1);
 Console.WriteLine(repeat);
+
+var flip = src.Flip(0, 1);
+Console.WriteLine(flip);

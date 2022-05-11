@@ -39,7 +39,7 @@
 | Use attributes to support multithread of ops is a good idea. | idea | p0 | Waiting 🔵 |
 | Use attributes to control the provider. | idea | p0 | Waiting 🔵 |
 | Use c++20 format in macros   | idea | p1 | Waiting 🔵 |
-| Add flip op |  | p0 | Waiting 🔵 |
+| Add flip op |  | p0 | Complete ✅ |
 | Add ratate op |  | p0 | Waiting 🔵 |
 | Add argwhere op |  | p1 | Waiting 🔵 |
 | Add argmax op |  | p0 | Complete ✅ |
@@ -48,7 +48,7 @@
 | Add mesh indexing op |  | p0 | Waiting 🔵 |
 | Add indexing onehot op |  | p0 | Waiting 🔵 |
 | Add padding op |  | p0 | Waiting 🔵 |
-| Add repeat op |  | p0 | Waiting 🔵 |
+| Add repeat op |  | p0 | Complete ✅ |
 | Add sort op |  | p0 | Waiting 🔵 |
 | Add topk op |  | p0 | Waiting 🔵 |
 

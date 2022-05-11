@@ -60,6 +60,9 @@ Status *Transpose(NativeTensor *inp, NativeTensor *oup, param::transpose *param,
 Status *Repeat(NativeTensor *inp, NativeTensor *oup, param::repeat *param,
                ProviderEnum provider);
 
+Status *Flip(NativeTensor *inp, NativeTensor *oup, param::flip *param,
+             ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

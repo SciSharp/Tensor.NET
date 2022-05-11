@@ -22,6 +22,9 @@ namespace Numnet.Native.Param{
         internal int repeats;
         internal int axis;
     }
+    internal struct FlipParam{
+        internal IntPtr dims;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }
