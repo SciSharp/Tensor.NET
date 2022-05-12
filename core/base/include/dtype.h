@@ -119,8 +119,8 @@ NN_FOREACH_DTYPE(NN_DECLARE_DTYPE)
   template <>                                       \
   struct DTypeTrait<dtype::_name> {                 \
     NN_DEF_DTYPE_TRAIT_BASIC(_name, _ctype, _bits)  \
-    static ctype min() { return max_val_##_ctype; } \
-    static ctype max() { return min_val_##_ctype; } \
+    static ctype min() { return min_val_##_ctype; } \
+    static ctype max() { return max_val_##_ctype; } \
   };
 
 NN_FOREACH_DTYPE_TRAIT(NN_DEF_DTYPE_TRAIT)
