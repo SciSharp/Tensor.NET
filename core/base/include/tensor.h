@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <memory>
 
 #include "core/base/include/layout.h"
@@ -67,10 +68,10 @@ class RefPtr {
   }
 
   ~RefPtr() {
-    if (m_owned) {
+    if (m_owned && m_ref.use_count() == 1) {
       free(*m_ref);
+      *m_ref = nullptr;
     }
-    m_ref.reset();
   }
 };
 
