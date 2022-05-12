@@ -69,6 +69,47 @@ struct rotate {
   }
 };
 
+struct pad {
+  enum Mode : int32_t {
+    Constant = 1,
+    Edge = 2,
+    Maximum = 3,
+    Minimum = 4,
+    Medium = 5,
+    Mean = 6
+  };
+
+  Mode mode;
+  nn_size size;
+  nn_size *width;
+  double *constants;
+
+  pad(Mode mode, nn_size size, const std::vector<nn_size> &width,
+      const std::vector<double> &constants)
+      : mode(mode), size(size) {
+    this->width = (nn_size *)malloc(sizeof(nn_size) * width.size());
+    memcpy(this->width, width.data(), width.size() * sizeof(nn_size));
+    this->constants = (double *)malloc(sizeof(double) * constants.size());
+    memcpy(this->constants, constants.data(),
+           constants.size() * sizeof(double));
+  };
+
+  ~pad() {
+    if (width != nullptr) {
+      free(width);
+      width = nullptr;
+    }
+    if (constants != nullptr) {
+      free(constants);
+      constants = nullptr;
+    }
+  }
+
+ private:
+  pad(const pad &) {}
+  void operator=(const pad &) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
