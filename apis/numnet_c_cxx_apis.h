@@ -69,6 +69,9 @@ Status *MatrixInverse(NativeTensor *inp, NativeTensor *oup,
 Status *Rotate(NativeTensor *inp, NativeTensor *oup, param::rotate *param,
                ProviderEnum provider);
 
+Status *Pad(NativeTensor *inp, NativeTensor *oup, param::pad *param,
+            ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

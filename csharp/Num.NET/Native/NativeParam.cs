@@ -39,6 +39,12 @@ namespace Numnet.Native.Param{
             }
         }
     }
+    internal struct PadParam{
+        internal PadMode mode;
+        internal int size;
+        internal IntPtr widths;
+        internal IntPtr constants;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

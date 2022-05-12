@@ -47,7 +47,7 @@
 | Add matrix inverse op |  | p0 | Complete ✅ |
 | Add mesh indexing op |  | p0 | Waiting 🔵 |
 | Add indexing onehot op |  | p0 | Waiting 🔵 |
-| Add padding op |  | p0 | Waiting 🔵 |
+| Add padding op |  | p0 | Partly complete🚀 |
 | Add repeat op |  | p0 | Complete ✅ |
 | Add sort op |  | p0 | Waiting 🔵 |
 | Add topk op |  | p0 | Waiting 🔵 |

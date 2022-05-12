@@ -121,7 +121,12 @@ var inverse = src.Inverse();
 Console.WriteLine(src);
 Console.WriteLine(inverse);
 
-src = Tensor.Random.Uniform<int>(new int[] { 3, 4 }, 0, 20);
+src = Tensor.Random.Uniform<int>(new int[] { 3, 4 }, 10, 50);
 var rotate = src.Rotate(3, 0, 1);
 Console.WriteLine(src);
 Console.WriteLine(rotate);
+
+var constantPadding = src.Pad(new (int, int)[] { (1, 2), (1, 1) }, PadMode.Constant, new (double, double)[] { (1, 2), (3, 4) });
+Console.WriteLine(constantPadding);
+var edgePadding = src.Pad(1, PadMode.Edge, 0);
+Console.WriteLine(edgePadding);
