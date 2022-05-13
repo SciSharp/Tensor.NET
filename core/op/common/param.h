@@ -110,6 +110,15 @@ struct pad {
   void operator=(const pad &) {}
 };
 
+struct sort {
+  enum Order : int32_t { Increase = 0, Decrease = 1 };
+
+  int axis;
+  Order order;
+
+  sort(int axis, Order order) : axis(axis), order(order) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
