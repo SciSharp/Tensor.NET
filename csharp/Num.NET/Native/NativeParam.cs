@@ -49,6 +49,9 @@ namespace Numnet.Native.Param{
         internal int axis;
         internal SortOrder order;
     }
+    internal struct OnehotParam{
+        internal int maxValue;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

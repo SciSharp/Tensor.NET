@@ -36,6 +36,8 @@ namespace Numnet.Native{
         public static extern IntPtr Pad(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
         public static extern IntPtr Sort(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
+        [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]
+        public static extern IntPtr Onehot(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
 
 
         [DllImport("/home/lyh/code/Num.NET/build/apis/libnumnet.so")]

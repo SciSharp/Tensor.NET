@@ -46,14 +46,14 @@
 | Add argmin op |  | p0 | Complete ✅ |
 | Add matrix inverse op |  | p0 | Complete ✅ |
 | Add mesh indexing op |  | p2 | Waiting 🔵 |
-| Add onehot op |  | p0 | Waiting 🔵 |
+| Add onehot op |  | p0 | Complete ✅ |
 | Add padding op |  | p0 | Partly complete🚀 |
 | Add repeat op |  | p0 | Complete ✅ |
 | Add sort op |  | p0 | Complete ✅ |
-| Add topk op |  | p0 | Waiting 🔵 |
+| Add topk op |  | p2 | Waiting 🔵 |
 | Add arrange op |  | p0 | Complete ✅ |
 | Add zeros_like, ones_like, fill_like methods |  | p0 | Complete ✅ |
-| Add flatten op |  | p0 | Waiting 🔵 |
+| Add flatten method |  | p0 | Complete ✅ |
 
 
 ✅   ❌   🚀   🔵

@@ -75,6 +75,9 @@ Status *Pad(NativeTensor *inp, NativeTensor *oup, param::pad *param,
 Status *Sort(NativeTensor *inp, NativeTensor *oup, param::sort *param,
              ProviderEnum provider);
 
+Status *Onehot(NativeTensor *inp, NativeTensor *oup, param::onehot *param,
+               ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

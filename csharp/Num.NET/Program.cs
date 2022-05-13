@@ -137,3 +137,8 @@ Console.WriteLine(sort);
 
 var arange = Tensor.Arange<double>(1.2, 7.8, 2.3);
 Console.WriteLine(arange);
+
+src = Tensor.Random.Uniform<int>(new int[] { 2, 3 }, 0, 10);
+var onehot = Tensor.Onehot(src, 9);
+Console.WriteLine(src);
+Console.WriteLine(onehot);
