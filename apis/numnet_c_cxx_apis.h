@@ -92,6 +92,8 @@ Status *Eye(NativeTensor *nt, param::eye *param, ProviderEnum provider);
 
 Status *Fill(NativeTensor *nt, param::fill *param, ProviderEnum provider);
 
+Status *Arange(NativeTensor *nt, param::arange *param, ProviderEnum provider);
+
 Status *Linspace(NativeTensor *nt, param::linspace *param,
                  ProviderEnum provider);
 

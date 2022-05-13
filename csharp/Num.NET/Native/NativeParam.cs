@@ -66,6 +66,11 @@ namespace Numnet.Native.Param{
     internal struct FillParam{
         internal double value;
     }
+    internal struct ArangeParam{
+        internal double start;
+        internal double stop;
+        internal double step;
+    }
     internal struct LinspaceParam{
         internal double start;
         internal double stop;

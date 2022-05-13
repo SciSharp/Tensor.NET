@@ -134,3 +134,6 @@ Console.WriteLine(edgePadding);
 var sort = src.Sort(0).Sort(1, SortOrder.Decrease);
 Console.WriteLine(src);
 Console.WriteLine(sort);
+
+var arange = Tensor.Arange<double>(1.2, 7.8, 2.3);
+Console.WriteLine(arange);

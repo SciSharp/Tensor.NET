@@ -412,6 +412,22 @@ Status *Fill(NativeTensor *nt, param::fill *param, ProviderEnum provider) {
   }
 }
 
+Status *Arange(NativeTensor *nt, param::arange *param, ProviderEnum provider) {
+  Tensor t;
+  nt->ToTensor(t, true);
+  OpBase *impl = GetImpl(provider);
+  if (impl == nullptr) {
+    return new Status(StatusCategory::NUMNET, StatusCode::INVALID_ARGUMENT,
+                      "Unsupported provider.");
+  }
+  auto status = impl->arange(t, *param);
+  if (status.is_ok()) {
+    return nullptr;
+  } else {
+    return new Status(status);
+  }
+}
+
 Status *Linspace(NativeTensor *nt, param::linspace *param,
                  ProviderEnum provider) {
   Tensor t;
