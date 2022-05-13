@@ -128,6 +128,12 @@ struct arange {
       : start(start), stop(stop), step(step) {}
 };
 
+struct onehot {
+  int max_val;
+
+  onehot(int max_val) : max_val(max_val) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
