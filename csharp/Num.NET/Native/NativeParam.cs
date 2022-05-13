@@ -45,6 +45,10 @@ namespace Numnet.Native.Param{
         internal IntPtr widths;
         internal IntPtr constants;
     }
+    internal struct SortParam{
+        internal int axis;
+        internal SortOrder order;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

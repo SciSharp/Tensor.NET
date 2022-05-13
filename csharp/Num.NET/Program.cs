@@ -130,3 +130,7 @@ var constantPadding = src.Pad(new (int, int)[] { (1, 2), (1, 1) }, PadMode.Const
 Console.WriteLine(constantPadding);
 var edgePadding = src.Pad(1, PadMode.Edge, 0);
 Console.WriteLine(edgePadding);
+
+var sort = src.Sort(0).Sort(1, SortOrder.Decrease);
+Console.WriteLine(src);
+Console.WriteLine(sort);

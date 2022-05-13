@@ -72,6 +72,9 @@ Status *Rotate(NativeTensor *inp, NativeTensor *oup, param::rotate *param,
 Status *Pad(NativeTensor *inp, NativeTensor *oup, param::pad *param,
             ProviderEnum provider);
 
+Status *Sort(NativeTensor *inp, NativeTensor *oup, param::sort *param,
+             ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 
