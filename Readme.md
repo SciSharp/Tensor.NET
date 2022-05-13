@@ -52,7 +52,7 @@
 | Add sort op |  | p0 | Complete ✅ |
 | Add topk op |  | p0 | Waiting 🔵 |
 | Add arrange op |  | p0 | Complete ✅ |
-| Add zeros_like, ones_like, fill_like methods |  | p0 | Waiting 🔵 |
+| Add zeros_like, ones_like, fill_like methods |  | p0 | Complete ✅ |
 | Add flatten op |  | p0 | Waiting 🔵 |
 
 

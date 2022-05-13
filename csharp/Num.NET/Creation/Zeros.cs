@@ -14,5 +14,10 @@ namespace Numnet{
             IntPtr status = NativeExecutor.Execute(NativeApi.Fill, src.TMemory, src.TLayout, new IntPtr(&param), Tensor<T>.Provider);
             NativeStatus.AssertOK(status);
         }
+        public static Tensor<TResult> ZerosLike<TResult, TRefer>(Tensor<TRefer> tensor) 
+            where TResult : struct, IConvertible, IEquatable<TResult> 
+            where TRefer : struct, IConvertible, IEquatable<TRefer>{
+            return Tensor.Zeros<TResult>(tensor.TLayout);
+        }
     }
 }
