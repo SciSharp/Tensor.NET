@@ -49,9 +49,9 @@
 | Add onehot op |  | p0 | Waiting 🔵 |
 | Add padding op |  | p0 | Partly complete🚀 |
 | Add repeat op |  | p0 | Complete ✅ |
-| Add sort op |  | p0 | Waiting 🔵 |
+| Add sort op |  | p0 | Complete ✅ |
 | Add topk op |  | p0 | Waiting 🔵 |
-| Add arrange op |  | p0 | Waiting 🔵 |
+| Add arrange op |  | p0 | Complete ✅ |
 | Add zeros_like, ones_like, fill_like methods |  | p0 | Waiting 🔵 |
 | Add flatten op |  | p0 | Waiting 🔵 |
 

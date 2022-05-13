@@ -14,7 +14,7 @@ namespace opr {
 using namespace param;
 
 #define NN_FOREACH_SELF_MODIFY_OP(cb) \
-  cb(normal) cb(uniform) cb(eye) cb(fill) cb(linspace)
+  cb(normal) cb(uniform) cb(eye) cb(fill) cb(linspace) cb(arange)
 
 #define NN_FOREACH_SINGLE_INPUT_OP(cb)                                        \
   cb(transpose) cb(permute) cb(repeat) cb(flip) cb(matrix_inverse) cb(rotate) \

@@ -119,6 +119,15 @@ struct sort {
   sort(int axis, Order order) : axis(axis), order(order) {}
 };
 
+struct arange {
+  double start;
+  double stop;
+  double step;
+
+  arange(int start, int stop, int step)
+      : start(start), stop(stop), step(step) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
