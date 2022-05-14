@@ -145,7 +145,7 @@ inline DTypeEnum deduce_double_input_op(DTypeEnum a, DTypeEnum b) {
 #define SPECIFY_CONVERT_OP_INTERNAL(_typeA, _typeB, _, _class_name) \
   template Status _class_name::convert_internal<_typeA, _typeB>(    \
       const _typeA* ptr_inp, _typeB* ptr_oup, const Layout& linp,   \
-      const Layout& loup, const param::convert& param)
+      const Layout& loup, [[maybe_unused]] const param::convert& param)
 
 #define CONVERT_CASE(_value, _A, _B, ...)                                      \
   case (_value):                                                               \

@@ -12,7 +12,7 @@ struct TestArgs {
       : params(params), a(a), b(b), oup(oup) {}
 };
 
-inline std::vector<TestArgs> get_args() {}
+// inline std::vector<TestArgs> get_args() {}
 
 }  // namespace matmul
 

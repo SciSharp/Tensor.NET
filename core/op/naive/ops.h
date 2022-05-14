@@ -90,32 +90,32 @@ class OpNaiveImpl final : public OpBase {
                          const Layout& loup, const param::concat& param);
 };
 
-#define IMPL_NAIVE_SINGLE_INPUT_SPECIFIED_TYPE_INTERNAL(_name, _typeOup)       \
-  NN_FOREACH_CTYPE_WITH_PARAM(                                                 \
-      SPECIFY_SINGLE_OUTPUT_SPECIFIED_TYPE_OP_INTERNAL, OpNaiveImpl, _name,    \
-      _typeOup)                                                                \
-                                                                               \
-  template <typename T>                                                        \
-  Status OpNaiveImpl::_name##_internal(const T* ptr_inp, _typeOup* ptr_oup,    \
-                                       const Layout& linp, const Layout& loup, \
-                                       const param::_name& param)
+#define IMPL_NAIVE_SINGLE_INPUT_SPECIFIED_TYPE_INTERNAL(_name, _typeOup)    \
+  NN_FOREACH_CTYPE_WITH_PARAM(                                              \
+      SPECIFY_SINGLE_OUTPUT_SPECIFIED_TYPE_OP_INTERNAL, OpNaiveImpl, _name, \
+      _typeOup)                                                             \
+                                                                            \
+  template <typename T>                                                     \
+  Status OpNaiveImpl::_name##_internal(                                     \
+      const T* ptr_inp, _typeOup* ptr_oup, const Layout& linp,              \
+      const Layout& loup, [[maybe_unused]] const param::_name& param)
 
 #define IMPL_NAIVE_SELF_MODIFY_INTERNAL(_name)                              \
   NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SELF_MODIFY_OP_INTERNAL, OpNaiveImpl, \
                               _name)                                        \
                                                                             \
   template <typename T>                                                     \
-  Status OpNaiveImpl::_name##_internal(T* t, const Layout& layout,          \
-                                       const param::_name& param)
+  Status OpNaiveImpl::_name##_internal(                                     \
+      T* t, const Layout& layout, [[maybe_unused]] const param::_name& param)
 
-#define IMPL_NAIVE_SINGLE_INPUT_INTERNAL(_name)                                \
-  NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SINGLE_OUTPUT_OP_INTERNAL, OpNaiveImpl,  \
-                              _name)                                           \
-                                                                               \
-  template <typename T>                                                        \
-  Status OpNaiveImpl::_name##_internal(const T* ptr_inp, T* ptr_oup,           \
-                                       const Layout& linp, const Layout& loup, \
-                                       const param::_name& param)
+#define IMPL_NAIVE_SINGLE_INPUT_INTERNAL(_name)                               \
+  NN_FOREACH_CTYPE_WITH_PARAM(SPECIFY_SINGLE_OUTPUT_OP_INTERNAL, OpNaiveImpl, \
+                              _name)                                          \
+                                                                              \
+  template <typename T>                                                       \
+  Status OpNaiveImpl::_name##_internal(                                       \
+      const T* ptr_inp, T* ptr_oup, const Layout& linp, const Layout& loup,   \
+      [[maybe_unused]] const param::_name& param)
 
 #define IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(_name)                        \
   FOREACH_DOUBLE_INPUT_TYPE_PAIR(SPECIFY_DOUBLE_OUTPUT_OP_INTERNAL,    \
@@ -124,9 +124,8 @@ class OpNaiveImpl final : public OpBase {
   template <typename TA, typename TB, typename TC>                     \
   Status OpNaiveImpl::_name##_internal(                                \
       const TA* ptr_a, const TB* ptr_b, TC* ptr_oup, const Layout& la, \
-      const Layout& lb, const Layout& loup, const param::_name& param)
-
-// NN_FOREACH_CTYPE_WITH_PARAM(EXPLICIT_DECLARE_TEMPLATE_CLASS, OpNaiveImpl)
+      const Layout& lb, const Layout& loup,                            \
+      [[maybe_unused]] const param::_name& param)
 
 }  // namespace naive
 }  // namespace opr

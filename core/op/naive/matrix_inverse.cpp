@@ -5,6 +5,10 @@ namespace opr {
 namespace naive {
 
 IMPL_NAIVE_SINGLE_INPUT_INTERNAL(matrix_inverse) {
+  if (linp.dtype.enumv() == DTypeEnum::Bool) {
+    return Status(StatusCategory::NUMNET, StatusCode::FAIL,
+                  "Cannot calculate inverse matrix for bool tensor.");
+  }
   nn_size batch = 1;
   for (nn_size i = 0; i < linp.ndim - 2; i++) {
     batch *= linp.shape[i];

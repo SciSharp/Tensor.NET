@@ -89,12 +89,13 @@ class OpBase {
 #undef DEF_OP_SINGLE_INPUT
 #undef DEF_OP_DOUBLE_INPUT
 
-#define IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(_name)                   \
-  Status OpBase::deduce_layout_##_name(Layout& inp, Layout& res, \
-                                       const param::_name& param)
-#define IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(_name)                            \
-  Status OpBase::deduce_layout_##_name(Layout& a, Layout& b, Layout& res, \
-                                       const param::_name& param)
+#define IMPL_SINGLE_INPUT_LAYOUT_DEDUCE(_name) \
+  Status OpBase::deduce_layout_##_name(        \
+      Layout& inp, Layout& res, [[maybe_unused]] const param::_name& param)
+#define IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(_name) \
+  Status OpBase::deduce_layout_##_name(        \
+      Layout& a, Layout& b, Layout& res,       \
+      [[maybe_unused]] const param::_name& param)
 
 #define IMPL_OP_SELF_MODIFY(_name)                                         \
  public:                                                                   \

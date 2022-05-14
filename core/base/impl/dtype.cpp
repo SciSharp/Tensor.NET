@@ -26,6 +26,10 @@ DType DType::from_enum(DTypeEnum enumv) {
     return dtype::_dt();
     NN_FOREACH_DTYPE(cb)
 #undef cb
+    default:
+      nn_throw(
+          "Failed to create Dtype from enum because of invalid DTypeEnum "
+          "value.");
   }
   nn_throw(
       "Failed to create Dtype from enum because of invalid DTypeEnum value.");

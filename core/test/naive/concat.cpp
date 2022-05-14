@@ -1,4 +1,3 @@
-#include "core/base/include/tensor.h"
 #include "core/op/naive/ops.h"
 #include "core/test/common/factory.h"
 #include "core/test/common/utils.h"

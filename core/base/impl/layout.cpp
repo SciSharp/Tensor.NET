@@ -89,7 +89,7 @@ Layout::Layout(const Shape &shape, const DType &dtype)
 Layout::Layout(const Shape &shape, const std::vector<nn_size> &stride,
                const DType &dtype)
     : Shape(shape), dtype(dtype) {
-  nn_assert(shape.ndim == stride.size(),
+  nn_assert(shape.ndim == static_cast<nn_size>(stride.size()),
             "Size of shape mismatched that of stride.");
   for (nn_size i = 0; i < shape.ndim; i++) this->stride[i] = stride[i];
 }
@@ -208,7 +208,7 @@ nn_size Layout::content_bytes() const { return total_elems() * dtype.size(); }
 Layout Layout::dimshuffle(const std::vector<nn_size> &dims) const {
   Layout res{dtype};
   res.ndim = this->ndim;
-  nn_assert(dims.size() == this->ndim);
+  nn_assert(static_cast<nn_size>(dims.size()) == this->ndim);
   auto ndim = this->ndim;
   rep(i, ndim) {
     auto dest = dims[i];

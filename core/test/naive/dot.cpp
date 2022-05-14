@@ -1,11 +1,7 @@
-#include "core/base/include/tensor.h"
 #include "core/op/naive/ops.h"
-#include "core/test/common/checker.h"
 #include "core/test/common/factory.h"
-#include "core/test/common/matmul.h"
 #include "core/test/common/utils.h"
 #include "gtest/gtest.h"
-
 using namespace nncore;
 using namespace test;
 using namespace opr;

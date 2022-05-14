@@ -17,7 +17,7 @@ class NDArrayFactory {
   static Tensor from_list(std::initializer_list<V> values, Shape shape,
                           T dtype) {
     Tensor res(shape, dtype);
-    nn_assert(values.size() == shape.total_elems(),
+    nn_assert(static_cast<nn_size>(values.size()) == shape.total_elems(),
               "The values used to init the Tensor is not compitable with the "
               "given shape. The element count of initial values is %ld, the "
               "shape is %s, which means %d elements.",

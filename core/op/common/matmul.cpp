@@ -23,7 +23,6 @@ IMPL_DOUBLE_INPUT_LAYOUT_DEDUCE(matmul) {
     return Status::OK();
   }
   nn_size dim = a.ndim > b.ndim ? a.ndim : b.ndim;
-  nn_size min_dim = a.ndim < b.ndim ? a.ndim : b.ndim;
   res.ndim = dim;
   Shape a_dst_shape(a);
   Shape b_dst_shape(b);
