@@ -9,14 +9,11 @@
 namespace nncore {
 Shape::Shape(const std::vector<nn_size> &init_shape) {
   nn_assert(init_shape.size() <= MAX_NDIM,
-            "The shape you specified has too many dims, which is %lu, the "
+            "The shape you specified has too many dims, which is %llu, the "
             "max is %d\n",
             init_shape.size(), MAX_NDIM);
   ndim = init_shape.size();
   memcpy(shape, init_shape.data(), sizeof(nn_size) * ndim);
-  // for (nn_size i = ndim; i < MAX_NDIM; i++) {
-  //   shape[i] = 1;
-  // }
 }
 
 Shape::Shape(nn_size *init_shape, nn_size ndim) {
@@ -259,7 +256,6 @@ bool Layout::is_contiguous() const {
 }
 
 Layout Layout::collapse_contiguous() const {
-  // assert_valid(layout);
   nn_assert(ndim);
   Layout res{*this};
 
@@ -277,8 +273,6 @@ Layout Layout::collapse_contiguous() const {
 
   if (res.ndim == 1) {
     if (res.shape[0] <= 1) {
-      // make it the "most canonical" contiguous layout for scalars or
-      // empty tensors
       res.stride[0] = 1;
     }
     return res;
