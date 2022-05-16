@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using Numnet;
+using Tensornet;
 
 namespace TensorOpTest;
 

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageId>Tensor.NET</PackageId>
+    <Version>0.0.2</Version>
+    <Authors>AsakusaRinne</Authors>
+    <Company>Null</Company>
+    <Description>
+      This is a test version, please do not download and use.
+    </Description>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+</Project>

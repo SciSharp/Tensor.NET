@@ -56,9 +56,9 @@ Benchmarks will be privided later.
 ## Simple usages
 
 ```cs
-using Numnet;
-using Numnet.Common;
-using Numnet.Math;
+using Tensornet;
+using Tensornet.Common;
+using Tensornet.Math;
 using System.Text;
 
 // Matrix multiply

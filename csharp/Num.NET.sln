@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Num.NET", "Num.NET\Num.NET.csproj", "{24DFAC2B-3D5D-43ED-AC56-0F5A84E819BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tensor.NET", "Tensor.NET\Tensor.NET.csproj", "{24DFAC2B-3D5D-43ED-AC56-0F5A84E819BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TensorBasicTest", "TensorBasicTest\TensorBasicTest.csproj", "{95FC7971-7C2D-4606-9044-C21FACB72048}"
 EndProject
