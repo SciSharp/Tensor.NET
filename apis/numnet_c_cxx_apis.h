@@ -78,6 +78,9 @@ Status *Sort(NativeTensor *inp, NativeTensor *oup, param::sort *param,
 Status *Onehot(NativeTensor *inp, NativeTensor *oup, param::onehot *param,
                ProviderEnum provider);
 
+Status *Sum(NativeTensor *inp, NativeTensor *oup, param::sum *param,
+            ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

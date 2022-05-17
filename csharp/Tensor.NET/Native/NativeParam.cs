@@ -52,6 +52,10 @@ namespace Tensornet.Native.Param{
     internal struct OnehotParam{
         internal int maxValue;
     }
+    internal struct SumParam{
+        internal IntPtr dims;
+        internal bool keepDims;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

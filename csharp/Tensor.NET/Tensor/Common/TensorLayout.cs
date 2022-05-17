@@ -315,6 +315,14 @@ namespace Tensornet{
             return res;
         }
 
+        internal void RemoveAllDanglingAxisInplace(){
+            for (int i = NDim - 1; i >= 0; i--){
+                if(Shape[i] == 1 && NDim > 1){
+                    RemoveAxisInplace(i);
+                }
+            }
+        }
+
         internal void AddAxisInplace(int axis, int shape, int stride) {
             if(NDim + 1 > MAX_NDIM){
                 throw new InvalidArgumentException($"can not add axis at {axis} (current ndim is {NDim}, MAX_NDIM is {MAX_NDIM})");
