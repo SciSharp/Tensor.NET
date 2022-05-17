@@ -134,6 +134,26 @@ struct onehot {
   onehot(int max_val) : max_val(max_val) {}
 };
 
+struct sum {
+  nn_byte *dims;
+  bool keep_dims;
+
+  sum(const std::vector<nn_byte> &value, bool keep_dims) {
+    dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
+    memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
+    this->keep_dims = keep_dims;
+  }
+
+  ~sum() {
+    free(dims);
+    dims = nullptr;
+  }
+
+ private:
+  sum(const sum &) {}
+  void operator=(const sum &) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;

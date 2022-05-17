@@ -68,7 +68,7 @@ class RefPtr {
   }
 
   ~RefPtr() {
-    if (m_owned && m_ref.use_count() == 1) {
+    if (m_owned && m_ref.use_count() == 1 && *m_ref != nullptr) {
       free(*m_ref);
       *m_ref = nullptr;
     }
