@@ -71,6 +71,27 @@ class OpNaiveImpl final : public OpBase {
                          const Layout& loup, const param::argmxx& param);
 
  public:
+  Status mean(const Tensor& inp, Tensor& oup, const param::mean& param) {
+    Layout linp(inp.layout);
+    if (oup.is_ptr_owner()) {
+      Layout loup;
+      nn_return_status_if_error(deduce_layout_mean(linp, loup, param));
+      loup.init_contiguous_stride();
+      oup.relayout(loup);
+      NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT_SPECIFIED_TYPE, mean,
+                                  loup, nn_float64)
+    } else {
+      NN_FOREACH_CTYPE_WITH_PARAM(TYPE_SELECT_SINGLE_INPUT_SPECIFIED_TYPE, mean,
+                                  oup.layout, nn_float64)
+    }
+    return Status::OK();
+  }
+
+  template <typename T>
+  Status mean_internal(const T* inp, nn_float64* oup, const Layout& linp,
+                       const Layout& loup, const param::mean& param);
+
+ public:
   Status concat(const std::vector<const Tensor*>& inp, Tensor& oup,
                 const param::concat& param) {
     if (oup.is_ptr_owner()) {

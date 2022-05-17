@@ -76,6 +76,13 @@ class OpBase {
                               const param::argmxx& param);
 
  public:
+  virtual Status mean(const Tensor& inp, Tensor& oup,
+                      const param::mean& param) = 0;
+
+ protected:
+  Status deduce_layout_mean(Layout& inp, Layout& res, const param::mean& param);
+
+ public:
   virtual Status concat(const std::vector<const Tensor*>& inp, Tensor& oup,
                         const param::concat& param) = 0;
 

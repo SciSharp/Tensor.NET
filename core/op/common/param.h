@@ -154,6 +154,26 @@ struct sum {
   void operator=(const sum &) {}
 };
 
+struct mean {
+  nn_byte *dims;
+  bool keep_dims;
+
+  mean(const std::vector<nn_byte> &value, bool keep_dims) {
+    dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
+    memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
+    this->keep_dims = keep_dims;
+  }
+
+  ~mean() {
+    free(dims);
+    dims = nullptr;
+  }
+
+ private:
+  mean(const mean &) {}
+  void operator=(const mean &) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
