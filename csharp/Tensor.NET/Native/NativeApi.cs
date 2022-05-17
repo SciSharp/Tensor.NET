@@ -40,6 +40,8 @@ namespace Tensornet.Native{
         public static extern IntPtr Onehot(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("libnumnet")]
         public static extern IntPtr Sum(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
+        [DllImport("libnumnet")]
+        public static extern IntPtr Mean(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
 
 
         [DllImport("libnumnet")]

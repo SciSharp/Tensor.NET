@@ -81,6 +81,9 @@ Status *Onehot(NativeTensor *inp, NativeTensor *oup, param::onehot *param,
 Status *Sum(NativeTensor *inp, NativeTensor *oup, param::sum *param,
             ProviderEnum provider);
 
+Status *Mean(NativeTensor *inp, NativeTensor *oup, param::mean *param,
+             ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

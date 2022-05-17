@@ -56,6 +56,10 @@ namespace Tensornet.Native.Param{
         internal IntPtr dims;
         internal bool keepDims;
     }
+    internal struct MeanParam{
+        internal IntPtr dims;
+        internal bool keepDims;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }

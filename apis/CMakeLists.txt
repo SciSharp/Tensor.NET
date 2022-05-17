@@ -12,6 +12,9 @@ if(NOT WIN32 AND NN_CROSS_COMPILE)
     target_include_directories(numnet.dll PRIVATE ${PROJECT_SOURCE_DIR})
 else()
     add_library(numnet SHARED ${SOURCES})
+    set_target_properties(numnet PROPERTIES
+        PREFFIX ""
+    )
     target_link_libraries(numnet PRIVATE numnet_core_op numnet_core_base)
     target_include_directories(numnet PRIVATE ${PROJECT_SOURCE_DIR})
 endif()
