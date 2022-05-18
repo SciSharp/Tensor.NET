@@ -174,6 +174,42 @@ struct mean {
   void operator=(const mean &) {}
 };
 
+struct max {
+  nn_byte *dims;
+
+  max(const std::vector<nn_byte> &value) {
+    dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
+    memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
+  }
+
+  ~max() {
+    free(dims);
+    dims = nullptr;
+  }
+
+ private:
+  max(const max &) {}
+  void operator=(const max &) {}
+};
+
+struct min {
+  nn_byte *dims;
+
+  min(const std::vector<nn_byte> &value) {
+    dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
+    memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
+  }
+
+  ~min() {
+    free(dims);
+    dims = nullptr;
+  }
+
+ private:
+  min(const min &) {}
+  void operator=(const min &) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;
