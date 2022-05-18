@@ -136,12 +136,10 @@ struct onehot {
 
 struct sum {
   nn_byte *dims;
-  bool keep_dims;
 
-  sum(const std::vector<nn_byte> &value, bool keep_dims) {
+  sum(const std::vector<nn_byte> &value) {
     dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
     memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
-    this->keep_dims = keep_dims;
   }
 
   ~sum() {
@@ -156,12 +154,10 @@ struct sum {
 
 struct mean {
   nn_byte *dims;
-  bool keep_dims;
 
-  mean(const std::vector<nn_byte> &value, bool keep_dims) {
+  mean(const std::vector<nn_byte> &value) {
     dims = (nn_byte *)malloc(sizeof(nn_byte) * NN_MAX_NDIM);
     memcpy(dims, value.data(), value.size() * sizeof(nn_byte));
-    this->keep_dims = keep_dims;
   }
 
   ~mean() {

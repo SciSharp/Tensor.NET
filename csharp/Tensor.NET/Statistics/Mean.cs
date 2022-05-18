@@ -39,7 +39,7 @@ namespace Tensornet{
         }
         private unsafe static void MeanInternal<T>(Tensor<T> src, Tensor<double> dst, bool[] dims, bool keepDims) where T : struct, IEquatable<T>, IConvertible{
             fixed(bool* ptr = dims){
-                MeanParam p = new MeanParam() { dims = new IntPtr(ptr), keepDims = keepDims };
+                MeanParam p = new MeanParam() { dims = new IntPtr(ptr) };
                 IntPtr status = NativeExecutor.Execute(NativeApi.Mean, src.TMemory, dst.TMemory, src.TLayout, dst.TLayout, new IntPtr(&p), Tensor<T>.Provider);
                 NativeStatus.AssertOK(status);
             }

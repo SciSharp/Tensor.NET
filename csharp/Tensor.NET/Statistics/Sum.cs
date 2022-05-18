@@ -39,7 +39,7 @@ namespace Tensornet{
         }
         private unsafe static void SumInternal<T>(Tensor<T> src, Tensor<T> dst, bool[] dims, bool keepDims) where T : struct, IEquatable<T>, IConvertible{
             fixed(bool* ptr = dims){
-                SumParam p = new SumParam() { dims = new IntPtr(ptr), keepDims = keepDims };
+                SumParam p = new SumParam() { dims = new IntPtr(ptr) };
                 IntPtr status = NativeExecutor.Execute(NativeApi.Sum, src.TMemory, dst.TMemory, src.TLayout, dst.TLayout, new IntPtr(&p), Tensor<T>.Provider);
                 NativeStatus.AssertOK(status);
             }

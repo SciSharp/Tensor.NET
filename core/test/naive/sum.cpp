@@ -23,7 +23,7 @@ TEST(Naive, Sum) {
       {3, 4, 2, 3}, dtype::Int32());
   Tensor truth1 = F::from_list({273, 193, 306, 276, 272, 302}, {3, 1, 2, 1},
                                dtype::Int32());
-  Param p1({false, true, false, true}, true);
+  Param p1({false, true, false, true});
 
   Tensor pred1;
   ASSERT_TRUE(oprs->sum(inp1, pred1, p1).is_ok());
@@ -38,7 +38,7 @@ TEST(Naive, Sum) {
       {3, 4, 2, 3}, dtype::Int32());
   Tensor truth2 = F::from_list({238, 267, 241, 283, 128, 280, 268, 214},
                                {1, 4, 2, 1}, dtype::Int32());
-  Param p2({true, false, false, true}, true);
+  Param p2({true, false, false, true});
 
   Tensor pred2;
   ASSERT_TRUE(oprs->sum(inp2, pred2, p2).is_ok());
@@ -52,7 +52,7 @@ TEST(Naive, Sum) {
        37, 24, 28, 17, 22, 21, 15, 23, 35, 16, 31, 3,  29, 28, 0,  15, 17, 10},
       {3, 4, 2, 3}, dtype::Int32());
   Tensor truth3 = F::from_list({1734}, {1, 1, 1, 1}, dtype::Int32());
-  Param p3({true, true, true, true}, true);
+  Param p3({true, true, true, true});
 
   Tensor pred3;
   ASSERT_TRUE(oprs->sum(inp3, pred3, p3).is_ok());

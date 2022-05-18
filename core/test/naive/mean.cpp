@@ -23,7 +23,7 @@ TEST(Naive, Mean) {
   Tensor truth1 =
       F::from_list({23.0, 28.583333333333332, 17.333333333333332, 17.5},
                    {2, 1, 1, 2}, dtype::Float64());
-  Param p1({false, true, true, false}, true);
+  Param p1({false, true, true, false});
 
   Tensor pred1;
   ASSERT_TRUE(oprs->mean(inp1, pred1, p1).is_ok());
@@ -37,7 +37,7 @@ TEST(Naive, Mean) {
       {2, 4, 3, 2}, dtype::Int32());
   Tensor truth2 = F::from_list({24.0, 24.166666666666668, 32.75, 26.0},
                                {1, 4, 1, 1}, dtype::Float64());
-  Param p2({true, false, true, true}, true);
+  Param p2({true, false, true, true});
 
   Tensor pred2;
   ASSERT_TRUE(oprs->mean(inp2, pred2, p2).is_ok());
