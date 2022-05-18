@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>Tensor.NET</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.7</Version>
     <Authors>AsakusaRinne</Authors>
     <Company>Null</Company>
     <Description>
@@ -14,5 +14,38 @@
     </Description>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
+
+  <ItemGroup>
+        <!-- <Content Include="./CppLibrary/libnumnet.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackagePath>lib\$(TargetFramework)</PackagePath>
+        </Content>
+        <Content Include="./CppLibrary/libnumnet_core_base.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackagePath>lib\$(TargetFramework)</PackagePath>
+        </Content>
+        <Content Include="./CppLibrary/libnumnet_core_op.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackagePath>lib\$(TargetFramework)</PackagePath>
+        </Content>
+        <Content Include="./CppLibrary/libstdc++-6.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackagePath>lib\$(TargetFramework)</PackagePath>
+        </Content>
+        <Content Include="./CppLibrary/libgcc_s_seh-1.dll">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Pack>true</Pack>
+            <PackagePath>lib\$(TargetFramework)</PackagePath>
+        </Content> -->
+        <Content Include="libnumnet.so">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <PackageCopyToOutput>true</PackageCopyToOutput>
+            <pack>true</pack>
+        </Content>
+    </ItemGroup>
 
 </Project>

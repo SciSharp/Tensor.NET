@@ -84,6 +84,12 @@ Status *Sum(NativeTensor *inp, NativeTensor *oup, param::sum *param,
 Status *Mean(NativeTensor *inp, NativeTensor *oup, param::mean *param,
              ProviderEnum provider);
 
+Status *Max(NativeTensor *inp, NativeTensor *oup, param::max *param,
+            ProviderEnum provider);
+
+Status *Min(NativeTensor *inp, NativeTensor *oup, param::min *param,
+            ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

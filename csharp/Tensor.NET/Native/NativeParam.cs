@@ -58,6 +58,12 @@ namespace Tensornet.Native.Param{
     internal struct MeanParam{
         internal IntPtr dims;
     }
+    internal struct MaxParam{
+        internal IntPtr dims;
+    }
+    internal struct MinParam{
+        internal IntPtr dims;
+    }
     internal struct TypeConvertParam{
         internal DType targetType;
     }
