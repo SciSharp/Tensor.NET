@@ -4,7 +4,7 @@ message(${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 if(NOT WIN32 AND NN_CROSS_COMPILE)
     add_library(numnet.dll SHARED ${SOURCES})
-    target_link_libraries(numnet.dll PRIVATE numnet_core_op.dll numnet_core_base.dll)
+    target_link_libraries(numnet.dll PRIVATE numnet_core_op.lib numnet_core_base.lib)
     set_target_properties(numnet.dll PROPERTIES
         SUFFIX ""
         LINK_FLAGS "-Wl,--add-stdcall-alias"
