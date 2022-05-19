@@ -55,7 +55,7 @@ For how to build from source, please refer to [this doc](./doc/Build.md)
 
 For how to use, please refer to [the user guide]() (WIP)
 
-For examples, please refer to [this repository]()
+For examples, please refer to [this repository](https://github.com/AsakusaRinne/Tensor.NET.Examples)
 
 ## Benchmarks (WIP)
 
