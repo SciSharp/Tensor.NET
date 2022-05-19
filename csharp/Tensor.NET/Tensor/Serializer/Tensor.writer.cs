@@ -8,7 +8,7 @@ namespace Tensornet{
     public enum TensorSerializationMode
     {
         Auto = 0,
-        NumNET,
+        TensorNET,
         Numpy
     }
     public static class TensorWriter{
@@ -16,11 +16,11 @@ namespace Tensornet{
         private static byte[] _versionNumber;
 
         static TensorWriter(){
-            _magicNumber = Encoding.ASCII.GetBytes("NumNET");
+            _magicNumber = Encoding.ASCII.GetBytes("Tensor.NET");
             _versionNumber = Encoding.ASCII.GetBytes(Tensor.VersionNumber);
         }
 
-        public static void Write<T>(string path, Tensor<T> tensor, TensorSerializationMode mode = TensorSerializationMode.NumNET) where T : struct, IEquatable<T>, IConvertible{
+        public static void Write<T>(string path, Tensor<T> tensor, TensorSerializationMode mode = TensorSerializationMode.TensorNET) where T : struct, IEquatable<T>, IConvertible{
             using(var fs = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Write)){
                 WriteHeader(fs, tensor.TLayout);
                 if(tensor.TLayout.IsContiguous()){

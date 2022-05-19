@@ -10,7 +10,7 @@ namespace Tensornet{
         private static byte[] _versionNumber;
 
         static TensorReader(){
-            _magicNumber = Encoding.ASCII.GetBytes("NumNET");
+            _magicNumber = Encoding.ASCII.GetBytes("Tensor.NET");
             _versionNumber = Encoding.ASCII.GetBytes(Tensor.VersionNumber);
         }
 

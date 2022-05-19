@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
 # set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 
-project(NumNet VERSION 1.0.0)
+project(TensorNet VERSION 0.1.0)
 
 option(NN_WITH_TEST "Enable test for Num.NET." OFF)
 option(NN_CROSS_COMPILE "Cross compile to build. So far only compile from Linux targeting Windows is supported" OFF)

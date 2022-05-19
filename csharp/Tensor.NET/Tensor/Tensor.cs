@@ -91,7 +91,7 @@ namespace Tensornet{
             }
         }
 
-        public void Save(string path, TensorSerializationMode mode = TensorSerializationMode.NumNET){
+        public void Save(string path, TensorSerializationMode mode = TensorSerializationMode.TensorNET){
             TensorWriter.Write(path, this, mode);
         }
 
