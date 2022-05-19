@@ -20,7 +20,8 @@ using namespace param;
   cb(transpose) cb(permute) cb(repeat) cb(flip) cb(matrix_inverse) cb(rotate) \
       cb(pad) cb(sort) cb(onehot) cb(sum) cb(max) cb(min) cb(negative)
 
-#define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot) cb(boolindex)
+#define NN_FOREACH_DOUBLE_INPUT_OP(cb) \
+  cb(matmul) cb(dot) cb(boolindex) cb(interelem)
 
 #define NN_FOREACH_SINGLE_INPUT_OP_WITH_PARAM(cb, ...) \
   cb(permute, __VA_ARGS__) cb(transpose, __VA_ARGS__)

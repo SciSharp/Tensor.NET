@@ -208,6 +208,14 @@ struct min {
 
 struct negative {};
 
+struct interelem {
+  enum Operation { Add = 1, Sub = 2, Mul = 3, Div = 4 };
+
+  Operation op;
+
+  interelem(Operation op) : op(op) {}
+};
+
 struct argmxx {
   int axis;
   bool is_max;

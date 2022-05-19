@@ -4,7 +4,7 @@ namespace nncore {
 namespace opr {
 namespace naive {
 
-IMPL_NAIVE_SINGLE_INPUT_INTERNAL(flip) {
+IMPL_NAIVE_SINGLE_INPUT_INTERNAL(negative) {
   nn_size n = loup.total_elems();
   nn_size src_idx[NN_MAX_NDIM];
   for (nn_size i = 0; i < n; i++) {
