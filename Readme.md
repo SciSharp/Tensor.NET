@@ -40,6 +40,12 @@ The following features will be provided in the future.
 PM> Install-Package Tensor.NET
 ```
 
+or 
+
+```
+$ dotnet add package Tensor.NET
+```
+
 
 ## Documention
 
