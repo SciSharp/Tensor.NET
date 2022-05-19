@@ -1,6 +1,6 @@
 
 namespace Tensornet.Common{
-    public static class OnElemOperation{
+    internal static class OnElemOperation{
         public static Tensor<TResult> Execute<TInput, TResult>(Tensor<TInput> inp, Func<TInput, TResult> operation) 
             where TInput : struct, IEquatable<TInput>, IConvertible 
             where TResult : struct, IEquatable<TResult>, IConvertible{

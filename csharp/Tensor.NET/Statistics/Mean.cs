@@ -48,19 +48,19 @@ namespace Tensornet{
             }
         }
         private static TensorLayout DeduceLayout(TensorLayout src, int[] axes){
-            var res = new TensorLayout(src.Shape, DType.Float64);
+            var res = new TensorLayout(src as TensorShape, DType.Float64);
             foreach(var dim in axes){
                 res.Shape[dim] = 1;
             }
             return res;
         }
         private static TensorLayout DeduceLayout(TensorLayout src, int axis){
-            var res = new TensorLayout(src.Shape, DType.Float64);
+            var res = new TensorLayout(src as TensorShape, DType.Float64);
             res.Shape[axis] = 1;
             return res;
         }
         private static TensorLayout DeduceLayout(TensorLayout src){
-            var res = new TensorLayout(src.Shape, DType.Float64);
+            var res = new TensorLayout(src as TensorShape, DType.Float64);
             res.Shape.AsSpan().Fill(1);
             return res;
         }

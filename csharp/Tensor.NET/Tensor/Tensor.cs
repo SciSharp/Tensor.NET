@@ -40,7 +40,7 @@ namespace Tensornet{
         internal int IndicesToPosition(params int[] indices){
             if(indices.Length != TLayout.NDim){
                 throw new InvalidArgumentException($"Index does not have same dims with tensor, " + 
-                    "the index is {indices.Length} dims but the tensor is {TLayout.NDim}.");
+                    $"the index is {indices.Length} dims but the tensor is {TLayout.NDim}.");
             }
             int res = 0;
             for (int i = 0; i < TLayout.NDim; i++) {
@@ -65,7 +65,7 @@ namespace Tensornet{
         }
 
         public Tensor<T> ToContiguousTensor(){
-            Tensor<T> res = new Tensor<T>(new TensorLayout(TLayout.Shape, TLayout.DType));
+            Tensor<T> res = new Tensor<T>(new TensorLayout(TLayout as TensorShape, TLayout.DType));
             this.CopyTo(res);
             return res;
         }

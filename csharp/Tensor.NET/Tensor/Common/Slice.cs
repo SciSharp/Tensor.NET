@@ -2,9 +2,9 @@ using Tensornet.Exceptions;
 
 namespace Tensornet{
     public struct Slice{
-        public int Begin{ get; set; }
-        public int End{ get; set; }
-        public int Step{ get; set; }
+        public int Begin{ get; internal set; }
+        public int End{ get; internal set; }
+        public int Step{ get; internal set; }
         public Slice(int dim){
             Begin = dim;
             End = dim;
@@ -16,8 +16,17 @@ namespace Tensornet{
             Step = step;
         }
         public Slice(Range range){
-            Begin = range.Start.IsFromEnd ? -range.Start.Value : range.Start.Value;
+            Begin = range.Start.IsFromEnd? -range.Start.Value : range.Start.Value;
             End = range.End.IsFromEnd ? -range.End.Value : range.End.Value;
+            if(Begin == 0 && range.Start.IsFromEnd){
+                Step = 1;
+                return;
+            }
+            if(End == 0 && range.End.IsFromEnd){
+                End = Begin - 1;
+                Step = -1;
+                return;
+            }
             Step = 1;
         }
         public Slice(Index index){
@@ -45,6 +54,10 @@ namespace Tensornet{
             }
             if(axis >= res.NDim){
                 throw new InvalidArgumentException($"Axis to slice exceeds the limit. The axis is {axis}, the limit is {res.NDim - 1}.");
+            }
+            if(s.End + 1 == s.Begin && s.Step == -1){
+                s.End = Shape[axis];
+                s.Step = 1;
             }
             int axisDim = res.Shape[axis];
             int begin = s.Begin;

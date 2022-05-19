@@ -6,27 +6,22 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>Tensor.NET</PackageId>
-    <Version>0.0.8</Version>
+    <Version>0.1.0</Version>
     <Authors>AsakusaRinne</Authors>
     <Company>Null</Company>
     <Description>
-      This is a test version, please do not download and use.
+      A lightweight and high-performance tensor library which provides numpy-like operations but .NET style interfaces. It supports generic tensor, Linq, C# native slices and so on. It is young so that it may may lack some features or have some BUGs. Please tell us on github or via email, thank you!
+
+      Github repository: https://github.com/AsakusaRinne/Tensor.NET
+
+      Email: AsakusaRinne@gmail.com
     </Description>
+    <PackageLicenseExpression>Apache2.0</PackageLicenseExpression>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-        <!-- <Content Include="./CppLibrary/libnumnet.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackagePath>lib\$(TargetFramework)</PackagePath>
-        </Content>
-        <Content Include="./CppLibrary/libnumnet_core_base.dll">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Pack>true</Pack>
-            <PackagePath>lib\$(TargetFramework)</PackagePath>
-        </Content>
-        <Content Include="./CppLibrary/libnumnet_core_op.dll">
+        <Content Include="./CppLibrary/libnumnet.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackagePath>lib\$(TargetFramework)</PackagePath>
@@ -40,7 +35,7 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackagePath>lib\$(TargetFramework)</PackagePath>
-        </Content> -->
+        </Content>
         <Content Include="libnumnet.so">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <PackageCopyToOutput>true</PackageCopyToOutput>
