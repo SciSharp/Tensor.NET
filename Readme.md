@@ -1,5 +1,7 @@
 # Tensor.NET
 
+Tensor.NET is a lightweight and high-performance tensor library which provides numpy-like operations but .NET style interfaces. It supports generic tensor, Linq, C# native slices and so on. It is young so that it may may lack some features or have some BUGs. Please tell us on github or via email, thank you!
+
 ## Why using Tensor.NET
 
 Currently, there has been some repositories to support tensor operation, providing numpy-like interfaces, such as [NumSharp](https://github.com/SciSharp/NumSharp) and [TensorFlow.NET](https://github.com/SciSharp/TensorFlow.NET). I also learned a lot from them and thanks for the authors of the two repositories sincerely!
@@ -26,7 +28,7 @@ The following features will be provided in the future.
 
 - Support reading and writing tensor from image, excel, csv and other more formats.
 
-## API map from Numpy to Tensor.NET
+## API map from Numpy to Tensor.NET (WIP)
 
 ```Tensor.NET``` implements the main features of ```Numpy```. The mapping from Numpy API to Tensor.NET API could be found [here](./doc/API_Mapping.md).
 
@@ -45,11 +47,11 @@ Currently, most of the docs are in the making. Please wait for some days, thank 
 
 For how to build from source, please refer to [this doc](./doc/Build.md)
 
-For how to use, please refer to [the user guide]()
+For how to use, please refer to [the user guide]() (WIP)
 
 For examples, please refer to [this repository]()
 
-## Benchmarks
+## Benchmarks (WIP)
 
 Benchmarks will be privided later.
 
@@ -118,7 +120,7 @@ var amax = src.Argmax(0);
 var amin = src.Argmin(1);
 ```
 
-## The main shortcoming
+## The major shortcoming
 
 Despite the advantages above, ```Tensor.NET``` does have some shortcomings, the main shortcoming is its basic arithment with operator ```+ - % /```.
 
