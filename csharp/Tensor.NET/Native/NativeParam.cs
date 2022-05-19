@@ -1,4 +1,5 @@
 using Tensornet.Exceptions;
+using Tensornet.Common;
 
 namespace Tensornet.Native.Param{
     internal struct MatmulParam{
@@ -6,6 +7,9 @@ namespace Tensornet.Native.Param{
     }
     internal struct DotParam{
         
+    }
+    internal struct InterelemParam{
+        internal InterElemOperationType operationType;
     }
     internal struct PermuteParam{
         internal IntPtr dims;

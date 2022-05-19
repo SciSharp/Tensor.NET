@@ -16,6 +16,8 @@ namespace Tensornet.Native{
         public static extern IntPtr Dot(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("libnumnet")]
         public static extern IntPtr BoolIndex(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
+        [DllImport("libnumnet")]
+        public static extern IntPtr Interelem(IntPtr a, IntPtr b, IntPtr oup, IntPtr param, NativeProvider provider);
 
 
         [DllImport("libnumnet")]

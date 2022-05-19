@@ -1,7 +1,85 @@
 using Tensornet.Exceptions;
+using Tensornet.Native;
+using Tensornet.Native.Param;
 
 namespace Tensornet.Common{
-    public static class InterElemOperation{
+    internal enum InterElemOperationType{
+        Add = 1,
+        Sub = 2,
+        Mul = 3,
+        Div = 4
+    }
+    internal static class InterElemOperation{
+        public static unsafe Tensor<T> Execute<T>(Tensor<T> a, Tensor<T> b, InterElemOperationType operationType) 
+            where T : struct, IEquatable<T>, IConvertible{
+            TensorLayout resLayout = new TensorLayout();
+            resLayout.DType = TensorTypeInfo.GetTypeInfo(typeof(T))._dtype;
+            resLayout.NDim = System.Math.Max(a.TLayout.NDim, b.TLayout.NDim);
+            for (int i = a.TLayout.NDim - 1, j = b.TLayout.NDim - 1, idx = resLayout.NDim - 1; i >= 0 || j >= 0; i--, j--, idx--){
+                if(i < 0){
+                    resLayout.Shape[idx] = b.TLayout.Shape[j];
+                }
+                else if(j < 0){
+                    resLayout.Shape[idx] = a.TLayout.Shape[i];
+                }
+                else if(a.TLayout.Shape[i] == b.TLayout.Shape[j]){
+                    resLayout.Shape[idx] = a.TLayout.Shape[i];
+                }
+                else if(a.TLayout.Shape[i] == 1){
+                    resLayout.Shape[idx] = b.TLayout.Shape[j];
+                }
+                else if(b.TLayout.Shape[j] == 1){
+                    resLayout.Shape[idx] = a.TLayout.Shape[i];
+                }
+                else{
+                    throw new MismatchedShapeException($"Cannot broadcast between the shape {a.TLayout as TensorShape} and shape {b.TLayout as TensorShape}.");
+                }
+            }
+            resLayout.InitContiguousLayout();
+            Tensor<T> tempA = a.Broadcast(resLayout);
+            Tensor<T> tempB = b.Broadcast(resLayout);
+            Tensor<T> res = new Tensor<T>(resLayout);
+            InterelemParam p = new InterelemParam() { operationType = operationType };
+            IntPtr status = NativeExecutor.Execute(NativeApi.Interelem, tempA.TMemory, tempB.TMemory, res.TMemory, tempA.TLayout, tempB.TLayout, res.TLayout, new IntPtr(&p), Tensor<T>.Provider);
+            NativeStatus.AssertOK(status);
+            return res;
+        }
+        public static unsafe Tensor<TResult> Execute<TA, TB, TResult>(Tensor<TA> a, Tensor<TB> b, InterElemOperationType operationType) 
+            where TA : struct, IEquatable<TA>, IConvertible 
+            where TB : struct, IEquatable<TB>, IConvertible 
+            where TResult : struct, IEquatable<TResult>, IConvertible{
+            TensorLayout resLayout = new TensorLayout();
+            resLayout.DType = TensorTypeInfo.GetTypeInfo(typeof(TResult))._dtype;
+            resLayout.NDim = System.Math.Max(a.TLayout.NDim, b.TLayout.NDim);
+            for (int i = a.TLayout.NDim - 1, j = b.TLayout.NDim - 1, idx = resLayout.NDim - 1; i >= 0 || j >= 0; i--, j--, idx--){
+                if(i < 0){
+                    resLayout.Shape[idx] = b.TLayout.Shape[j];
+                }
+                else if(j < 0){
+                    resLayout.Shape[idx] = a.TLayout.Shape[i];
+                }
+                else if(a.TLayout.Shape[i] == b.TLayout.Shape[j]){
+                    resLayout.Shape[idx] = a.TLayout.Shape[i];
+                }
+                else if(a.TLayout.Shape[i] == 1){
+                    resLayout.Shape[idx] = b.TLayout.Shape[j];
+                }
+                else if(b.TLayout.Shape[j] == 1){
+                    resLayout.Shape[idx] = a.TLayout.Shape[i];
+                }
+                else{
+                    throw new MismatchedShapeException($"Cannot broadcast between the shape {a.TLayout as TensorShape} and shape {b.TLayout as TensorShape}.");
+                }
+            }
+            resLayout.InitContiguousLayout();
+            Tensor<TA> tempA = a.Broadcast(resLayout);
+            Tensor<TB> tempB = b.Broadcast(resLayout);
+            Tensor<TResult> res = new Tensor<TResult>(resLayout);
+            InterelemParam p = new InterelemParam() { operationType = operationType };
+            IntPtr status = NativeExecutor.Execute(NativeApi.Interelem, tempA.TMemory, tempB.TMemory, res.TMemory, tempA.TLayout, tempB.TLayout, res.TLayout, new IntPtr(&p), Tensor<TResult>.Provider);
+            NativeStatus.AssertOK(status);
+            return res;
+        }
         public static Tensor<TResult> Execute<TA, TB, TResult>(Tensor<TA> a, Tensor<TB> b, Func<TA, TB, TResult> operation) 
             where TA : struct, IEquatable<TA>, IConvertible 
             where TB : struct, IEquatable<TB>, IConvertible 
@@ -26,7 +104,7 @@ namespace Tensornet.Common{
                     resLayout.Shape[idx] = a.TLayout.Shape[i];
                 }
                 else{
-                    throw new MismatchedShapeException($"Cannot broadcast between the shape {a.TLayout as TensorShape} and shape {{b.TLayout as TensorShape}}.");
+                    throw new MismatchedShapeException($"Cannot broadcast between the shape {a.TLayout as TensorShape} and shape {b.TLayout as TensorShape}.");
                 }
             }
             resLayout.InitContiguousLayout();

@@ -51,6 +51,9 @@ Status *Dot(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
 Status *BoolIndex(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
                   param::boolindex *param, ProviderEnum provider);
 
+Status *Interelem(NativeTensor *a, NativeTensor *b, NativeTensor *oup,
+                  param::interelem *param, ProviderEnum provider);
+
 Status *Permute(NativeTensor *inp, NativeTensor *oup, param::permute *param,
                 ProviderEnum provider);
 
