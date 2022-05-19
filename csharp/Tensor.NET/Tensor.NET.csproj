@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PackageId>Tensor.NET</PackageId>
-    <Version>0.0.7</Version>
+    <Version>0.0.8</Version>
     <Authors>AsakusaRinne</Authors>
     <Company>Null</Company>
     <Description>

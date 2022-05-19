@@ -46,6 +46,8 @@ namespace Tensornet.Native{
         public static extern IntPtr Max(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
         [DllImport("libnumnet")]
         public static extern IntPtr Min(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
+        [DllImport("libnumnet")]
+        public static extern IntPtr Negative(IntPtr inp, IntPtr oup, IntPtr param, NativeProvider provider);
 
 
         [DllImport("libnumnet")]

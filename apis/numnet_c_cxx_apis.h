@@ -90,6 +90,9 @@ Status *Max(NativeTensor *inp, NativeTensor *oup, param::max *param,
 Status *Min(NativeTensor *inp, NativeTensor *oup, param::min *param,
             ProviderEnum provider);
 
+Status *Negative(NativeTensor *inp, NativeTensor *oup, param::negative *param,
+                 ProviderEnum provider);
+
 Status *Argmxx(NativeTensor *inp, NativeTensor *oup, param::argmxx *param,
                ProviderEnum provider);
 

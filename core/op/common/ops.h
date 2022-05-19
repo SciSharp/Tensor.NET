@@ -18,7 +18,7 @@ using namespace param;
 
 #define NN_FOREACH_SINGLE_INPUT_OP(cb)                                        \
   cb(transpose) cb(permute) cb(repeat) cb(flip) cb(matrix_inverse) cb(rotate) \
-      cb(pad) cb(sort) cb(onehot) cb(sum) cb(max) cb(min)
+      cb(pad) cb(sort) cb(onehot) cb(sum) cb(max) cb(min) cb(negative)
 
 #define NN_FOREACH_DOUBLE_INPUT_OP(cb) cb(matmul) cb(dot) cb(boolindex)
 

@@ -206,6 +206,8 @@ struct min {
   void operator=(const min &) {}
 };
 
+struct negative {};
+
 struct argmxx {
   int axis;
   bool is_max;
