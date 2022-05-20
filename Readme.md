@@ -1,3 +1,5 @@
+English | [中文](./doc/Readme-zh-cn.md)
+
 # Tensor.NET
 
 Tensor.NET is a lightweight and high-performance tensor library which provides numpy-like operations but .NET style interfaces. It supports generic tensor, Linq, C# native slices and so on. It is young so that it may may lack some features or have some BUGs. Please tell us on github or via email, thank you!
@@ -51,11 +53,11 @@ $ dotnet add package Tensor.NET
 
 Currently, most of the docs are in the making. Please wait for some days, thank you.
 
-For how to build from source, please refer to [this doc](./doc/Build.md)
+- About how to build from source, please refer to [this doc](./doc/Build.md)
 
-For how to use, please refer to [the user guide]() (WIP)
+- About how to use, please refer to [the user guide]() (WIP)
 
-For examples, please refer to [this repository](https://github.com/AsakusaRinne/Tensor.NET.Examples)
+- About examples, please refer to [this repository](https://github.com/AsakusaRinne/Tensor.NET.Examples)
 
 ## Benchmarks (WIP)
 
