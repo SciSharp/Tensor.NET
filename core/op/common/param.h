@@ -209,7 +209,16 @@ struct min {
 struct negative {};
 
 struct interelem {
-  enum Operation { Add = 1, Sub = 2, Mul = 3, Div = 4 };
+  enum Operation {
+    Add = 1,
+    Sub = 2,
+    Mul = 3,
+    Div = 4,
+    Mod = 5,
+    And = 6,
+    Or = 7,
+    Xor = 8
+  };
 
   Operation op;
 

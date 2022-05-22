@@ -28,6 +28,26 @@ TC interelem_div(TA a, TB b) {
   return static_cast<TC>(a / b);
 }
 
+template <typename TA, typename TB, typename TC>
+TC interelem_mod(TA a, TB b) {
+  return static_cast<TC>(a % b);
+}
+
+template <typename TA, typename TB, typename TC>
+TC interelem_and(TA a, TB b) {
+  return static_cast<TC>(a & b);
+}
+
+template <typename TA, typename TB, typename TC>
+TC interelem_or(TA a, TB b) {
+  return static_cast<TC>(a | b);
+}
+
+template <typename TA, typename TB, typename TC>
+TC interelem_xor(TA a, TB b) {
+  return static_cast<TC>(a ^ b);
+}
+
 IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(interelem) {
   nn_size idx_offset = loup.ndim - NN_MAX_NDIM;
   std::function<TC(TA, TB)> func;
@@ -43,6 +63,18 @@ IMPL_NAIVE_DOUBLE_INPUT_INTERNAL(interelem) {
       break;
     case Param::Div:
       func = interelem_div<TA, TB, TC>;
+      break;
+    case Param::Mod:
+      func = interelem_mod<TA, TB, TC>;
+      break;
+    case Param::And:
+      func = interelem_and<TA, TB, TC>;
+      break;
+    case Param::Or:
+      func = interelem_or<TA, TB, TC>;
+      break;
+    case Param::Xor:
+      func = interelem_xor<TA, TB, TC>;
       break;
 
     default:
