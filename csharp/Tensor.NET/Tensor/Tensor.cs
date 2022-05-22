@@ -64,6 +64,11 @@ namespace Tensornet{
             }
         }
 
+        /// <summary>
+        /// Make the tensor contiguous. Note that if the tensor is already contiguous, the method will return itself.
+        /// If the tensor is not contiguous, a new contiguous tensor will be returned.
+        /// </summary>
+        /// <returns></returns>
         public Tensor<T> ToContiguousTensor(){
             Tensor<T> res = new Tensor<T>(new TensorLayout(TLayout as TensorShape, TLayout.DType));
             this.CopyTo(res);
@@ -105,9 +110,13 @@ namespace Tensornet{
         IEnumerator IEnumerable.GetEnumerator()
             => new TensorEnumerator<T>(this);
 
-        [Obsolete("This method need to be revised in the future because the tensor may not be contiguous", true)]
         public object Clone(){
-            return new Tensor<T>(new TensorMemory<T>(TMemory.AsSpan()), new TensorLayout(TLayout));
+            if(TLayout.IsContiguous()){
+                return new Tensor<T>(new TensorMemory<T>(TMemory.AsSpan()), new TensorLayout(TLayout));
+            }
+            else{
+                return ToContiguousTensor();
+            }
         }
 
         public override string ToString()
