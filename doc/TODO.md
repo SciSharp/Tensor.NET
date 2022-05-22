@@ -55,6 +55,7 @@
 | Add zeros_like, ones_like, fill_like methods |  | p0 | Complete ✅ |
 | Add flatten method |  | p0 | Complete ✅ |
 | Add max, min, mean op |  | p0 | Complete ✅ |
+| Add mod, and, or, xor operators in csharp |  | p0 | Waiting 🔵 |
 
 
 ✅   ❌   🚀   🔵

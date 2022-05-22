@@ -79,3 +79,16 @@ namespace Tensornet.Common{
         }
     }
 }
+
+namespace Tensornet{
+    public partial class Tensor<T>{
+        /// <summary>
+        /// Apply an function on each element of the current tensor inplace.
+        /// Note that the modification will be made on the current tensor directly.
+        /// </summary>
+        /// <param name="operation"></param>
+        public void ForEachInplace(Func<T, T> operation){
+            Common.InplaceOperation.Execute(this, operation);
+        }
+    }
+}

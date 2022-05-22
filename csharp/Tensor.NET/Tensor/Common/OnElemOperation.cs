@@ -29,3 +29,18 @@ namespace Tensornet.Common{
         }
     }
 }
+
+namespace Tensornet{
+    public partial class Tensor<T>{
+        /// <summary>
+        /// Apply a function to each element of the current tensor.
+        /// Note that a new tensor will be created. If you want to directly modify the tensor, please use "ForEachInplace"
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="operation"></param>
+        /// <returns></returns>
+        public Tensor<TResult> ForEach<TResult>(Func<T, TResult> operation) where TResult : struct, IEquatable<TResult>, IConvertible{
+            return Common.OnElemOperation.Execute(this, operation);
+        }
+    }
+}
