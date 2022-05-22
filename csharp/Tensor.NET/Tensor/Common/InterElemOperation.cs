@@ -7,7 +7,11 @@ namespace Tensornet.Common{
         Add = 1,
         Sub = 2,
         Mul = 3,
-        Div = 4
+        Div = 4,
+        Mod = 5,
+        And = 6,
+        Or = 7,
+        Xor = 8
     }
     internal static class InterElemOperation{
         public static unsafe Tensor<T> Execute<T>(Tensor<T> a, Tensor<T> b, InterElemOperationType operationType) 
