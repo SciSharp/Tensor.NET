@@ -33,7 +33,7 @@ namespace Tensornet{
         }
 
         public static async void WriteAsync<T>(string path, Tensor<T> tensor) where T : struct, IEquatable<T>, IConvertible{
-            
+            throw new NotImplementedException();
         }
 
         private static void WriteMagicAndVersion(FileStream fs){
@@ -73,6 +73,12 @@ namespace Tensornet{
                 }
                 fs.Write(dataSpan);
             }
+        }
+    }
+
+    public partial class Tensor<T>{
+        public void Save(string path, TensorSerializationMode mode = TensorSerializationMode.TensorNET){
+            TensorWriter.Write(path, this, mode);
         }
     }
 }

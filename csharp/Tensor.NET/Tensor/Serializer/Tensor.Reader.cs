@@ -66,6 +66,11 @@ namespace Tensornet{
             ReadContiguousData(fs, res);
             return res;
         }
+    }
 
+    public static partial class Tensor{
+        public static Tensor<T> Load<T>(string path) where T : struct, IEquatable<T>, IConvertible{
+            return TensorReader.Read<T>(path);
+        }
     }
 }
