@@ -49,4 +49,24 @@ TEST(Naive, Interelem) {
   Tensor pred4;
   ASSERT_TRUE(oprs->interelem(a4, b4, pred4, p4).is_ok());
   assert_same_data<int>(pred4, truth4, 0.0001f);
+
+  // Group 5
+  Tensor a5 = F::from_list({1, 2, 35, 43, 5, 14}, {2, 3}, dtype::Int32());
+  Tensor b5 = F::from_list({1, 2, 9, 5, 2, 4}, {2, 3}, dtype::Int32());
+  Tensor truth5 = F::from_list({0, 0, 8, 3, 1, 2}, {2, 3}, dtype::Int32());
+  Param p5(Param::Operation::Mod);
+
+  Tensor pred5;
+  ASSERT_TRUE(oprs->interelem(a5, b5, pred5, p5).is_ok());
+  assert_same_data<int>(pred5, truth5, 0.0001f);
+
+  // Group 5
+  Tensor a6 = F::from_list({1, 2, 4}, {3}, dtype::Int32());
+  Tensor b6 = F::from_list({1, 3, 1}, {3}, dtype::Int32());
+  Tensor truth6 = F::from_list({0, 1, 5}, {3}, dtype::Int32());
+  Param p6(Param::Operation::Xor);
+
+  Tensor pred6;
+  ASSERT_TRUE(oprs->interelem(a6, b6, pred6, p6).is_ok());
+  assert_same_data<int>(pred6, truth6, 0.0001f);
 }

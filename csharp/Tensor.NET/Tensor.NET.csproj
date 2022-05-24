@@ -15,13 +15,20 @@
       Github repository: https://github.com/AsakusaRinne/Tensor.NET
 
       Email: AsakusaRinne@gmail.com
+
+      Update information:
+        1. Add static method for load and save.
+        2. Add mod, and, or, xor operators for Tensor.
+        3. Add ForEach method for Tensor.
+        4. Add docs for public APIs. 
+
     </Description>
-    <PackageLicenseExpression>Apache2.0</PackageLicenseExpression>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-        <Content Include="./CppLibrary/libnumnet.dll">
+        <Content Include="./CppLibrary/libtensornet.dll">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <Pack>true</Pack>
             <PackagePath>lib\$(TargetFramework)</PackagePath>
@@ -36,7 +43,7 @@
             <Pack>true</Pack>
             <PackagePath>lib\$(TargetFramework)</PackagePath>
         </Content>
-        <Content Include="libnumnet.so">
+        <Content Include="libtensornet.so">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <PackageCopyToOutput>true</PackageCopyToOutput>
             <pack>true</pack>
