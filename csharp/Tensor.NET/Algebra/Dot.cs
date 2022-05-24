@@ -17,7 +17,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -26,7 +25,6 @@ namespace Tensornet{
         }/// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -36,7 +34,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -46,7 +43,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -56,7 +52,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -66,7 +61,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -76,7 +70,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -86,7 +79,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -96,7 +88,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -106,7 +97,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -116,7 +106,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -126,7 +115,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -136,7 +124,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -146,7 +133,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -156,7 +142,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -166,7 +151,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -176,7 +160,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -186,7 +169,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -196,7 +178,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -206,7 +187,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>
@@ -216,7 +196,6 @@ namespace Tensornet{
         /// <summary>
         /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="lhs"></param>
         /// <param name="rhs"></param>
         /// <returns></returns>

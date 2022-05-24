@@ -68,12 +68,12 @@ namespace Tensornet{
         /// <param name="src">the tensor to be flipped</param>
         /// <param name="axes"> The axes to flip. If it's set to null, then all axis will be flipped. </param>
         /// <returns>The flipped tensor</returns>
-        public static Tensor<T> Flip<T>(Tensor<T> src, int[]? axis = null) where T : struct, IEquatable<T>, IConvertible{
-            if(axis is null){
+        public static Tensor<T> Flip<T>(Tensor<T> src, int[]? axes = null) where T : struct, IEquatable<T>, IConvertible{
+            if(axes is null){
                 return src.Flip();
             }
             else{
-                return src.Flip(axis);
+                return src.Flip(axes);
             }
         }
         /// <summary>

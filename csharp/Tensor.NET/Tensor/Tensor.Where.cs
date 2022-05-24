@@ -23,10 +23,10 @@ namespace Tensornet{
 
     public static partial class Tensor{
         /// <summary>
-        /// Return elements chosen from trueCase or falseCase depending on condition.
+        /// Return elements chosen from trueCase or falseCase depending on a bool tensor.
         /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.where.html?highlight=where
         /// </summary>
-        /// <param name="condition"> The condition to decide whether use trueCase or falseCase</param>
+        /// <param name="conditionTensor"> The condition to decide whether use trueCase or falseCase</param>
         /// <param name="trueCase"> The value to fill when the condition is true. </param>
         /// <param name="falseCase"> The value to fill when the condition is false. </param>
         /// <returns></returns>

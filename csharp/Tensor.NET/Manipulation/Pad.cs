@@ -117,9 +117,9 @@ namespace Tensornet{
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="src"></param>
-        /// <param name="widths"> Number of values padded to the edges of each axis. ((width_1, width_1), … (width_N, width_N)) same pad widths for each axis. </param>
+        /// <param name="width"> Number of values padded to the edges of each axis. ((width_1, width_1), … (width_N, width_N)) same pad widths for each axis. </param>
         /// <param name="mode"> The mode of the padding.</param>
-        /// <param name="constants"> Used in ‘constant’. The values to set the padded values for each axis. ((value_1, value_1), ... (value_N, value_N)) same pad constants for each axis. Default is 0.</param>
+        /// <param name="constant"> Used in ‘constant’. The values to set the padded values for each axis. ((value_1, value_1), ... (value_N, value_N)) same pad constants for each axis. Default is 0.</param>
         /// <returns></returns>
         /// <exception cref="InvalidParamException"></exception>
         /// <exception cref="NotImplementedException"></exception>

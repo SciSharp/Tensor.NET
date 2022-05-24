@@ -309,9 +309,7 @@ namespace Tensornet{
             DataType = TensorTypeInfo.GetTypeInfo(typeof(T))._dtype;
         }
         public T Value{ get; set; }
-        // public Scalar(int vaule, DType dataType) : base(new TensorMemory(1, dataType), new TensorLayout(new int[]{1}, dataType)){
 
-        // }
         /// <summary>
         /// Get the value of the specified type. Since this function contains casting, 
         /// if you already have an instance of Scalar<T>, please use the Value property directly.
@@ -339,6 +337,7 @@ namespace Tensornet{
                 throw new NotImplementedException();
             }
         }
+        
         /// <summary>
         /// Get the value of the specified type. Since this function contains casting, 
         /// if you already have an instance of Scalar<T>, please use the Value property directly.
