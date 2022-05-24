@@ -4,69 +4,222 @@ using Tensornet.Exceptions;
 
 namespace Tensornet{
     public static class DotExtension{
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<T> Dot<T>(this Tensor<T> lhs, Tensor<T> rhs) where T : struct, IEquatable<T>, IConvertible{
             return DotInternal<T, T, T>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<double> lhs, Tensor<int> rhs){
             return DotInternal<double, int, double>(lhs, rhs);
-        }
+        }/// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<double> lhs, Tensor<float> rhs){
             return DotInternal<double, float, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<double> lhs, Tensor<long> rhs){
             return DotInternal<double, long, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<double> lhs, Tensor<bool> rhs){
             return DotInternal<double, bool, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<int> lhs, Tensor<double> rhs){
             return DotInternal<int, double, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<float> Dot(this Tensor<int> lhs, Tensor<float> rhs){
             return DotInternal<int, float, float>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<long> Dot(this Tensor<int> lhs, Tensor<long> rhs){
             return DotInternal<int, long, long>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<int> Dot(this Tensor<int> lhs, Tensor<bool> rhs){
             return DotInternal<int, bool, int>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<long> lhs, Tensor<double> rhs){
             return DotInternal<long, double, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<float> Dot(this Tensor<long> lhs, Tensor<float> rhs){
             return DotInternal<long, float, float>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<long> Dot(this Tensor<long> lhs, Tensor<int> rhs){
             return DotInternal<long, int, long>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<long> Dot(this Tensor<long> lhs, Tensor<bool> rhs){
             return DotInternal<long, bool, long>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<float> Dot(this Tensor<float> lhs, Tensor<long> rhs){
             return DotInternal<float, long, float>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<float> Dot(this Tensor<float> lhs, Tensor<int> rhs){
             return DotInternal<float, int, float>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<float> Dot(this Tensor<float> lhs, Tensor<bool> rhs){
             return DotInternal<float, bool, float>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<float> lhs, Tensor<double> rhs){
             return DotInternal<float, double, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<double> Dot(this Tensor<bool> lhs, Tensor<double> rhs){
             return DotInternal<bool, double, double>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<float> Dot(this Tensor<bool> lhs, Tensor<float> rhs){
             return DotInternal<bool, float, float>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<long> Dot(this Tensor<bool> lhs, Tensor<long> rhs){
             return DotInternal<bool, long, long>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         public static Tensor<int> Dot(this Tensor<bool> lhs, Tensor<int> rhs){
             return DotInternal<bool, int, int>(lhs, rhs);
         }
+        /// <summary>
+        /// Get the dot result of the two tensors. For the details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.dot.html#numpy.dot
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns></returns>
         private static Tensor<TC> DotInternal<TA, TB, TC>(Tensor<TA> lhs, Tensor<TB> rhs) 
         where TA : struct, IEquatable<TA>, IConvertible
         where TB : struct, IEquatable<TB>, IConvertible

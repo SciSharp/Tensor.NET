@@ -5,11 +5,19 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class FlipExtension{
-
-        public static Tensor<T> Flip<T>(this Tensor<T> src, params int[] axis) where T : struct, IEquatable<T>, IConvertible
+        /// <summary>
+        /// Reverse the order of elements in an array along the given axis. The shape of the array is preserved, but the elements are reordered.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.flip.html?highlight=flip#numpy.flip
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axes"> Axes along which to flip over. If no axis is given, then the tensor will be flipped on all axes.</param>
+        /// <returns></returns>
+        /// <exception cref="InvalidParamException"></exception>
+        public static Tensor<T> Flip<T>(this Tensor<T> src, params int[] axes) where T : struct, IEquatable<T>, IConvertible
         {
             bool[] dims = new bool[TensorLayout.MAX_NDIM];
-            if(axis.Length == 0){
+            if(axes.Length == 0){
                 for (int i = 0; i < src.TLayout.NDim; i++){
                     dims[i] = true;
                 }
@@ -18,7 +26,7 @@ namespace Tensornet{
                 for (int i = 0; i < dims.Length; i++){
                     dims[i] = false;
                 }
-                foreach (var i in axis)
+                foreach (var i in axes)
                 {
                     if (i >= src.TLayout.NDim)
                     {
@@ -53,11 +61,12 @@ namespace Tensornet{
 
     public static partial class Tensor{
         /// <summary>
-        /// Flip the tensor.
+        /// Reverse the order of elements in an array along the given axis. The shape of the array is preserved, but the elements are reordered.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.flip.html?highlight=flip#numpy.flip
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="src">the tensor to be flipped</param>
-        /// <param name="axis"> The axis to flip. If it's set to null, then all axis will be flipped</param>
+        /// <param name="axes"> The axes to flip. If it's set to null, then all axis will be flipped. </param>
         /// <returns>The flipped tensor</returns>
         public static Tensor<T> Flip<T>(Tensor<T> src, int[]? axis = null) where T : struct, IEquatable<T>, IConvertible{
             if(axis is null){
@@ -67,6 +76,14 @@ namespace Tensornet{
                 return src.Flip(axis);
             }
         }
+        /// <summary>
+        /// Reverse the order of elements in an array along the given axis. The shape of the array is preserved, but the elements are reordered.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.flip.html?highlight=flip#numpy.flip
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src">the tensor to be flipped</param>
+        /// <param name="axis"> The axis to flip. </param>
+        /// <returns>The flipped tensor</returns>
         public static Tensor<T> Flip<T>(Tensor<T> src, int axis) where T : struct, IEquatable<T>, IConvertible{
             return src.Flip(axis);
         }

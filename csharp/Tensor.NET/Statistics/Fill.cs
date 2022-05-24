@@ -5,7 +5,12 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class FillExtension{
-
+        /// <summary>
+        /// Fill the tensor with the given value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="value"> The value to be filled in the tensor. </param>
         public static void Fill<T>(this Tensor<T> src, T value) where T : struct, IEquatable<T>, IConvertible
         {
             FillParam param = new FillParam() { value = Convert.ToDouble(value) };
@@ -26,6 +31,12 @@ namespace Tensornet{
     }
 
     public static partial class Tensor{
+        /// <summary>
+        /// Fill the tensor with the given value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="value"> The value to be filled in the tensor. </param>
         public static void Fill<T>(Tensor<T> src, T value) where T : struct, IEquatable<T>, IConvertible
         {
             src.Fill(value);

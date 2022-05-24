@@ -4,6 +4,14 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class MinExtension{
+        /// <summary>
+        /// Get the minimum elements along some axes.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axes"> The axes to get minimum value. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Min<T>(this Tensor<T> src, int[] axes, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, axes));
@@ -17,6 +25,14 @@ namespace Tensornet{
             MinInternal(src, res, boolDims, keepDims);
             return res;
         }
+        /// <summary>
+        /// Get the minimum elements along an axis.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get minimum value. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Min<T>(this Tensor<T> src, int axis, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, axis));
@@ -28,6 +44,13 @@ namespace Tensornet{
             MinInternal(src, res, boolDims, keepDims);
             return res;
         }
+        /// <summary>
+        /// Get the minimum element of a tensor.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Min<T>(this Tensor<T> src, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout));
@@ -68,33 +91,33 @@ namespace Tensornet{
 
     public static partial class Tensor{
         /// <Summary>
-        /// Get the minimum elements of the tensor.
+        /// Get the minimum elements of the tensor along some axes.
         /// </Summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="src"> The tensor to get minimum elements. </param>
-        /// <param name="axes"> The axes to execute. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the Min. If false, the NDim of the result may be different with the input. </param>
+        /// <param name="axes"> The axes to get minimum elements. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
         /// <returns></returns>
         public static Tensor<T> Min<T>(Tensor<T> src, int[] axes, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Min(axes, keepDims);
         }
         /// <Summary>
-        /// Get the minimum elements of the tensor.
+        /// Get the minimum elements of the tensor along an axis.
         /// </Summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="src"> The tensor to get minimum elements. </param>
-        /// <param name="axis"> The axis to execute. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the Min. If false, the NDim of the result may be different with the input. </param>
+        /// <param name="axis"> The axis to get minimum elements. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
         /// <returns></returns>
         public static Tensor<T> Min<T>(Tensor<T> src, int axis, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Min(axis, keepDims);
         }
         /// <Summary>
-        /// Get the minimum elements of the tensor.
+        /// Get the minimum element of the tensor.
         /// </Summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to get minimum elements. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the Min. If false, the NDim of the result may be different with the input. </param>
+        /// <param name="src"> The tensor to get minimum element. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
         /// <returns></returns>
         public static Tensor<T> Min<T>(Tensor<T> src, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Min(keepDims);

@@ -5,7 +5,14 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class TransposeExtension{
-
+        /// <summary>
+        /// Reverse the two axes of a tensor.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="dimA"></param>
+        /// <param name="dimB"></param>
+        /// <returns></returns>
         public static Tensor<T> Transpose<T>(this Tensor<T> src, int dimA, int dimB) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, dimA, dimB));

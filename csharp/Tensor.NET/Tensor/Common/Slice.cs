@@ -92,6 +92,13 @@ namespace Tensornet{
     }
 
     public partial class Tensor<T>{
+        /// <summary>
+        /// Get the slice of the tensor.
+        /// Please note that except of the Slice class in Tensor.NET, Range and Index in C# 8 or higher is also supported. For details, please refer to https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/ranges
+        /// </summary>
+        /// <param name="slices"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidArgumentException"></exception>
         public Tensor<T> this[params Slice[] slices]{
             get{
                 if(slices.Length > TLayout.NDim){

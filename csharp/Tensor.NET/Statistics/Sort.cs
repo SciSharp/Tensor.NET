@@ -8,6 +8,16 @@ namespace Tensornet{
         Decrease = 1
     }
     public static class SortExtension{
+        /// <summary>
+        /// Return a sorted copy of a tensor.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.sort.html?highlight=sort#numpy.sort
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> Axis along which to sort. By default it sorts the last axis. Please set it to zero or a positive number.</param>
+        /// <param name="order"> The order of the sort. </param>
+        /// <returns></returns>
+        /// <exception cref="InvalidParamException"></exception>
         public static Tensor<T> Sort<T>(this Tensor<T> src, int axis = -1, SortOrder order = SortOrder.Increase) where T : struct, IEquatable<T>, IConvertible
         {
             if(axis == -1){
@@ -33,12 +43,15 @@ namespace Tensornet{
 
     public static partial class Tensor{
         /// <summary>
-        /// Sort the tensor.
+        /// Return a sorted copy of a tensor.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.sort.html?highlight=sort#numpy.sort
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be sorted. </param>
-        /// <param name="axis"> The axis to Sort. If it's set to -1, then the last axis will be Sorted</param>
-        /// <returns>The Sortped tensor</returns>
+        /// <param name="src"></param>
+        /// <param name="axis"> Axis along which to sort. By default it sorts the last axis. Please set it to zero or a positive number.</param>
+        /// <param name="order"> The order of the sort. </param>
+        /// <returns></returns>
+        /// <exception cref="InvalidParamException"></exception>
         public static Tensor<T> Sort<T>(Tensor<T> src, int axis = -1, SortOrder order = SortOrder.Increase) where T : struct, IEquatable<T>, IConvertible{
             return src.Sort(axis, order);
         }

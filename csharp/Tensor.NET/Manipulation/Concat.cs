@@ -7,7 +7,14 @@ using System.Runtime.InteropServices;
 
 namespace Tensornet{
     public static partial class Tensor{
-
+        /// <summary>
+        /// Join a sequence of arrays along an existing axis.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.concatenate.html?highlight=concat#numpy.concatenate
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis along which the arrays will be joined. </param>
+        /// <returns></returns>
         public static Tensor<T> Concat<T>(IEnumerable<Tensor<T>> src, int axis) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(ConcatDeduceLayout(src, axis));

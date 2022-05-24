@@ -5,7 +5,14 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class PermuteExtension{
-
+        /// <summary>
+        /// Permute the axes of a tensor.
+        /// For example, the input is s tensor with shape [2, 3, 4], the parameter is [2, 0, 1], the shapee of the result is [4, 2, 3].
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="dims"> The new arrangement of the dims.</param>
+        /// <returns></returns>
         public static Tensor<T> Permute<T>(this Tensor<T> src, params int[] dims) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, dims));

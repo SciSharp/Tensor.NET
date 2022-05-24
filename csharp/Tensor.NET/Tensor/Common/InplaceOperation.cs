@@ -1,6 +1,6 @@
 
 namespace Tensornet.Common{
-    public static class InplaceOperation{
+    internal static class InplaceOperation{
         public static void Execute<T>(Tensor<T> inp, Func<T, T> operation) 
             where T : struct, IEquatable<T>, IConvertible{
             int idxOffset = inp.TLayout.NDim - TensorLayout.MAX_NDIM;

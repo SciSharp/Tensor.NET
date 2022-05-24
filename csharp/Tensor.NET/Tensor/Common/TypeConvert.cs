@@ -4,6 +4,12 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public partial class Tensor<T>{
+        /// <summary>
+        /// Convert the tensor to the target type.
+        /// Please note that whether the target type is same of different, a new memory will be alloced. Therefore, it could alse be used as a copy method.
+        /// </summary>
+        /// <typeparam name="TD"></typeparam>
+        /// <returns></returns>
         public Tensor<TD> ToTensor<TD>() where TD : struct, IEquatable<TD>, IConvertible{
             Tensor<TD> res = new Tensor<TD>(new TensorLayout(TLayout, TensorTypeInfo.GetTypeInfo(typeof(TD))._dtype));
             TypeConvertInternal(TMemory, res.TMemory, TLayout, res.TLayout);

@@ -3,6 +3,7 @@ using Tensornet.Common;
 using Tensornet.Exceptions;
 
 namespace Tensornet{
+    [Obsolete("The class may be removed in the future version.")]
     public class Scalar : IEquatable<Scalar>{
         public DType DataType{ get; internal set; }
         public Scalar<T> AsScalar<T>() where T : struct{

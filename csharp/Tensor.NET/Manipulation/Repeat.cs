@@ -5,7 +5,15 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class RepeatExtension{
-
+        /// <summary>
+        /// Repeat elements of a tensor.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.repeat.html?highlight=repeat
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="repeats"> The number of repetitions for each element. repeats is broadcasted to fit the shape of the given axis. </param>
+        /// <param name="axis"> The axis along which to repeat values. </param>
+        /// <returns></returns>
         public static Tensor<T> Repeat<T>(this Tensor<T> src, int repeats, int axis) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, repeats, axis));
@@ -37,6 +45,15 @@ namespace Tensornet{
     }
 
     public static partial class Tensor{
+        /// <summary>
+        /// Repeat elements of a tensor.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.repeat.html?highlight=repeat
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="repeats"> The number of repetitions for each element. repeats is broadcasted to fit the shape of the given axis. </param>
+        /// <param name="axis"> The axis along which to repeat values. </param>
+        /// <returns></returns>
         public static Tensor<T> Repeat<T>(Tensor<T> src, int repeats, int axis) where T : struct, IEquatable<T>, IConvertible{
             return src.Repeat(repeats, axis);
         }

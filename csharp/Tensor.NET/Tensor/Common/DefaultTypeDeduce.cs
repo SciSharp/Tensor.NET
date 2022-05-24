@@ -2,7 +2,7 @@ using Tensornet.Native;
 
 namespace Tensornet.Common{
     internal static class DefaultTypeDeduce{
-        public static DType Deduce(DType lhs, DType rhs){
+        internal static DType Deduce(DType lhs, DType rhs){
             if(lhs == rhs) return lhs;
             if(lhs == DType.Float64 || rhs == DType.Float64){
                 return DType.Float64;

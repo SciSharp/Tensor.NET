@@ -3,6 +3,16 @@ using Tensornet.Native;
 
 namespace Tensornet{
     public static partial class Tensor{
+        /// <summary>
+        /// Get the onehot data of a tensor on the last axis. The tensor shape depends on the maxValue parameter.
+        /// For example, tensor [1, 2] with maxValue = 3 will create an onehot tensor
+        /// [[0, 1, 0, 0],
+        ///  [0, 0, 1, 0]]
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="maxValue"> The max value of the onehot. </param>
+        /// <returns></returns>
         public static Tensor<T> Onehot<T>(Tensor<T> src, int maxValue) where T : struct, IConvertible, IEquatable<T>{
             Tensor<T> res = new Tensor<T>(DeduceOnehotLayout(src.TLayout, maxValue));
             res.TLayout.InitContiguousLayout();

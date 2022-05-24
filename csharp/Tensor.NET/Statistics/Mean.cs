@@ -4,6 +4,14 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class MeanExtension{
+        /// <summary>
+        /// Get the mean of elements of a tensor along some axes.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axes"> The axes to get mean. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<double> Mean<T>(this Tensor<T> src, int[] axes, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<double> res = new Tensor<double>(DeduceLayout(src.TLayout, axes));
@@ -17,6 +25,14 @@ namespace Tensornet{
             MeanInternal(src, res, boolDims, keepDims);
             return res;
         }
+        /// <summary>
+        /// Get the mean of elements of a tensor along an axis.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get mean. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<double> Mean<T>(this Tensor<T> src, int axis, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<double> res = new Tensor<double>(DeduceLayout(src.TLayout, axis));
@@ -28,6 +44,13 @@ namespace Tensornet{
             MeanInternal(src, res, boolDims, keepDims);
             return res;
         }
+        /// <summary>
+        /// Get the mean of elements of a tensor.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<double> Mean<T>(this Tensor<T> src, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<double> res = new Tensor<double>(DeduceLayout(src.TLayout));
@@ -68,23 +91,23 @@ namespace Tensornet{
 
     public static partial class Tensor{
         /// <Meanmary>
-        /// Mean the tensor.
+        /// Get the mean of the tensor along some axes.
         /// </Meanmary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be mean. </param>
-        /// <param name="axes"> The axes to mean. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the mean. If false, the NDim of the result may be different with the input. </param>
+        /// <param name="src"> </param>
+        /// <param name="axes"> The axes to get mean result. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
         /// <returns>The Mean tensor</returns>
         public static Tensor<double> Mean<T>(Tensor<T> src, int[] axes, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Mean(axes, keepDims);
         }
         /// <Meanmary>
-        /// Mean the tensor.
+        /// Get the mean of the tensor along an axis.
         /// </Meanmary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be meaned. </param>
-        /// <param name="axis"> The axis to mean. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the mean. If false, the NDim of the result may be different with the input. </param>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get mean result. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
         /// <returns>The Mean tensor</returns>
         public static Tensor<double> Mean<T>(Tensor<T> src, int axis, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Mean(axis, keepDims);
@@ -93,8 +116,8 @@ namespace Tensornet{
         /// Mean the tensor.
         /// </Meanmary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be meaned. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the mean. If false, the NDim of the result may be different with the input. </param>
+        /// <param name="src"> </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
         /// <returns>The Mean tensor</returns>
         public static Tensor<double> Mean<T>(Tensor<T> src, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Mean(keepDims);

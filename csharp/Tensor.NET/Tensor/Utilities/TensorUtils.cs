@@ -3,6 +3,15 @@ using Tensornet.Native;
 namespace Tensornet{
     public static class TensorUtils
     {
+        /// <summary>
+        /// Return if each value of the tensors are equal.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="err"></param>
+        /// <returns></returns>
+        [Obsolete("The method may be removed in the future version")]
         public static bool IsValueEqual<T>(Tensor<T> a, Tensor<T> b, double err = 1e-5) where T : struct, IEquatable<T>, IConvertible{
             if(Object.ReferenceEquals(a, b)) return true;
             if(!a.TLayout.IsSameShape(b.TLayout)) return false;

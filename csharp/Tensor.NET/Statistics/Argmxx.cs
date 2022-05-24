@@ -5,7 +5,14 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class ArgmaxExtension{
-
+        /// <summary>
+        /// Returns the indices of the maximum values along an axis.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.argmax.html?highlight=argmax#numpy.argmax
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get the indices. </param>
+        /// <returns></returns>
         public static Tensor<long> Argmax<T>(this Tensor<T> src, int axis) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<long> res = new Tensor<long>(DeduceLayout(src.TLayout, axis));
@@ -14,7 +21,14 @@ namespace Tensornet{
             res.TLayout.RemoveAxisInplace(axis);
             return res;
         }
-
+        /// <summary>
+        /// Returns the indices of the minimum values along an axis.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.argmin.html?highlight=argmin#numpy.argmin
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get the indices. </param>
+        /// <returns></returns>
         public static Tensor<long> Argmin<T>(this Tensor<T> src, int axis) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<long> res = new Tensor<long>(DeduceLayout(src.TLayout, axis));
@@ -45,9 +59,25 @@ namespace Tensornet{
     }
 
     public static partial class Tensor{
+        /// <summary>
+        /// Returns the indices of the maximum values along an axis.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.argmax.html?highlight=argmax#numpy.argmax
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get the indices. </param>
+        /// <returns></returns>
         public static Tensor<long> Argmax<T>(Tensor<T> src, int axis) where T : struct, IEquatable<T>, IConvertible{
             return src.Argmax(axis);
         }
+        /// <summary>
+        /// Returns the indices of the minimum values along an axis.
+        /// For details, please refer to https://numpy.org/doc/stable/reference/generated/numpy.argmin.html?highlight=argmin#numpy.argmin
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get the indices. </param>
+        /// <returns></returns>
         public static Tensor<long> Argmin<T>(Tensor<T> src, int axis) where T : struct, IEquatable<T>, IConvertible{
             return src.Argmin(axis);
         }

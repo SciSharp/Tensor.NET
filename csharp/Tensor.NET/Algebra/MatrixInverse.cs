@@ -5,6 +5,11 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class InverseExtension{
+        /// <summary>
+        /// Get the inverse of the tensor. For the details of the manipulation, please refer to https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html
+        /// </summary>
+        /// <param name="src"></param>
+        /// <returns></returns>
         public static Tensor<double> Inverse(this Tensor<int> src)
         {
             Tensor<double> res = new Tensor<double>(DeduceLayout(src.TLayout));
@@ -12,6 +17,11 @@ namespace Tensornet{
             InverseInternal<double>(src.ToTensor<double>(), res);
             return res;
         }
+        /// <summary>
+        /// Get the inverse of the tensor. For the details of the manipulation, please refer to https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html
+        /// </summary>
+        /// <param name="src"></param>
+        /// <returns></returns>
         public static Tensor<double> Inverse(this Tensor<long> src)
         {
             Tensor<double> res = new Tensor<double>(DeduceLayout(src.TLayout));
@@ -19,6 +29,11 @@ namespace Tensornet{
             InverseInternal<double>(src.ToTensor<double>(), res);
             return res;
         }
+        /// <summary>
+        /// Get the inverse of the tensor. For the details of the manipulation, please refer to https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html
+        /// </summary>
+        /// <param name="src"></param>
+        /// <returns></returns>
         public static Tensor<double> Inverse(this Tensor<double> src)
         {
             Tensor<double> res = new Tensor<double>(DeduceLayout(src.TLayout));
@@ -31,6 +46,11 @@ namespace Tensornet{
             }
             return res;
         }
+        /// <summary>
+        /// Get the inverse of the tensor. For the details of the manipulation, please refer to https://numpy.org/doc/stable/reference/generated/numpy.linalg.inv.html
+        /// </summary>
+        /// <param name="src"></param>
+        /// <returns></returns>
         public static Tensor<float> Inverse(this Tensor<float> src)
         {
             Tensor<float> res = new Tensor<float>(DeduceLayout(src.TLayout));

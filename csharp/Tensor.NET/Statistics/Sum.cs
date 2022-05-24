@@ -4,6 +4,14 @@ using Tensornet.Native.Param;
 
 namespace Tensornet{
     public static class SumExtension{
+        /// <summary>
+        /// Get the sum of the elements of a tensor along some axes.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axes"> The axes to get sum. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Sum<T>(this Tensor<T> src, int[] axes, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, axes));
@@ -17,6 +25,14 @@ namespace Tensornet{
             SumInternal(src, res, boolDims, keepDims);
             return res;
         }
+        /// <summary>
+        /// Get the sum of the elements of a tensor along an axis.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get the sum. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Sum<T>(this Tensor<T> src, int axis, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout, axis));
@@ -28,6 +44,13 @@ namespace Tensornet{
             SumInternal(src, res, boolDims, keepDims);
             return res;
         }
+        /// <summary>
+        /// Get the sum of the elements of a tensor.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="src"></param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Sum<T>(this Tensor<T> src, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible
         {
             Tensor<T> res = new Tensor<T>(DeduceLayout(src.TLayout));
@@ -68,34 +91,34 @@ namespace Tensornet{
 
     public static partial class Tensor{
         /// <summary>
-        /// Sum the tensor.
+        /// Get the sum of the elements of a tensor along some axes.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be sumed. </param>
-        /// <param name="axes"> The axes to sum. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the sum. If false, the NDim of the result may be different with the input. </param>
-        /// <returns>The Sumped tensor</returns>
+        /// <param name="src"></param>
+        /// <param name="axes"> The axes to get sum. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Sum<T>(Tensor<T> src, int[] axes, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Sum(axes, keepDims);
         }
         /// <summary>
-        /// Sum the tensor.
+        /// Get the sum of the elements of a tensor along an axis.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be sumed. </param>
-        /// <param name="axis"> The axis to sum. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the sum. If false, the NDim of the result may be different with the input. </param>
-        /// <returns>The Sumped tensor</returns>
+        /// <param name="src"></param>
+        /// <param name="axis"> The axis to get the sum. </param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Sum<T>(Tensor<T> src, int axis, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Sum(axis, keepDims);
         }
         /// <summary>
-        /// Sum the tensor.
+        /// Get the sum of the elements of a tensor.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="src"> The tensor to be sumed. </param>
-        /// <param name="keepDims"> Whether to keep the dims after the sum. If false, the NDim of the result may be different with the input. </param>
-        /// <returns>The Sumped tensor</returns>
+        /// <param name="src"></param>
+        /// <param name="keepDims"> Whether to keep the dims all eliminate the dims. False by default. </param>
+        /// <returns></returns>
         public static Tensor<T> Sum<T>(Tensor<T> src, bool keepDims = false) where T : struct, IEquatable<T>, IConvertible{
             return src.Sum(keepDims);
         }
