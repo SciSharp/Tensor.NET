@@ -2,7 +2,7 @@ English | [中文](./doc/Readme-zh-cn.md)
 
 # Tensor.NET
 
-Tensor.NET is a lightweight and high-performance tensor library which provides numpy-like operations but .NET style interfaces. It supports generic tensor, Linq, C# native slices and so on. It is young so that it may may lack some features or have some BUGs. Please tell us on github or via email, thank you!
+Tensor.NET is a lightweight and high-performance tensor library which provides numpy-like operations but .NET style interfaces. It supports generic tensor, Linq, C# native slices and so on.
 
 ## Why using Tensor.NET
 
@@ -12,13 +12,13 @@ However, everyone has his strong and weak points, compared with the previous wor
 
 - Faster speed: using c++ to implement operations.
 
-    ```Tensor.NET``` puts its implmentation of operations in c++ and interop with native api. Then a encapsulation is applied to hide the interop from users. It could provide better performance than pure C# implementation.
+    ```Tensor.NET``` puts its implmentation of operations in c++ and interop with native api. Then a encapsulation is applied to hide the interop from users. It could provide better performance than pure C# implementation. (3 - 30 times faster)
 
-- Better extensibility: using generic class ```Tensor<T>```.
+- Extensibility: using generic class ```Tensor<T>```.
 
     Erasing type in the class design could provide convinience for python-style interfaces. However, using generic class could better integrate with other .NET code.
 
-- More friendly apis for .NETer
+- Friendly apis for .NETer
     
     Rather than providing python-style and numpy-like apis, ```Tensor.NET``` aims to design .NET style apis. It implements ```IEnumerable<T>``` interface, supports C# index and slice, and use generic to constriant the operations between tensors of different data types. ```Tensor.NET``` provides the main features in ```Numpy```, but provides .NET style interfaces.
 
@@ -51,13 +51,9 @@ $ dotnet add package Tensor.NET
 
 ## Documention
 
-Currently, most of the docs are in the making. Please wait for some days, thank you.
-
 - About how to build from source, please refer to [this doc](./doc/Build.md)
 
-- About how to use, please refer to [the user guide]() (WIP)
-
-- About examples, please refer to [this repository](https://github.com/AsakusaRinne/Tensor.NET.Examples)
+- About examples, please refer to [this repository](https://github.com/SteeWing/Tensor.NET.Examples)
 
 ## Benchmarks (WIP)
 
@@ -134,4 +130,4 @@ Despite the advantages above, ```Tensor.NET``` does have some shortcomings, the 
 
 Since ```Tensor.NET``` use generic class in its design and operations between tensors of different types are supposed, there's no way to provide these operators in .NET 6 and C# 10 except the operations between tensors of the same data type. For tensors with different data types, ```Add, Sub, Mod, Div``` methods are provided. However, still, there will be some inconvinience.
 
-This problem is supposed to be solved in .NET 7 with its new features. Thanks for the using and waiting!
+This problem is supposed to be solved in .NET 7 with its new features.

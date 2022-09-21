@@ -40,3 +40,5 @@ build/
 #CSharp
 bin/
 obj/
+csharp/Tensor.NET/bin/
+csharp/Tensor.NET/obj/

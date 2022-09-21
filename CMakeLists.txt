@@ -5,8 +5,6 @@ set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-attributes -Wno-unused -Wno-parentheses"
 set(CMAKE_CXX_FLAGS "-fPIC")
 set(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
-# set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")
 
 project(TensorNet VERSION 0.1.0)
 
