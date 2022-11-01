@@ -60,7 +60,7 @@ namespace NN.Native.Data
                     var random = new System.Random();
                     for (int i = 0; i < span.Length; i++)
                     {
-                        span[i] = random.NextSingle() * ((float)(object)maxValue - (float)(object)minValue) + (float)(object)minValue;
+                        span[i] = ((float)random.NextDouble()) * ((float)(object)maxValue - (float)(object)minValue) + (float)(object)minValue;
                     }
                 }
                 else

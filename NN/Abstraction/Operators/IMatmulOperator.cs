@@ -2,8 +2,12 @@
 
 namespace NN.Native.Abstraction.Operators
 {
-    public interface IMatmulOperator<TA, TB, TC>: ITernaryOperator where TA : unmanaged where TB : unmanaged where TC : unmanaged
+    public interface IMatmulOperator<T>: ITernaryOperator where T : unmanaged
     {
-        static abstract void Exec(ReadOnlySpan<TA> a, ReadOnlySpan<TB> b, Span<TC> c, in NativeLayout LayoutA, in NativeLayout LayoutB, in NativeLayout LayoutC);
+#if NET7_0_OR_GREATER
+        static abstract void Exec(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, in NativeLayout LayoutA, in NativeLayout LayoutB, in NativeLayout LayoutC);
+#else
+        void Exec(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, in NativeLayout LayoutA, in NativeLayout LayoutB, in NativeLayout LayoutC);
+#endif
     }
 }

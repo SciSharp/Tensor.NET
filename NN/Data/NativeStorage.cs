@@ -23,7 +23,7 @@ namespace NN.Native.Data
         }
 
 
-        public override bool Equals([NotNullWhen(true)] object? obj)
+        public override bool Equals(object? obj)
         {
             if (obj is null or not NativeStorage<T>) return false;
             else return this == (NativeStorage<T>)obj;

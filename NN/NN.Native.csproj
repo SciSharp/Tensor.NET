@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFrameworks>net7.0;net6.0;netcoreapp3.1;netstandard2.0;</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Operators\X86\" />
+    <PackageReference Include="System.Memory" Version="4.5.4" Condition="'$(TargetFramework)'=='netstandard2.0'"/>
   </ItemGroup>
 
 </Project>

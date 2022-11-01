@@ -3,41 +3,39 @@ using System.Runtime.CompilerServices;
 
 namespace NN.Native.Basic.DType
 {
-    public class FloatHandler: IUnaryDTypeHandler<float>, IBinaryDTypeHandler<float, float>, ITernaryDTypeHandler<float, float, float>, 
+    public class Float32Handler: INativeDTypeHandler<float>,
             INativeConvertible<int, float>, INativeConvertible<bool, float>, INativeConvertible<float, float>
     {
         #region unary
-        public static float Zero { get => .0f; }
-        public static float One { get => 1.0f; }
+        public float Zero { get => .0f; }
+        public float One { get => 1.0f; }
         #endregion
 
         #region binary
-        public static void AddInplace(ref float src, in float addend) => src += addend;
-        public static void SubstractInplace(ref float src, in float subtrahend) => src -= subtrahend;
-        public static void MultiplyInplace(ref float src, in float multiplicator) => src *= multiplicator;
-        public static void DivideInplace(ref float src, in float divisor) => src /= divisor;
-        public static void ModuleInplace(ref float src, in float modulus) => src %= modulus;
-        //public static void LeftShift(ref float src, ref float dst, int offset) => throw new InvalidOperationException();
-        //public static void RightShift(ref float src, ref float dst, int offset) => throw new InvalidOperationException();
-        public static bool AreEqual(in float a, in float b) => a == b;
-        public static bool IsGraeter(in float a, in float b) => a > b;
-        public static bool IsLess(in float a, in float b) => a < b;
+        public bool AreEqual(float a, float b) => a == b;
+        public bool IsGraeter(float a, float b) => a > b;
+        public bool IsLess(float a, float b) => a < b;
         #endregion
 
         #region ternary
-        public static void Add(in float a, in float b, ref float dst) => dst = a + b;
-        public static void Substract(in float a, in float b, ref float dst) => dst = a - b;
-        public static void Multiply(in float a, in float b, ref float dst) => dst = a * b;
-        public static void Divide(in float a, in float b, ref float dst) => dst = a / b;
-        public static void Module(in float a, in float b, ref float dst) => dst = a % b;
-        [method:MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float MultiplyAndAdd(float a, float b, float dst) => dst + a * b;
+        public float Add(float a, float b) => a + b;
+        public float Substract(float a, float b) => a - b;
+        public float Multiply(float a, float b) => a * b;
+        public float Divide(float a, float b) => a / b;
+        public float Module(float a, float b) => a % b;
+        public float MultiplyAndAdd(float a, float b, float dst) => dst + a * b;
         #endregion
 
         #region convert
-        public static void Convert(in float a, ref float b) => b = a;
-        public static void Convert(in int a, ref float b) => b = a;
-        public static void Convert(in bool a, ref float b) => b = a ? .1f: .0f;
+#if NET7_0_OR_GREATER
+        public static float Convert(float a) => a;
+        public static float Convert(int a) => a;
+        public static float Convert(bool a) => a ? .1f : .0f;
+#else
+        public float Convert(float a) => a;
+        public float Convert(int a) => a;
+        public float Convert(bool a) => a ? .1f : .0f;
+#endif
         #endregion
     }
 }

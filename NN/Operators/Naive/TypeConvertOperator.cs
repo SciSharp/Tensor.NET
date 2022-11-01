@@ -7,10 +7,16 @@ using NN.Native.Operators.Common.Params;
 
 namespace NN.Native.Operators.Naive
 {
-    public class TypeConvertOperator<TA, TB, THandler>: TypeConvertOperatorBase where TA: unmanaged where TB: unmanaged where THandler: INativeConvertible<TA, TB>
+    public class TypeConvertOperator<TA, TB, THandler>: TypeConvertOperatorBase where TA: unmanaged where TB: unmanaged where THandler: INativeConvertible<TA, TB>, new()
     {
+#if NET7_0_OR_GREATER
         public static bool IsThreadSafe { get => false; }
         public static OperatorHandlerType HandlerType { get => OperatorHandlerType.Naive; }
+#else
+        private static THandler _handler = new();
+        public bool IsThreadSafe { get => false; }
+        public OperatorHandlerType HandlerType { get => OperatorHandlerType.Naive; }
+#endif
         public static unsafe void Exec(ReadOnlySpan<TA> a, Span<TB> b, in NativeLayout layoutA, in NativeLayout layoutB, in TypeConvertParam param)
         {
             int totalElems = layoutA.TotalElemCount();
@@ -20,7 +26,11 @@ namespace NN.Native.Operators.Naive
                 var indexEnumeratorB = NativeLayout.GetIndexEnumerator(layoutB);
                 for (int i = 0; i < totalElems; i++)
                 {
-                    THandler.Convert(a[indexEnumeratorA.MoveNext()], ref b[indexEnumeratorB.MoveNext()]);
+#if NET7_0_OR_GREATER
+                    b[indexEnumeratorB.MoveNext()] = THandler.Convert(a[indexEnumeratorA.MoveNext()]);
+#else
+                    b[indexEnumeratorB.MoveNext()] = _handler.Convert(a[indexEnumeratorA.MoveNext()]);
+#endif
                 }
             }
             else
@@ -32,7 +42,11 @@ namespace NN.Native.Operators.Naive
                     indices[param.DimA] ^= indices[param.DimB];
                     indices[param.DimB] ^= indices[param.DimA];
                     indices[param.DimA] ^= indices[param.DimB];
-                    THandler.Convert(a[offset], ref b[layoutB.IndicesToOffset(indices)]);
+#if NET7_0_OR_GREATER
+                    b[layoutB.IndicesToOffset(indices)] = THandler.Convert(a[offset]);
+#else
+                    b[layoutB.IndicesToOffset(indices)] = _handler.Convert(a[offset]);
+#endif
                 }
             }
         }

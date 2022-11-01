@@ -14,7 +14,7 @@ namespace NN.Native.Data
     {
         public Memory<T> AllocateMemory<T>(int elems) where T: unmanaged
         {
-            return new(new T[elems * Marshal.SizeOf<T>()]);
+            return new(new T[elems]);
         }
     }
 }

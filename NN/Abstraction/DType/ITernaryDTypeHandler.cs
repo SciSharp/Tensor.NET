@@ -1,54 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace NN.Native.Abstraction.DType
 {
-    public interface ITernaryDTypeHandler<TA, TB, TC> where TA : unmanaged where TB : unmanaged where TC: unmanaged
+    public interface ITernaryDTypeHandler<T> where T : unmanaged
     {
         /// <summary>
-        /// dst = a + b
+        /// a + b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <param name="dst"></param>
-        static abstract void Add(in TA a, in TB b, ref TC dst);
+        T Add(T a, T b);
         /// <summary>
-        /// dst = a - b
+        /// a - b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <param name="dst"></param>
-        static abstract void Substract(in TA a, in TB b, ref TC dst);
+        T Substract(T a, T b);
         /// <summary>
-        /// dst = a * b
+        /// a * b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <param name="dst"></param>
-        static abstract void Multiply(in TA a, in TB b, ref TC dst);
+        T Multiply(T a, T b);
         /// <summary>
-        /// dst = a / b
+        /// a / b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <param name="dst"></param>
-        static abstract void Divide(in TA a, in TB b, ref TC dst);
+        T Divide(T a, T b);
         /// <summary>
-        /// dst = a % b
+        /// a % b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <param name="dst"></param>
-        static abstract void Module(in TA a, in TB b, ref TC dst);
+        T Module(T a, T b);
         /// <summary>
-        /// dst += a * b
+        /// a * b + c
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="dst"></param>
-        static abstract TC MultiplyAndAdd(TA a, TB b, TC dst);
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        T MultiplyAndAdd(T a, T b, T c);
     }
 }

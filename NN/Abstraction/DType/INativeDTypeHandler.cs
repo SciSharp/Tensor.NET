@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NN.Native.Abstraction.DType
 {
-    public interface IUnaryDTypeHandler<T> where T: unmanaged
+    public interface INativeDTypeHandler<T> :
+        IBinaryDTypeHandler<T>, IUnaryDTypeHandler<T>, ITernaryDTypeHandler<T> where T : unmanaged
     {
-        T Zero { get; }
-        T One { get; }
+
     }
 }

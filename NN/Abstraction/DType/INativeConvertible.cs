@@ -8,6 +8,10 @@ namespace NN.Native.Abstraction.DType
 {
     public interface INativeConvertible<TA, TB> where TA: unmanaged where TB: unmanaged
     {
-        static abstract void Convert(in TA a, ref TB b);
+#if NET7_0_OR_GREATER
+        static abstract TB Convert(TA a);
+#else
+        TB Convert(TA a);
+#endif
     }
 }
