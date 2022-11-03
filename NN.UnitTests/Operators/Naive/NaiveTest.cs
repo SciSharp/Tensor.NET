@@ -36,7 +36,7 @@ namespace NN.UnitTests.Naive
             var a = NativeArray.FromArray(new NativeLayout(new int[] { 3, 4 }), new float[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
             var b = NativeArray.FromArray(new NativeLayout(new int[] { 4, 2 }), new float[] { 1, 2, 1, 2, 1, 1, 2, 3 });
             var c = new NativeArray<float>(new NativeLayout(new int[] { 3, 2 }), new DefaultNativeMemoryManager());
-            Native.Operators.X86.MatmulOperator<float>.Exec(a.Span, b.Span, c.Span, a._layout, b._layout, c._layout);
+            Native.Operators.Naive.MatmulOperator<float>.Exec(a.Span, b.Span, c.Span, a._layout, b._layout, c._layout);
             _output.WriteLine(c.Print());
         }
     }

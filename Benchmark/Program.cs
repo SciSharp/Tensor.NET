@@ -6,9 +6,11 @@ using NN.Native.Data;
 using NN.Native.Basic;
 using NN.Native.Operators.Naive;
 using NN.Native.Basic.DType;
+using System.Runtime.Remoting;
 
 var summary = BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
 Console.WriteLine(summary);
+
 
 public class MatmulFloat32Benchmark
 {

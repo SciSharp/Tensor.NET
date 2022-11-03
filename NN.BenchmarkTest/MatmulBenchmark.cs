@@ -14,6 +14,7 @@ namespace NN.BenchmarkTest
     //[SimpleJob(RunStrategy.Throughput, runtimeMoniker: RuntimeMoniker.NetCoreApp31, baseline: true)]
     //[SimpleJob(RunStrategy.Throughput, runtimeMoniker: RuntimeMoniker.Net60)]
     [SimpleJob(RunStrategy.Throughput, runtimeMoniker: RuntimeMoniker.Net70)]
+    //[BenchmarkDotNet.Attributes.RyuJitX64Job]
     public class MatmulFloat32Benchmark
     {
         public IEnumerable<DimensionHelper> DimensionValues => new DimensionHelper[] {
@@ -46,13 +47,15 @@ namespace NN.BenchmarkTest
 #endif
         }
         [Benchmark]
-        public void X86Matmul()
+        public unsafe void X86Matmul()
         {
             NativeArray<float> res = new(new NativeLayout(new int[] { Dimensions[0][0], Dimensions[1][1] }), new DefaultNativeMemoryManager());
 #if NET7_0_OR_GREATER
-            NN.Native.Operators.X86.MatmulOperator<float>.Exec(ArrayLeft.Span, ArrayRight.Span, res.Span, ArrayLeft._layout, ArrayRight._layout, res._layout);
+            NN.Native.Operators.X86.MatmulOperator<float>.Exec((float*)ArrayLeft.Pin().Pointer, (float*)ArrayRight.Pin().Pointer
+                , (float*)res.Pin().Pointer, ArrayLeft._layout, ArrayRight._layout, res._layout);
 #else
-            new NN.Native.Operators.X86.MatmulOperator<float, Float32Handler>().Exec(ArrayLeft.Span, ArrayRight.Span, res.Span, ArrayLeft._layout, ArrayRight._layout, res._layout);
+            new NN.Native.Operators.X86.MatmulOperator<float, Float32Handler>().Exec((float*)ArrayLeft.Pin().Pointer, (float*)ArrayRight.Pin().Pointer
+                , (float*)res.Pin().Pointer, ArrayLeft._layout, ArrayRight._layout, res._layout);
 #endif
         }
     }

@@ -1,6 +1,7 @@
 ﻿using NN.Native.Abstraction.Data;
 using NN.Native.Basic;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -27,6 +28,11 @@ namespace NN.Native.Data
         {
             _layout = layout;
             _storage = new NativeStorage<T>(memory, 0);
+        }
+
+        public unsafe MemoryHandle Pin()
+        {
+            return _storage._memory.Pin();
         }
 
         public readonly bool IsMutable() => _storage._mutable;
