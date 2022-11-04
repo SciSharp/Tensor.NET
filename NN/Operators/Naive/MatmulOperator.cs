@@ -13,7 +13,7 @@ namespace NN.Native.Operators.Naive
 {
 
 #if NET7_0_OR_GREATER
-    public class MatmulOperator<T> where T : unmanaged, INumberBase<T>
+    public class MatmulOperator<T>: IMatmulOperator<T> where T : unmanaged, INumberBase<T>
     {
         public static bool IsThreadSafe { get => false; }
         public static OperatorHandlerType HandlerType { get => OperatorHandlerType.Naive; }

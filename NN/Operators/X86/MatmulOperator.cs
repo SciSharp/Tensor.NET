@@ -30,76 +30,26 @@ namespace NN.Native.Operators.X86
         //[MethodImpl(MethodImplOptions.AggressiveOptimization)]
         static
 #endif
-        public unsafe void Exec(T* a, T* b, T* c, in NativeLayout layoutA, in NativeLayout layoutB, in NativeLayout layoutC)
+        public unsafe void Exec(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, in NativeLayout layoutA, in NativeLayout layoutB, in NativeLayout layoutC)
         {
             // The array should be contiguous here
             int aRows = layoutA._shape[0];
             int aCols = layoutA._shape[1];
             int bCols = layoutB._shape[1];
 
-            T c00, c01, c02, c03, c10, c11, c12, c13, c20, c21, c22, c23, c30, c31, c32, c33;
-            T b00, b01, b02, b03;
+            int aIdx = 0, bIdx = 0;
 
-            for (int i = 0; i <= aRows - 4; i += 4)
+            for (int i = 0; i <= aRows - 8; i += 8)
             {
-                for (int j = 0; j <= bCols - 4; j += 4)
+                bIdx = 0;
+                for (int j = 0; j <= bCols - 8; j += 8)
                 {
-#if NET7_0_OR_GREATER
-                    c00 = c01 = c02 = c03 = c10 = c11 = c12 = c13 = c20 = c21 = c22 = c23 = c30 = c31 = c32 = c33 = T.Zero;
-                    b00 = b01 = b02 = b03 = T.Zero;
-#else
-                    c00 = c01 = c02 = c03 = c10 = c11 = c12 = c13 = c20 = c21 = c22 = c23 = c30 = c31 = c32 = c33 = _handler.Zero;
-                    b00 = b01 = b02 = b03 = _handler.Zero;
-#endif
-                    int idx0 = i * aCols, idx1 = (i + 1) * aCols, idx2 = (i + 2) * aCols, idx3 = (i + 3) * aCols;
-
-                    for (int k = 0; k < aCols; k++)
-                    {
-                        b00 = b[k * bCols + j];
-                        b01 = b[k * bCols + j + 1];
-                        b02 = b[k * bCols + j + 2];
-                        b03 = b[k * bCols + j + 3];
-#if NET7_0_OR_GREATER
-                        c00 += b00 * a[idx0];
-                        c10 += b00 * a[idx1];
-                        c20 += b00 * a[idx2];
-                        c30 += b00 * a[idx3];
-
-                        c01 += b01 * a[idx0];
-                        c11 += b01 * a[idx1];
-                        c21 += b01 * a[idx2];
-                        c31 += b01 * a[idx3];
-
-                        c02 += b02 * a[idx0];
-                        c12 += b02 * a[idx1];
-                        c22 += b02 * a[idx2];
-                        c32 += b02 * a[idx3];
-
-                        c03 += b03 * a[idx0++];
-                        c13 += b03 * a[idx1++];
-                        c23 += b03 * a[idx2++];
-                        c33 += b03 * a[idx3++];
-#endif
-                    }
-                    c[i * bCols + j] = c00;
-                    c[i * bCols + j + 1] = c01;
-                    c[i * bCols + j + 2] = c02;
-                    c[i * bCols + j + 3] = c03;
-                    c[(i + 1) * bCols + j] = c10;
-                    c[(i + 1) * bCols + j + 1] = c11;
-                    c[(i + 1) * bCols + j + 2] = c12;
-                    c[(i + 1) * bCols + j + 3] = c13;
-                    c[(i + 2) * bCols + j] = c20;
-                    c[(i + 2) * bCols + j + 1] = c21;
-                    c[(i + 2) * bCols + j + 2] = c22;
-                    c[(i + 2) * bCols + j + 3] = c23;
-                    c[(i + 3) * bCols + j] = c30;
-                    c[(i + 3) * bCols + j + 1] = c31;
-                    c[(i + 3) * bCols + j + 2] = c32;
-                    c[(i + 3) * bCols + j + 3] = c33;
+                    Kernel32b8x8(a.Slice(aIdx), b.Slice(bIdx), c.Slice(i * bCols + j), aRows, aCols, bCols);
+                    bIdx += 8;
                 }
+                aIdx += 8 * aCols;
             }
-            for (int i = aRows / 4 * 4; i < aRows; i++)
+            for (int i = aRows / 8 * 8; i < aRows; i++)
             {
                 for (int j = 0; j < bCols; j++)
                 {
@@ -111,9 +61,9 @@ namespace NN.Native.Operators.X86
                     }
                 }
             }
-            for (int i = 0; i < aRows / 4 * 4; i++)
+            for (int i = 0; i < aRows / 8 * 8; i++)
             {
-                for (int j = bCols / 4 * 4; j < bCols; j++)
+                for (int j = bCols / 8 * 8; j < bCols; j++)
                 {
                     for (int k = 0; k < aCols; k++)
                     {
@@ -125,26 +75,52 @@ namespace NN.Native.Operators.X86
             }
         }
 
-#if NET7_0_OR_GREATER
-        //[MethodImpl(MethodImplOptions.AggressiveOptimization)]
-        static
-#endif
-        public unsafe void Kernel32b8x8(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, in NativeLayout layoutA, in NativeLayout layoutB, in NativeLayout layoutC)
+        public static unsafe void Kernel32b8x8(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, int aRows, int aCols, int bCols)
         {
-            int aRows = layoutA._shape[0];
-            int aCols = layoutA._shape[1];
-            int bCols = layoutB._shape[1];
+            Vector<T> c_0_v = new Vector<T>();
+            Vector<T> c_1_v = new Vector<T>();
+            Vector<T> c_2_v = new Vector<T>();
+            Vector<T> c_3_v = new Vector<T>();
+            Vector<T> c_4_v = new Vector<T>();
+            Vector<T> c_5_v = new Vector<T>();
+            Vector<T> c_6_v = new Vector<T>();
+            Vector<T> c_7_v = new Vector<T>();
 
-            Vector256<T> c_0_v = new Vector256<T>();
-            Vector256<T> c_1_v = new Vector256<T>();
-            Vector256<T> c_2_v = new Vector256<T>();
-            Vector256<T> c_3_v = new Vector256<T>();
-            Vector256<T> c_4_v = new Vector256<T>();
-            Vector256<T> c_5_v = new Vector256<T>();
-            Vector256<T> c_6_v = new Vector256<T>();
-            Vector256<T> c_7_v = new Vector256<T>();
+            Vector<T> a_0_v, a_1_v, a_2_v, a_3_v, a_4_v, a_5_v, a_6_v, a_7_v;
+            Vector<T> b_v;
+            int offset = 0;
 
-            
+            for(int k = 0; k < aCols; k++)
+            {
+                a_0_v = new Vector<T>(a[k]);
+                a_1_v = new Vector<T>(a[aCols + k]);
+                a_2_v = new Vector<T>(a[2 * aCols + k]);
+                a_3_v = new Vector<T>(a[3 * aCols + k]);
+                a_4_v = new Vector<T>(a[4 * aCols + k]);
+                a_5_v = new Vector<T>(a[5 * aCols + k]);
+                a_6_v = new Vector<T>(a[6 * aCols + k]);
+                a_7_v = new Vector<T>(a[7 * aCols + k]);
+
+                b_v = new Vector<T>(b.Slice(offset));
+                offset += bCols;
+
+                c_0_v += a_0_v * b_v;
+                c_1_v += a_1_v * b_v;
+                c_2_v += a_2_v * b_v;
+                c_3_v += a_3_v * b_v;
+                c_4_v += a_4_v * b_v;
+                c_5_v += a_5_v * b_v;
+                c_6_v += a_6_v * b_v;
+                c_7_v += a_7_v * b_v;
+            }
+            c_0_v.CopyTo(c);
+            c_1_v.CopyTo(c.Slice(bCols));
+            c_2_v.CopyTo(c.Slice(2 * bCols));
+            c_3_v.CopyTo(c.Slice(3 * bCols));
+            c_4_v.CopyTo(c.Slice(4 * bCols));
+            c_5_v.CopyTo(c.Slice(5 * bCols));
+            c_6_v.CopyTo(c.Slice(6 * bCols));
+            c_7_v.CopyTo(c.Slice(7 * bCols));
         }
     }
 }

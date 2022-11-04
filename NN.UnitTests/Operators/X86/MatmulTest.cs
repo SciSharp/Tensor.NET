@@ -28,7 +28,7 @@ namespace NN.UnitTests.Operators.X86
                 var naiveResult = new NativeArray<int>(new NativeLayout(new int[] { shape.Item1[0], shape.Item2[1] }), new DefaultNativeMemoryManager());
                 var x86Result = new NativeArray<int>(new NativeLayout(new int[] { shape.Item1[0], shape.Item2[1] }), new DefaultNativeMemoryManager());
                 Native.Operators.Naive.MatmulOperator<int>.Exec(a.Span, b.Span, naiveResult.Span, a._layout, b._layout, naiveResult._layout);
-                Native.Operators.X86.MatmulOperator<int>.Exec((int*)a.Pin().Pointer, (int*)b.Pin().Pointer, (int*)x86Result.Pin().Pointer, a._layout, b._layout, x86Result._layout);
+                Native.Operators.X86.MatmulOperator<int>.Exec(a.Span, b.Span, x86Result.Span, a._layout, b._layout, x86Result._layout);
                 var enumeratorNaive = NativeLayout.GetIndexEnumerator(naiveResult._layout);
                 var enumeratorX86 = NativeLayout.GetIndexEnumerator(x86Result._layout);
                 var naiveSpan = naiveResult.Span;
