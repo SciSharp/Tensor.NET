@@ -1,6 +1,8 @@
-﻿using NN.Native.Abstraction.DType;
+﻿using NN.Native.Abstraction.Data;
+using NN.Native.Abstraction.DType;
 using NN.Native.Abstraction.Operators;
 using NN.Native.Basic;
+using NN.Native.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,19 +18,30 @@ namespace NN.Native.Operators.Naive
     public class MatmulOperator<T>: IMatmulOperator<T> where T : unmanaged, INumberBase<T>
     {
         public static bool IsThreadSafe { get => false; }
+        public static bool RequireContiguousArray { get => false; }
         public static OperatorHandlerType HandlerType { get => OperatorHandlerType.Naive; }
 #else
-    public class MatmulOperator<T, U> where T : unmanaged where U: INativeDTypeHandler<T>, new()
+    public class MatmulOperator<T, U>: IMatmulOperator<T> where T : unmanaged where U : INativeDTypeHandler<T>, new()
     {
         private static U _handler = new();
+        public bool RequireContiguousArray { get => false; }
         public bool IsThreadSafe { get => false; }
         public OperatorHandlerType HandlerType { get => OperatorHandlerType.Naive; }
 #endif
 #if NET7_0_OR_GREATER
-        //[MethodImpl(MethodImplOptions.AggressiveOptimization)]
         static
 #endif
-        public unsafe void Exec(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, in NativeLayout layoutA, in NativeLayout layoutB, in NativeLayout layoutC)
+        public NativeArray<T> Exec(in NativeArray<T> a, in NativeArray<T> b, INativeMemoryManager? memoryManager = null)
+        {
+            var layoutA = new NativeLayout(a._layout);
+            var layoutB = new NativeLayout(b._layout);
+            var layoutC = IMatmulOperator<T>.DeduceLayout(ref layoutA, ref layoutB);
+            var res = new NativeArray<T>(layoutC, memoryManager);
+            ExecInternal(a.Span, b.Span, res.Span, layoutA, layoutB, layoutC);
+            return res;
+        }
+
+        private static void ExecInternal(ReadOnlySpan<T> a, ReadOnlySpan<T> b, Span<T> c, in NativeLayout layoutA, in NativeLayout layoutB, in NativeLayout layoutC)
         {
             // The array should be contiguous here
             int aRows = layoutA._shape[0];

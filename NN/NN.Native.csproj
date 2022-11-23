@@ -9,7 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Memory" Version="4.5.4" Condition="'$(TargetFramework)'=='netstandard2.0'"/>
+    <PackageReference Include="System.Memory" Version="4.5.4" Condition="'$(TargetFramework)'=='netstandard2.0'" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <PackageReference Include="IsExternalInit" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Operators\Common\" />
   </ItemGroup>
 
 </Project>

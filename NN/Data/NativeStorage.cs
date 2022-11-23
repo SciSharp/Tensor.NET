@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NN.Native.Data
 {
-    internal struct NativeStorage<T> where T: unmanaged
+    public struct NativeStorage<T> where T: unmanaged
     {
         internal Memory<T> _memory;
         internal int _offset;

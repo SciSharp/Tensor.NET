@@ -1,4 +1,5 @@
 ﻿using NN.Native.Abstraction;
+using NN.Native.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,6 +20,10 @@ namespace NN.Native.Basic
         internal int[] _shape;
         internal int[] _stride;
 
+        public int Ndim { get => _ndim; }
+        public int[] Shape { get => _shape; }
+        public int[] Stride { get => _stride; }
+
         #region constructor
         public NativeLayout()
         {
@@ -26,16 +31,36 @@ namespace NN.Native.Basic
             _shape = new int[MAX_NDIM];
             _stride = new int[MAX_NDIM];
         }
-        public NativeLayout(int[] shape)
+        public NativeLayout(params int[] shape)
         {
-            _ndim = shape.Length;
-            Debug.Assert(_ndim > 0 && _ndim < MAX_NDIM);
+            _ndim = 0;
+            for(int i = 0; i < shape.Length; i++)
+            {
+                if (shape[i] != 0) _ndim++;
+                else if (i > 0 && i < shape.Length - 1) throw new InvalidShapeException();
+            }
+            Debug.Assert(_ndim > 0 && _ndim <= MAX_NDIM);
             _shape = new int[MAX_NDIM];
             _stride = new int[MAX_NDIM];
             shape.CopyTo(_shape, 0);
             // init contiguous stride
             int s = 1;
             for(int i = 0; i < _ndim; i++)
+            {
+                _stride[_ndim - i - 1] = s;
+                s *= shape[_ndim - i - 1];
+            }
+        }
+        public NativeLayout(ReadOnlySpan<int> shape)
+        {
+            _ndim = shape.Length;
+            Debug.Assert(_ndim > 0 && _ndim <= MAX_NDIM);
+            _shape = new int[MAX_NDIM];
+            _stride = new int[MAX_NDIM];
+            shape.CopyTo(_shape);
+            // init contiguous stride
+            int s = 1;
+            for (int i = 0; i < _ndim; i++)
             {
                 _stride[_ndim - i - 1] = s;
                 s *= shape[_ndim - i - 1];
@@ -50,7 +75,7 @@ namespace NN.Native.Basic
             shape.CopyTo(_shape, 0);
             stride.CopyTo(_stride, 0);
         }
-        public NativeLayout(ref NativeLayout layout)
+        public NativeLayout(in NativeLayout layout)
         {
             _ndim = layout._ndim;
             Debug.Assert(_ndim > 0 && _ndim < MAX_NDIM);
@@ -92,14 +117,18 @@ namespace NN.Native.Basic
             for (int i = 0; i < _ndim; i++) res *= _shape[i];
             return res;
         }
-        public readonly bool IsSameShape(ref NativeLayout other)
+        public readonly bool IsSameShape(in NativeLayout other)
         {
             if (_ndim != other._ndim) return false;
-            return _shape.AsSpan().SequenceEqual(other._shape.AsSpan());
+            for(int i = 0; i < _ndim; i++)
+            {
+                if (_shape[i] != other._shape[i]) return false;
+            }
+            return true;
         }
-        public readonly bool IsSameLayout(ref NativeLayout other)
+        public readonly bool IsSameLayout(in NativeLayout other)
         {
-            return IsSameShape(ref other) && _stride.AsSpan().SequenceEqual(other._stride);
+            return IsSameShape(other) && _stride.AsSpan().SequenceEqual(other._stride);
         }
         #endregion
 
@@ -129,6 +158,121 @@ namespace NN.Native.Basic
 
         public void AddAxisInplace(int axis) => AddAxisInplace(axis, 1, _stride[axis] * _shape[axis]);
 
+        public void BroadcastInplace(in NativeLayout targetLayout)
+        {
+            int targetNDim = targetLayout._ndim;
+            if (_ndim <= 0 || targetNDim <= 0)
+            {
+                throw new Exception("Cannot broadcast (to) empty tensor shape");
+            }
+
+            if (IsScalar())
+            {
+                _ndim = targetNDim;
+                for (int i = 0; i < targetNDim; i++)
+                {
+                    Shape[i] = targetLayout.Shape[i];
+                    Stride[i] = targetLayout.Shape[i] == 1 ? 1 : 0;
+                }
+                return;
+            }
+
+            if (targetNDim < _ndim)
+            {
+                throw new Exception($"Dimension after broadcast is less than that before braodcast. ");
+            }
+
+            for (int i = 0; i < targetNDim; i++)
+            {
+                int targetIdx = targetNDim - i - 1;
+                int cur_shape = i < _ndim ? Shape[_ndim - i - 1] : 1, cur_stride = i < _ndim ? Stride[_ndim - i - 1] : 0;
+                if (targetLayout.Shape[targetIdx] != cur_shape)
+                {
+                    if (cur_shape != 1 && cur_stride != 0)
+                    {
+                        throw new Exception($"Broadcast on dim {_ndim - i - 1} with shape not equal to 0 or 1.");
+                    }
+                    Shape[targetIdx] = targetLayout.Shape[targetIdx];
+                    Stride[targetIdx] = 0;
+                }
+                else
+                {
+                    Shape[targetIdx] = cur_shape;
+                    Stride[targetIdx] = cur_stride;
+                }
+            }
+            _ndim = targetNDim;
+        }
+
+        public NativeLayout Broadcast(in NativeLayout targetLayout)
+        {
+            NativeLayout res = new NativeLayout(this);
+            res.BroadcastInplace(targetLayout);
+            return res;
+        }
+
+        public NativeLayout CollapseContiguous()
+        {
+            if (_ndim == 0)
+            {
+                throw new InvalidShapeException($"The ndim of the tensor that try to collapse contiguously is 0.");
+            }
+            NativeLayout res = new NativeLayout(this);
+
+            // remove all dims with shape 1
+            for (int i = 0; i <= res._ndim - 1 && res._ndim >= 2; i++)
+            {
+                if (res.Shape[i] == 0)
+                {
+                    // empty tensor
+                    res._ndim = 1;
+                    res.Shape[0] = 0;
+                    res.Stride[0] = 1;
+                    return res;
+                }
+                if (res.Shape[i] == 1) res.RemoveAxisInplace(i);
+            }
+
+            if (res._ndim == 1)
+            {
+                if (res.Shape[0] <= 1)
+                {
+                    res.Stride[0] = 1;
+                }
+                return res;
+            }
+
+            if (res._ndim <= 0 || res.Shape[res._ndim - 1] <= 0)
+            {
+                throw new InvalidShapeException("CollapseContiguous");
+            }
+            for (int i = res._ndim - 2; i >= 0; i--)
+            {
+                if (res.Shape[i] <= 0)
+                {
+                    throw new InvalidShapeException("CollapseContiguous");
+                }
+                if (res.Stride[i] == res.Stride[i + 1] * res.Shape[i + 1])
+                {
+                    res.Shape[i] *= res.Shape[i + 1];
+                    res.Stride[i] = res.Stride[i + 1];
+                    res.RemoveAxisInplace(i + 1);
+                }
+            }
+            return res;
+        }
+
+        public void RemoveDanglingAxesInplace()
+        {
+            for (int i = _ndim - 1; i >= 0; i--)
+            {
+                if (Shape[i] == 1 && _ndim > 1)
+                {
+                    RemoveAxisInplace(i);
+                }
+            }
+        }
+
         public override string ToString()
         {
             string res = "(";
@@ -152,6 +296,12 @@ namespace NN.Native.Basic
             res += ")";
             return res;
         }
+
+        public static NativeLayout ShapeLike(in NativeLayout layout)
+        {
+            return new NativeLayout(layout._shape.AsSpan(0, layout._ndim));
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Enumerator GetIndexEnumerator(in NativeLayout layout) => new Enumerator(layout);
 
@@ -163,6 +313,13 @@ namespace NN.Native.Basic
             private int _product1, _product2, _product3;
             private int _ndim;
             private int _currentIndex;
+
+            public int CurrentIndex { get => _currentIndex; }
+
+            public void Clear()
+            {
+                _currentIndex = _index1 = _index2 = _index3;
+            }
 
             [MethodImpl (MethodImplOptions.AggressiveInlining)]
             public Enumerator(in NativeLayout layout)
@@ -217,6 +374,7 @@ namespace NN.Native.Basic
             {
                 return _ndim switch
                 {
+                    0 => 0,
                     1 => MoveWithNDim1(),
                     2 => MoveWithNDim2(),
                     3 => MoveWithNDim3(),
@@ -240,6 +398,7 @@ namespace NN.Native.Basic
                 if(_index1 >= _shape1)
                 {
                     _currentIndex += _stride0 - _product1;
+                    _index1 = 0;
                 }
                 return res;
             }
@@ -253,10 +412,12 @@ namespace NN.Native.Basic
                 {
                     _index1++;
                     _currentIndex += _stride1 - _product2;
+                    _index2 = 0;
                 }
                 if (_index1 >= _shape1)
                 {
                     _currentIndex += _stride0 - _product1;
+                    _index1 = 0;
                 }
                 return res;
             }
@@ -270,15 +431,18 @@ namespace NN.Native.Basic
                 {
                     _index2++;
                     _currentIndex += _stride2 - _product3;
+                    _index3 = 0;
                 }
                 if (_index2 >= _shape2)
                 {
                     _index1++;
                     _currentIndex += _stride1 - _product2;
+                    _index2 = 0;
                 }
                 if (_index1 >= _shape1)
                 {
                     _currentIndex += _stride0 - _product1;
+                    _index1 = 0;
                 }
                 return res;
             }

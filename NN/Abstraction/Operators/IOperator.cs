@@ -10,9 +10,11 @@ namespace NN.Native.Abstraction.Operators
     {
 #if NET7_0_OR_GREATER
         static abstract bool IsThreadSafe { get; }
+        static abstract bool RequireContiguousArray { get; }
         static abstract OperatorHandlerType HandlerType { get; }
 #else
         bool IsThreadSafe { get; }
+        bool RequireContiguousArray { get; }
         OperatorHandlerType HandlerType { get; }
 #endif
     }

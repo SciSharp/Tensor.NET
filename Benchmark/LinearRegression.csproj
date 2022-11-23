@@ -11,10 +11,13 @@
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+    <PackageReference Include="NumSharp" Version="0.30.0" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.7.0" />
+    <PackageReference Include="TensorFlow.NET" Version="0.70.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NN\NN.Native.csproj" />
+    <ProjectReference Include="..\NN.Core\NN.Core.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NN.BenchmarkTest", "NN.Benc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NN.Core", "NN.Core\NN.Core.csproj", "{C61FC3B6-FD8C-4BDA-BC69-AB4BD46C8867}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Benchmark", "Benchmark\Benchmark.csproj", "{9A84C621-DF8A-4D37-B980-F8DCC4638B40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinearRegression", "Benchmark\LinearRegression.csproj", "{9A84C621-DF8A-4D37-B980-F8DCC4638B40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

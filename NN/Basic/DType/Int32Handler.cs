@@ -1,39 +1,57 @@
-﻿//using NN.Native.Abstraction.DType;
+﻿using NN.Native.Abstraction.DType;
+using System.Runtime.CompilerServices;
 
-//namespace NN.Native.Basic.DType
-//{
-//    public class Int32Handler : IUnaryDTypeHandler<int>, IBinaryDTypeHandler<int, int>, ITernaryDTypeHandler<int, int, int>, INativeConvertible<int, int>, INativeConvertible<bool, int>
-//    {
-//        #region unary
-//        public static int Zero { get => 0; }
-//        public static int One { get => 1; }
-//        #endregion
+namespace NN.Native.Basic.DType
+{
+    public class Int32Handler : INativeDTypeHandler<int>,INativeConvertible<int, int>, INativeConvertible<bool, int>, INativeConvertible<float, int>
+    {
+        #region unary
+        public int Zero { get => 0; }
+        public int One { get => 1; }
+        #endregion
 
-//        #region binary
-//        public static void AddInplace(ref int src, in int addend) => src += addend;
-//        public static void SubstractInplace(ref int src, in int subtrahend) => src -= subtrahend;
-//        public static void MultiplyInplace(ref int src, in int multiplicator) => src *= multiplicator;
-//        public static void DivideInplace(ref int src, in int divisor) => src /= divisor;
-//        public static void ModuleInplace(ref int src, in int modulus) => src %= modulus;
-//        public static void LeftShift(in int src, ref int dst, int offset) => dst = src << offset;
-//        public static void RightShift(in int src, ref int dst, int offset) => dst = src >> offset;
-//        public static bool AreEqual(in int a, in int b) => a == b;
-//        public static bool IsGraeter(in int a, in int b) => a > b;
-//        public static bool IsLess(in int a, in int b) => a < b;
-//        #endregion
+        #region binary
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool AreEqual(int a, int b) => a == b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsGraeter(int a, int b) => a > b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsLess(int a, int b) => a < b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int GetNegative(int x) => -x;
+        #endregion
 
-//        #region ternary
-//        public static void Add(in int a, in int b, ref int dst) => dst = a + b;
-//        public static void Substract(in int a, in int b, ref int dst) => dst = a - b;
-//        public static void Multiply(in int a, in int b, ref int dst) => dst = a * b;
-//        public static void Divide(in int a, in int b, ref int dst) => dst = a / b;
-//        public static void Module(in int a, in int b, ref int dst) => dst = a % b;
-//        public static void MultiplyAndAdd(in int a, in int b, ref int dst) => dst += a * b;
-//        #endregion
+        #region ternary
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Add(int a, int b) => a + b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Subtract(int a, int b) => a - b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Multiply(int a, int b) => a * b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Divide(int a, int b) => a / b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Module(int a, int b) => a % b;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int MultiplyAndAdd(int a, int b, int dst) => dst + a * b;
+        #endregion
 
-//        #region convert
-//        public static void Convert(in int a, ref int b) => b = a;
-//        public static void Convert(in bool a, ref int b) => b = a ? 1 : 0;
-//        #endregion
-//    }
-//}
+        #region convert
+#if NET7_0_OR_GREATER
+        [method:MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Convert(int a) => a;
+        [method:MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Convert(float a) => (int)a;
+        [method:MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static int Convert(bool a) => a ? 1 : 0;
+#else
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Convert(int a) => a;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Convert(float a) => (int)a;
+        [method: MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public int Convert(bool a) => a ? 1 : 0;
+#endif
+        #endregion
+    }
+}

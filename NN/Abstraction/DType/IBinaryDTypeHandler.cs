@@ -23,5 +23,7 @@ namespace NN.Native.Abstraction.DType
         /// <param name="b"></param>
         /// <returns></returns>
         bool IsLess(T a, T b);
+
+        T GetNegative(T x);
     }
 }

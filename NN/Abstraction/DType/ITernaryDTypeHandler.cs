@@ -20,7 +20,7 @@ namespace NN.Native.Abstraction.DType
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        T Substract(T a, T b);
+        T Subtract(T a, T b);
         /// <summary>
         /// a * b
         /// </summary>
