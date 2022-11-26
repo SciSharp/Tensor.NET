@@ -53,7 +53,7 @@ $ dotnet add package Tensor.NET
 
 - About how to build from source, please refer to [this doc](./doc/Build.md)
 
-- About examples, please refer to [this repository](https://github.com/SteeWing/Tensor.NET.Examples)
+- About examples, please refer to [this repository](https://github.com/AsakusaRinne/Tensor.NET.Examples)
 
 ## Benchmarks (WIP)
 
